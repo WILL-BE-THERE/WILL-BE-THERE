@@ -6,4 +6,4 @@ An online RSVP service
 
 - [ABOUT](./project%20structures)
 - [FRONTEND](./will_be_there/)
-- [BACKEND](.)
+- [BACKEND](./backend/)
