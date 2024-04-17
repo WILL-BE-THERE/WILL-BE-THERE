@@ -4,5 +4,5 @@ An online RSVP service
 
 ## projects
 
-- [Frontend](./will_be_there/)
+- [FRONTEND](./will_be_there/)
 - [BACKEND](.)
