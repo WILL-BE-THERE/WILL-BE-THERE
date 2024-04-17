@@ -6,4 +6,3 @@ An online RSVP service
 
 - [Frontend](./will_be_there/)
 - [BACKEND](.)
-
