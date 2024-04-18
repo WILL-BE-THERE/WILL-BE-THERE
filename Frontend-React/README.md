@@ -15,7 +15,9 @@ git clone https://github.com/ADCH24-GROUP-22/WILL-BE-THERE.git
 ```
 cd Frontend-React
 ```
-run the development server locally
+
+- run the development server locally
+
 ```
 npm run dev
 ```
