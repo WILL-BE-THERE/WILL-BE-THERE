@@ -30,4 +30,5 @@ npm run dev
 ```
 npm install --save-dev vite
 ```
+
 - run the **step 3** from before
