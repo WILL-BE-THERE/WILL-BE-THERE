@@ -5,10 +5,13 @@ an online rsvp system
 ## how to run
 
 - clone the repositories
+
 ```
 git clone https://github.com/ADCH24-GROUP-22/WILL-BE-THERE.git
 ```
+
 - Change into the directory
+
 ```
 cd Frontend-React
 ```
