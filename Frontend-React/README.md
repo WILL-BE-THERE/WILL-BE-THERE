@@ -21,6 +21,7 @@ cd Frontend-React
 ```
 npm run dev
 ```
+
 ### bugs and solutions
 
 - incase of error during ***step 3** above
