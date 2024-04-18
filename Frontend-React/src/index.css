@@ -4,4 +4,9 @@
 
 body {
   font-family: 'Inter', sans-serif;
+  background-color: #eff0f2;
+}
+
+.active {
+  color: #1a53fd;
 }

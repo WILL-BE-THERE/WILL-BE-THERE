@@ -8,7 +8,7 @@ export default {
           100: '#1A53FD',
           200: '#1262B1',
         },
-        neutral: '#C6E3FF',
+        neutral: { 100: '#C6E3FF', 200: '#5E5C5C' },
         secondary: {
           100: '#FD901A',
           200: '#B16512',
