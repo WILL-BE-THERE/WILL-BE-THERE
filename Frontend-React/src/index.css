@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #eff0f2;
+}
+
+h1 {
+  font-family: 'Manrope', sans-serif;
+}
+
+.active {
+  color: #1a53fd;
+}
+
+@media screen and (max-width: 430px) {
+  .active {
+    width: 100%;
+    background-color: #e8eeff;
+    color: #1a53fd;
+    border-left: 4px solid #1a53fd;
+  }
+}
