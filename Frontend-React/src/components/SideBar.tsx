@@ -3,13 +3,10 @@ import { menuData } from '../utils/local-data';
 import { NavLink } from 'react-router-dom';
 import SignUpButton from './Buttons/SignUpButton';
 import LoginButton from './Buttons/LoginButton';
+import { useProjectContext } from '../context/project-context';
 
-type SidebarProps = {
-  isSidebarOpen: true | false;
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const SideBar = ({ isSidebarOpen, setIsSidebarOpen }: SidebarProps) => {
+const SideBar = () => {
+  const { isSidebarOpen, setIsSidebarOpen } = useProjectContext();
   return (
     <AnimatePresence mode='wait'>
       {isSidebarOpen && (

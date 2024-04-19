@@ -18,6 +18,8 @@ import Faqs from './pages/Faqs.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 import SignUpPage from './pages/SignUpPage.tsx';
 import TwoFactorAuth from './pages/TwoFactorAuth.tsx';
+import ProjectProvider from './context/project-context.tsx';
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +39,8 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <ProjectProvider>
+      <RouterProvider router={router} />
+    </ProjectProvider>
   </React.StrictMode>
 );

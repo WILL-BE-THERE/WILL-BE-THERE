@@ -1,5 +1,137 @@
+import { Link } from 'react-router-dom';
+import shape1 from '../assets/shape1.png';
+import shape2 from '../assets/shape2.png';
+import shape3 from '../assets/shape3.png';
+import googleIcon from '../assets/google-icon.png';
+import appleIcon from '../assets/apple-icon.png';
+import fbIcon from '../assets/fb-icon.png';
+import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
 const LoginPage = () => {
-  return <div>LoginPage</div>;
+  const initialDetails = {
+    email: '',
+    password: '',
+  };
+
+  const [seePassword, setSeePassword] = useState(false);
+  const [userInfo, setUserInfo] = useState(initialDetails);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserInfo((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setUserInfo(initialDetails);
+    setSeePassword(false);
+  };
+
+  return (
+    <section className='h-screen w-full bg-white relative flex'>
+      <img
+        src={shape1}
+        alt='icon'
+        className='absolute right-0 top-1/2 -translate-y-1/2 w-36'
+      />
+      <img
+        src={shape2}
+        alt='icon'
+        className='absolute -bottom-6 left-1/2 -translate-x-1/2 w-44'
+      />
+      <img
+        src={shape3}
+        alt='icon'
+        className='absolute left-[22%] top-1/2 -translate-y-1/2 -translate-x-[22%] w-52'
+      />
+      <aside className='bg-primary-100/[50%] w-1/2 h-full relative z-[2] backdrop-filter backdrop-blur-[15px] grid place-items-center'>
+        <div className='w-[35%] h-fit text-white text-center'>
+          <h1 className='text-3xl mb-2 font-bold'>Stay in the loop</h1>
+          <p className='text-sm mb-8 font-light'>
+            Create an account to keep upto date with local and global events
+          </p>
+          <Link
+            to='/signup'
+            className='text-sm px-5 py-2 font-light border-2 border-white/30 rounded-md hover:bg-primary-200 hover:text-white transition-all'
+          >
+            Create your account
+          </Link>
+        </div>
+      </aside>
+
+      <div className='w-1/2 h-full'>
+        <form
+          className='w-[65%] ml-[6.8rem] mt-20 flex flex-col gap-6'
+          onSubmit={handleSubmit}
+        >
+          <h1 className='text-4xl mb-2 font-bold'>Login</h1>
+
+          <label htmlFor='Email' className='flex flex-col gap-1 w-full'>
+            <p className='flex gap-1 text-sm font-medium text-neutral-200'>
+              Email <span className='text-red-600 font-bold'>*</span>
+            </p>
+            <input
+              type='email'
+              name='email'
+              value={userInfo.email}
+              onChange={handleChange}
+              className='border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full'
+              required
+            />
+          </label>
+
+          <label
+            htmlFor='Enter Password'
+            className='flex flex-col gap-1 w-full'
+          >
+            <p className='flex gap-1 text-sm font-medium text-neutral-200'>
+              Enter Password <span className='text-red-600 font-bold'>*</span>
+            </p>
+            <aside className='relative flex'>
+              <input
+                type={seePassword ? 'text' : 'password'}
+                name='password'
+                value={userInfo.password}
+                onChange={handleChange}
+                className='border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 placeholder:text-sm w-full'
+                required
+              />
+              <button
+                type='button'
+                className='absolute right-5 top-1/2 -translate-y-1/2 border-none outline-none'
+                onClick={() => setSeePassword(!seePassword)}
+              >
+                {seePassword ? <FaRegEye /> : <FaRegEyeSlash />}
+              </button>
+            </aside>
+          </label>
+
+          <div className='w-full flex items-center justify-center'>
+            <button
+              type='submit'
+              className='px-5 py-2 rounded-md bg-primary-100 text-white text-sm hover:scale-110 active:scale-105 w-fit transition-all border-none outline-none'
+            >
+              Login
+            </button>
+          </div>
+
+          <p className='text-center'>or signup via</p>
+
+          <div className='flex w-full items-center justify-center gap-6'>
+            <a href='#'>
+              <img src={googleIcon} alt='google icon' className='w-6' />
+            </a>
+            <a href='#'>
+              <img src={appleIcon} alt='apple icon' className='w-6' />
+            </a>
+            <a href='#'>
+              <img src={fbIcon} alt='facebook icon' className='w-6' />
+            </a>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
 };
 export default LoginPage;
