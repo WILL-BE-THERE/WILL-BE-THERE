@@ -14,11 +14,9 @@ import About from './pages/About.tsx';
 import Contact from './pages/Contact.tsx';
 import Events from './pages/Events.tsx';
 import Accounts from './pages/Accounts.tsx';
-import  from '.'
 import Faqs from './pages/Faqs.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 import SignUpPage from './pages/SignUpPage.tsx';
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<Layout />} errorElement={<ErrorPage />}>
