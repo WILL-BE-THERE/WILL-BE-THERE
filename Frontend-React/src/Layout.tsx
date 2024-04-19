@@ -1,22 +1,16 @@
 import { Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import { useState } from 'react';
 import SideBar from './components/SideBar';
+import { useProjectContext } from './context/project-context';
 
 const Layout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { isSidebarOpen } = useProjectContext();
 
   return (
     <div className={`${isSidebarOpen && 'fixed w-full'}`}>
-      <Navbar
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-      />
-      <SideBar
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-      />
+      <Navbar />
+      <SideBar />
       <Outlet />
       <Footer />
     </div>

@@ -3,13 +3,11 @@ import SignUpButton from './Buttons/SignUpButton';
 import LoginButton from './Buttons/LoginButton';
 import NavLinks from './NavLinks';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { useProjectContext } from '../context/project-context';
 
-type NavbarProps = {
-  isSidebarOpen: true | false;
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
+const Navbar = () => {
+  const { isSidebarOpen, setIsSidebarOpen } = useProjectContext();
 
-const Navbar = ({ isSidebarOpen, setIsSidebarOpen }: NavbarProps) => {
   return (
     <nav className='bg-white h-20 flex items-center justify-center'>
       <section className='w-[90%] flex items-center justify-between m-auto sm:w-[95%] lg:w-[85%]'>
