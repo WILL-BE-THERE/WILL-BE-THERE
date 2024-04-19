@@ -21,13 +21,17 @@ const Accounts: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>{data.heading}</h1>
-      <h2>{data.subheading}</h2>
-      <p>{data.AccountTypes.Guest}</p>
-      <p>{data.AccountTypes.Host}</p>
-      <ContinueButton />
-      
+    <div className='flex justify-center items-center h-screen bg-grey'>
+      <section className='two-factor-auth p-4 rounded shadow-md bg-white'>
+        <div className='w-full max-w-md'>
+          <h1 className='text-2xl font-bold mb-4 text-center'>{data.heading}</h1>
+          <p className='text-base font-medium mb-2'>{data.subheading}</p>
+          <div className='flex justify-between'>
+            <ContinueButton text={data.AccountTypes.Guest} />
+            <ContinueButton text={data.AccountTypes.Host} />
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

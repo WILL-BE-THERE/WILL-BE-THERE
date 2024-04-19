@@ -1,60 +1,74 @@
-// TwoFactorAuth.ts
-
 import React from "react";
 
 interface TwoFactorAuth {
-  title: string;
-  instruction: string;
   phoneNumber: string;
-  codePlaceholder: string;
-  submitButtonLabel: string;
-  resendLinkLabel: string;
-  countdownTimer: string;
-  copyright: string;
-  activate: () => Promise<void>;
-  deactivate: () => Promise<void>;
+  verificationCode: string;
+  timer: number;
+  onVerify?: () => void;
+  onResend?: () => void;
 }
 
-class TwoFactorAuthModel implements TwoFactorAuth {
-  userId: string;
-  email: string;
-  phoneNumber: string;
-  qrCodeUrl?: string;
-  isActivated: boolean;
+function TwoFactorAuthComponent(props: TwoFactorAuth) {
+  const [code, setCode] = React.useState("");
+  const countdown = React.useRef(props.timer);
 
-  constructor(userId: string, email: string, phoneNumber: string) {
-    this.userId = userId;
-    this.email = email;
-    this.phoneNumber = phoneNumber;
-    this.isActivated = false;
-  }
+  React.useEffect(() => {
+    const intervalId = setInterval(() => {
+      countdown.current--;
+      if (countdown.current === 0) {
+        clearInterval(intervalId);
+      }
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
 
-  async activate(): Promise<void> {
-    // Implement logic to activate 2FA, e.g., generate QR code, send SMS, etc.
-    this.isActivated = true;
-    console.log("2FA activated!");
-  }
+  const handleVerify = () => {
+    if (props.onVerify) {
+      props.onVerify();
+    }
+  };
 
-  async deactivate(): Promise<void> {
-    // Implement logic to deactivate 2FA
-    this.isActivated = false;
-    console.log("2FA deactivated!");
-  }
-}
+  const handleResend = () => {
+    if (props.onResend) {
+      props.onResend();
+      countdown.current = props.timer; // Reset timer on resend
+    }
+  };
 
-const TwoFactorAuth: React.FC<TwoFactorAuth> = ({TwoFactorAuthModel}) => {
-  return(
-      <div id="two-step-verification-form">
-        <h1 id="title">Two Step Verification</h1>
-        <p id="instruction">Enter the verification code we sent to</p>
-        <p id="phone-number">+1234567890123</p>
-        <input type="text" id="code-placeholder" placeholder="Type your four digits code">
-          <button id="submit-button-label">Submit</button>
-          <a href="#" id="resend-link-label">Didn't get the code?</a>
-          <p id="countdown-timer">00:35</p>
-          <small id="copyright">@Allwritthen 2021</small>
-      </div>
+  return (
+    <div className="flex justify-center items-center h-screen bg-grey">
+      <section className="two-factor-auth p-4 rounded shadow-md bg-white">
+        <div className="w-full max-w-md"> {/* Limit max width for responsiveness */}
+          <img src="" alt="" />
+          <h1 className="text-2xl font-bold mb-4">Two Factor Authentication</h1>
+          <p className="text-base font-medium mb-2">Enter the verification code sent to</p>
+          <p className="text-sm text-gray-500">{props.phoneNumber}</p>
+          <p className="text-base font-medium mt-4">Type your Verification Code</p>
+          <input
+            type="text"
+            placeholder="Code"
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+          <button
+            onClick={handleVerify}
+            disabled={code.length !== 4}
+            className="disabled:bg-gray-300 py-2 px-4 text-sm font-medium text-center text-white rounded bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          >
+            Verify
+          </button>
+          <p className="text-sm text-gray-500 mt-4">
+            Didn't get the code?{" "}
+            <span onClick={handleResend} className="text-blue-500 cursor-pointer">
+              Resend
+            </span>
+          </p>
+          <p className="text-blue-500">({countdown.current}s) {/* Countdown timer */}</p>
+        </div>
+      </section>
+    </div>
   );
-};
+}
 
-export default TwoFactorAuth;
+export default TwoFactorAuthComponent;
