@@ -1,4 +1,5 @@
 import React from 'react';
+import ContinueButton from '../components/Buttons/ContinueButton';
 
 interface Accounts {
   heading: string;
@@ -25,6 +26,8 @@ const Accounts: React.FC = () => {
       <h2>{data.subheading}</h2>
       <p>{data.AccountTypes.Guest}</p>
       <p>{data.AccountTypes.Host}</p>
+      <ContinueButton />
+      
     </div>
   );
 };
