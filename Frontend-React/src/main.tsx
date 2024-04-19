@@ -13,6 +13,7 @@ import Home from './pages/Home.tsx';
 import About from './pages/About.tsx';
 import Contact from './pages/Contact.tsx';
 import Events from './pages/Events.tsx';
+import Accounttype from './pages/Accounttype.tsx';
 import Faqs from './pages/Faqs.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 import SignUpPage from './pages/SignUpPage.tsx';
