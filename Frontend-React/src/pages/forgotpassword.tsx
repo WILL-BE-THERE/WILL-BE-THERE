@@ -49,3 +49,5 @@ const ForgotPasswordComponent: React.FC = () => {
         </div>
     );
 }
+
+export default ForgotPasswordComponent;
