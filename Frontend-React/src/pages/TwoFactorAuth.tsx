@@ -1,4 +1,6 @@
 import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEquals } from '@fortawesome/free-solid-svg-icons';
 
 interface TwoFactorAuth {
   phoneNumber: string;
@@ -39,7 +41,7 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
     <div className="flex justify-center items-center h-screen bg-grey">
       <section className="two-factor-auth p-4 rounded shadow-md bg-white">
         <div className="w-full max-w-md"> {/* Limit max width for responsiveness */}
-          <img src="" alt="" />
+          <FontAwesomeIcon icon={faEquals} size="2xl" className="text-lightgreen" />
           <h1 className="text-2xl font-bold mb-4">Two Factor Authentication</h1>
           <p className="text-base font-medium mb-2">Enter the verification code sent to</p>
           <p className="text-sm text-gray-500">{props.phoneNumber}</p>
