@@ -17,6 +17,8 @@ import Accounts from './pages/Accounts.tsx';
 import Faqs from './pages/Faqs.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 import SignUpPage from './pages/SignUpPage.tsx';
+import TwoFactorAuth from './pages/TwoFactorAuth.tsx';
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<Layout />} errorElement={<ErrorPage />}>
@@ -28,6 +30,7 @@ const router = createBrowserRouter(
       <Route path='faqs' element={<Faqs />} />
       <Route path='login' element={<LoginPage />} />
       <Route path='signup' element={<SignUpPage />} />
+      <Route path='twofactorauth' element={<TwoFactorAuth />} />
     </Route>
   )
 );

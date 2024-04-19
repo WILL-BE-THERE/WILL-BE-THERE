@@ -1,11 +1,16 @@
 // TwoFactorAuth.ts
 
+import React from "react";
+
 interface TwoFactorAuth {
-  userId: string;
-  email: string;
+  title: string;
+  instruction: string;
   phoneNumber: string;
-  qrCodeUrl?: string;
-  isActivated: boolean;
+  codePlaceholder: string;
+  submitButtonLabel: string;
+  resendLinkLabel: string;
+  countdownTimer: string;
+  copyright: string;
   activate: () => Promise<void>;
   deactivate: () => Promise<void>;
 }
@@ -37,4 +42,19 @@ class TwoFactorAuthModel implements TwoFactorAuth {
   }
 }
 
-export { TwoFactorAuth, TwoFactorAuthModel };
+const TwoFactorAuth: React.FC<TwoFactorAuth> = ({TwoFactorAuthModel}) => {
+  return(
+      <div id="two-step-verification-form">
+        <h1 id="title">Two Step Verification</h1>
+        <p id="instruction">Enter the verification code we sent to</p>
+        <p id="phone-number">+1234567890123</p>
+        <input type="text" id="code-placeholder" placeholder="Type your four digits code">
+          <button id="submit-button-label">Submit</button>
+          <a href="#" id="resend-link-label">Didn't get the code?</a>
+          <p id="countdown-timer">00:35</p>
+          <small id="copyright">@Allwritthen 2021</small>
+      </div>
+  );
+};
+
+export default TwoFactorAuth;
