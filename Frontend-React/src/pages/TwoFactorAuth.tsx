@@ -1,6 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEquals } from '@fortawesome/free-solid-svg-icons';
+import { faSync,faCircleNotch, faCog,faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 interface TwoFactorAuth {
   phoneNumber: string;
@@ -41,7 +41,12 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
     <div className="flex justify-center items-center h-screen bg-grey">
       <section className="two-factor-auth p-4 rounded shadow-md bg-white">
         <div className="w-full max-w-md"> {/* Limit max width for responsiveness */}
-          <FontAwesomeIcon icon={faEquals} size="2xl" className="text-lightgreen" />
+          <FontAwesomeIcon icon={faSync} spin /> {/* Add "spin" prop for animation */}
+          <FontAwesomeIcon icon={faCircleNotch} spin />
+          <FontAwesomeIcon icon={faCog} spin />
+          <FontAwesomeIcon icon={faCog} spin className="fa-spin-reverse justify-center" /> {/* Reverse spin */}
+          <FontAwesomeIcon icon={faSpinner} spin className="fa-spin-pulse justify-center" /> {/* Pulse animation */}
+          <FontAwesomeIcon icon={faSpinner} spin className="fa-spin-pulse fa-spin-reverse justify-center" />
           <h1 className="text-2xl font-bold mb-4">Two Factor Authentication</h1>
           <p className="text-base font-medium mb-2">Enter the verification code sent to</p>
           <p className="text-sm text-gray-500">{props.phoneNumber}</p>
