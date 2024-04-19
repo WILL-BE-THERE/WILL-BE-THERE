@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import ContinueButton from '../components/Buttons/ContinueButton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 interface Accounts {
   heading: string;
