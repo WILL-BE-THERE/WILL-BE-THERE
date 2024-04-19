@@ -32,7 +32,7 @@ const router = createBrowserRouter(
       <Route path='faqs' element={<Faqs />} />
       <Route path='login' element={<LoginPage />} />
       <Route path='signup' element={<SignUpPage />} />
-      <Route path='twofactorauth' element={<TwoFactorAuth />} />
+      <Route path='twofactorauth' element={<TwoFactorAuth phoneNumber={''} verificationCode={''} timer={0} />} />
     </Route>
   )
 );
