@@ -27,9 +27,10 @@ const Accounts: React.FC = () => {
           <h1 className='text-2xl font-bold mb-4 text-center'>{data.heading}</h1>
           <p className='text-base font-medium mb-2'>{data.subheading}</p>
           <div className='flex justify-between'>
-            <ContinueButton text={data.AccountTypes.Guest} />
-            <ContinueButton text={data.AccountTypes.Host} />
-          </div>
+            <p>{data.AccountTypes.Guest}</p>
+            <p>{data.AccountTypes.Host}</p>
+            <ContinueButton />
+            </div>
         </div>
       </section>
     </div>
