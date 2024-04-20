@@ -1,6 +1,6 @@
 import React from "react";
-import { BiCheckbox, BiCheckboxChecked } from "react-icons/bi";
-import { MdCheckBox } from "react-icons/md";
+import { BiCheckboxChecked } from "react-icons/bi";
+
 
 interface NewPassword {
     heading: string;
