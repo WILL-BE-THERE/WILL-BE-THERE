@@ -1,6 +1,11 @@
-import React from "react";
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSync,faCircleNotch, faCog,faSpinner } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSync,
+  faCircleNotch,
+  faCog,
+  faSpinner,
+} from '@fortawesome/free-solid-svg-icons';
 
 interface TwoFactorAuth {
   phoneNumber: string;
@@ -11,18 +16,19 @@ interface TwoFactorAuth {
 }
 
 function TwoFactorAuthComponent(props: TwoFactorAuth) {
-  const [code, setCode] = React.useState("");
-  const countdown = React.useRef(props.timer);
+  const [code, setCode] = React.useState('');
+  const [countdown, setCountdown] = React.useState(props.timer);
 
   React.useEffect(() => {
     const intervalId = setInterval(() => {
-      countdown.current--;
-      if (countdown.current === 0) {
+      setCountdown(countdown - 1);
+      if (countdown === 0) {
+        setCountdown(0);
         clearInterval(intervalId);
       }
     }, 1000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [countdown]);
 
   const handleVerify = () => {
     if (props.onVerify) {
@@ -33,45 +39,75 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
   const handleResend = () => {
     if (props.onResend) {
       props.onResend();
-      countdown.current = props.timer; // Reset timer on resend
+      setCountdown(countdown); // Reset timer on resend
     }
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-grey">
-      <section className="two-factor-auth p-4 rounded shadow-md bg-white">
-        <div className="w-full max-w-md"> {/* Limit max width for responsiveness */}
-          <FontAwesomeIcon icon={faSync} spin /> {/* Add "spin" prop for animation */}
-          <FontAwesomeIcon icon={faCircleNotch} spin />
-          <FontAwesomeIcon icon={faCog} spin />
-          <FontAwesomeIcon icon={faCog} spin className="fa-spin-reverse justify-center" /> {/* Reverse spin */}
-          <FontAwesomeIcon icon={faSpinner} spin className="fa-spin-pulse justify-center" /> {/* Pulse animation */}
-          <FontAwesomeIcon icon={faSpinner} spin className="fa-spin-pulse fa-spin-reverse justify-center" />
-          <h1 className="text-2xl font-bold mb-4">Two Factor Authentication</h1>
-          <p className="text-base font-medium mb-2">Enter the verification code sent to</p>
-          <p className="text-sm text-gray-500">{props.phoneNumber}</p>
-          <p className="text-base font-medium mt-4">Type your Verification Code</p>
+    <div className='flex justify-center items-center h-screen sm:h-[75vh] lg:h-screen'>
+      <section className='two-factor-auth rounded-lg shadow-md bg-white w-[min(90%,30rem)] py-12 px-10'>
+        <div className='w-full max-w-md'>
+          {/* Limit max width for responsiveness */}
+          <div className='hidden'>
+            <FontAwesomeIcon icon={faSync} spin />{' '}
+            {/* Add "spin" prop for animation */}
+            <FontAwesomeIcon icon={faCircleNotch} spin />
+            <FontAwesomeIcon icon={faCog} spin />
+            <FontAwesomeIcon
+              icon={faCog}
+              spin
+              className='fa-spin-reverse justify-center'
+            />{' '}
+            {/* Reverse spin */}
+            <FontAwesomeIcon
+              icon={faSpinner}
+              spin
+              className='fa-spin-pulse justify-center'
+            />{' '}
+            {/* Pulse animation */}
+            <FontAwesomeIcon
+              icon={faSpinner}
+              spin
+              className='fa-spin-pulse fa-spin-reverse justify-center'
+            />
+          </div>
+          <h1 className='text-2xl font-bold mb-4 sm:text-3xl'>
+            Two Factor Authentication
+          </h1>
+          <p className='font-medium text-neutral-200 mb-2'>
+            Enter the verification code sent to
+          </p>
+          <p className='text-sm text-gray-500'>{props.phoneNumber}</p>
           <input
-            type="text"
-            placeholder="Code"
+            type='text'
+            placeholder='Verification Code'
             value={code}
             onChange={(e) => setCode(e.target.value)}
-            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className='w-full border border-gray-300 rounded-md bg-[#fafafa] px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm'
           />
           <button
             onClick={handleVerify}
             disabled={code.length !== 4}
-            className="disabled:bg-gray-300 py-2 px-4 text-sm font-medium text-center text-white rounded bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className='disabled:bg-gray-300 mt-4 py-2 px-4 text-sm font-medium text-center text-white rounded bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500'
           >
             Verify
           </button>
-          <p className="text-sm text-gray-500 mt-4">
-            Didn't get the code?{" "}
-            <span onClick={handleResend} className="text-blue-500 cursor-pointer">
-              Resend
-            </span>
+          <p className='text-sm text-gray-500 mt-4'>
+            Didn't get the code?{' '}
+            {countdown === 0 && (
+              <span
+                onClick={handleResend}
+                className='text-blue-500 cursor-pointer'
+              >
+                Resend
+              </span>
+            )}
           </p>
-          <p className="text-blue-500">({countdown.current}s) {/* Countdown timer */}</p>
+          {countdown !== 0 && (
+            <p className='text-blue-500'>
+              ({countdown}s) {/* Countdown timer */}
+            </p>
+          )}
         </div>
       </section>
     </div>
