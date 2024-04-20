@@ -96,6 +96,16 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = "favor.m.white@gmail.com"
 EMAIL_HOST_PASSWORD = "csmhfnrvounssvju"
 
+# swagger authorization setting
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

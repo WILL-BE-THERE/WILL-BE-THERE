@@ -12,10 +12,11 @@ from rest_framework.exceptions import ValidationError
 from .email import verify_email
 from userProfile.models import userProfile
 from drf_yasg.utils import swagger_auto_schema
-from .swagger import signUp_request_body, logIn_request_body, logout_request_body
+from .swagger import signUp_request_body, logIn_request_body, logout_request_body, resendVerification_request_body, VerifyAccount_request_body
 
 @swagger_auto_schema(
     method='post',
+    operation_description=" endpoint: http://127.0.0.1:8000/api/account/signup/",
     request_body=signUp_request_body,
     responses={200: 'Success', 400: 'Bad Request'}
 )
@@ -38,8 +39,38 @@ def signUp(request):
         return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@swagger_auto_schema(
+    method='post',
+    operation_description=" endpoint: http://127.0.0.1:8000/api/account/verify/",
+    request_body= VerifyAccount_request_body,
+    responses={200: 'Success', 404: 'Not Found'}
+)
+
 @api_view(['POST'])
-def resend_Vserification_code(request):
+def Verify_account(request):
+    """resend verification code"""
+    email = request.data.get('email')
+    verification_code = request.data.get('verification_code')
+    try:
+        user = User.objects.get(username=email)
+        user_profile = userProfile.objects.get(user=user)
+        if user_profile.verification_code == verification_code:
+            user_profile.is_verified = True
+            user_profile.save()
+            return Response({'success': '[profile verified]'})
+        else:
+            return Response({'error': '[incorrect verification code]',})
+    except User.DoesNotExist or userProfile.DoesNotExist:
+        return Response({'error': 'user with this email dose not exit'}, status=status.HTTP_404_NOT_FOUND)
+
+@swagger_auto_schema(
+    method='post',
+    operation_description=" endpoint: http://127.0.0.1:8000/api/account/verify/",
+    request_body= resendVerification_request_body,
+    responses={200: 'Success', 404: 'Not Found'}
+)
+@api_view(['POST'])
+def resend_Verification_code(request):
     """resend verification code"""
     email = request.data.get('email')
     try:
@@ -49,11 +80,12 @@ def resend_Vserification_code(request):
         user_profile.verification_code = code
         user_profile.save()
         return Response({'success': '[verification code sent successfully]', 'verification code': [code]})
-    except Exception as e:
-        return Response({'error': [str(e)]})
+    except User.DoesNotExist or userProfile.DoesNotExist:
+        return Response({'error': 'user with this email dose not exit'}, status=status.HTTP_404_NOT_FOUND)
 
 @swagger_auto_schema(
     method='post',
+    operation_description=" endpoint: http://127.0.0.1:8000/api/account/login/",
     request_body=logIn_request_body,
     responses={200: 'Success', 401: 'Unauthorized'}
 )
@@ -66,7 +98,7 @@ def logIn(request):
     if user is not None:
         token, _ = Token.objects.get_or_create(user=user)
         return Response({'token': token.key, 'user': userSerializer(user).data}, status=status.HTTP_200_OK)
-    return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+    return Response({'error': 'username and or password incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class CustomTokenAuthentication(TokenAuthentication):
     """ for custom authentication"""
@@ -74,11 +106,13 @@ class CustomTokenAuthentication(TokenAuthentication):
         try:
             return super().authenticate(request)
         except AuthenticationFailed:
-            raise AuthenticationFailed('Please login to continue')
+            raise AuthenticationFailed('unauthorized. Please login to continue')
 
 @swagger_auto_schema(
     method='post',
     request_body=logout_request_body,
+    operation_description=" endpoint: http://127.0.0.1:8000/api/account/logout/",
+     operation_summary="its Auth protected"
 )
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
