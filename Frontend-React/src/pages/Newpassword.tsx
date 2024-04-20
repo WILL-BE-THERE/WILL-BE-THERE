@@ -66,7 +66,7 @@ const NewPasswordComponent: React.FC = () => {
                             </div>
                             <div className="mt-3">
                                 <button className="w-full p-2 bg-blue-700 text-white rounded">
-                                    <a href="/login">submit</a>
+                                    <a href="">submit</a>
                                 </button>
                             </div>
                             <div className="flex">
