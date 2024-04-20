@@ -1,12 +1,37 @@
-import React from "react";
+import React from "react"; 
 
-const RsvpSuccess = () => {
-  return (
-    <div>
-      <h1>RSVP Successful</h1>
-      <p>Thank you for RSVPing to our event!</p>
-    </div>
-  );
-};
-
-export default RsvpSuccess;
+interface MessageCardProps {
+    message: string;
+    type?: "success" | "error" | "info"; // Optional message type
+    onDismiss?: () => void; // Optional callback for dismissing the card
+  }
+  
+  const MessageCard: React.FC<MessageCardProps> = ({
+    message,
+    type = "success",
+    onDismiss,
+  }) => {
+    const handleDismiss = () => {
+      if (onDismiss) {
+        onDismiss();
+      }
+    };
+  
+    return (
+      <div
+        className={`message-card message-card-${type}`}
+        role="alert"
+        aria-live="assertive"
+      >
+        <p>{message}</p>
+        {onDismiss && (
+          <button type="button" onClick={handleDismiss}>
+            Dismiss
+          </button>
+        )}
+      </div>
+    );
+  };
+  
+  export default MessageCard;
+  

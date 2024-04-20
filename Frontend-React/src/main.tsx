@@ -24,7 +24,6 @@ import NewPasswordComponent from './pages/Newpassword.tsx';
 import Rsvp from './pages/Rsvp.tsx';
 import RsvpSuccess from './pages/rsvpsuccess.tsx';
 
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<Layout />} errorElement={<ErrorPage />}>
@@ -40,7 +39,7 @@ const router = createBrowserRouter(
       <Route path='forgotpassword' element={<ForgotPasswordComponent />} />
       <Route path='newpassword' element={<NewPasswordComponent />} />
       <Route path='rsvp' element={<Rsvp />} />
-      <Route path='rsvpsuccess' element={<RsvpSuccess />} />
+      <Route path='rsvpsuccess' element={<RsvpSuccess message={''} />} /> // Add the 'message' property to the RsvpSuccess component
     </Route>
   )
 );
