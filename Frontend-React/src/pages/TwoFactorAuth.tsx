@@ -1,56 +1,82 @@
-import React from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSync,faCircleNotch, faCog,faSpinner } from '@fortawesome/free-solid-svg-icons';
+import React from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {
+  faSync,
+  faCircleNotch,
+  faCog,
+  faSpinner,
+} from '@fortawesome/free-solid-svg-icons'
 
 interface TwoFactorAuth {
-  phoneNumber: string;
-  verificationCode: string;
-  timer: number;
-  onVerify?: () => void;
-  onResend?: () => void;
+  phoneNumber: string
+  verificationCode: string
+  timer: number
+  onVerify?: () => void
+  onResend?: () => void
 }
 
 function TwoFactorAuthComponent(props: TwoFactorAuth) {
-  const [code, setCode] = React.useState("");
-  const countdown = React.useRef(props.timer);
+  const [code, setCode] = React.useState('')
+  const countdown = React.useRef(props.timer)
 
   React.useEffect(() => {
     const intervalId = setInterval(() => {
-      countdown.current--;
+      countdown.current--
       if (countdown.current === 0) {
-        clearInterval(intervalId);
+        clearInterval(intervalId)
       }
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+    }, 1000)
+    return () => clearInterval(intervalId)
+  }, [])
 
   const handleVerify = () => {
     if (props.onVerify) {
-      props.onVerify();
+      props.onVerify()
     }
-  };
+  }
 
   const handleResend = () => {
     if (props.onResend) {
-      props.onResend();
-      countdown.current = props.timer; // Reset timer on resend
+      props.onResend()
+      countdown.current = props.timer // Reset timer on resend
     }
-  };
+  }
 
   return (
     <div className="flex justify-center items-center h-screen bg-grey">
       <section className="two-factor-auth p-4 rounded shadow-md bg-white">
-        <div className="w-full max-w-md"> {/* Limit max width for responsiveness */}
-          <FontAwesomeIcon icon={faSync} spin /> {/* Add "spin" prop for animation */}
+        <div className="w-full max-w-md">
+          {' '}
+          {/* Limit max width for responsiveness */}
+          <FontAwesomeIcon icon={faSync} spin />{' '}
+          {/* Add "spin" prop for animation */}
           <FontAwesomeIcon icon={faCircleNotch} spin />
           <FontAwesomeIcon icon={faCog} spin />
-          <FontAwesomeIcon icon={faCog} spin className="fa-spin-reverse justify-center" /> {/* Reverse spin */}
-          <FontAwesomeIcon icon={faSpinner} spin className="fa-spin-pulse justify-center" /> {/* Pulse animation */}
-          <FontAwesomeIcon icon={faSpinner} spin className="fa-spin-pulse fa-spin-reverse justify-center" />
+          <FontAwesomeIcon
+            icon={faCog}
+            spin
+            className="fa-spin-reverse justify-center"
+          />{' '}
+          {/* Reverse spin */}
+          <FontAwesomeIcon
+            icon={faSpinner}
+            spin
+            className="fa-spin-pulse justify-center"
+          />{' '}
+          {/* Pulse animation */}
+          <FontAwesomeIcon
+            icon={faSpinner}
+            spin
+            className="fa-spin-pulse fa-spin-reverse justify-center"
+          />
           <h1 className="text-2xl font-bold mb-4">Two Factor Authentication</h1>
-          <p className="text-base font-medium mb-2">Enter the verification code sent to</p>
+          <p className="text-base font-medium mb-2">
+            Enter the verification code sent to
+          </p>
           <p className="text-sm text-gray-500">{props.phoneNumber}</p>
-          <p className="text-base font-medium mt-4">Type your Verification Code</p>
+          <p className="text-base font-medium mt-4">
+            Type your Verification Code
+          </p>
           <input
             type="text"
             placeholder="Code"
@@ -66,16 +92,21 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
             Verify
           </button>
           <p className="text-sm text-gray-500 mt-4">
-            Didn't get the code?{" "}
-            <span onClick={handleResend} className="text-blue-500 cursor-pointer">
+            Didn't get the code?{' '}
+            <span
+              onClick={handleResend}
+              className="text-blue-500 cursor-pointer"
+            >
               Resend
             </span>
           </p>
-          <p className="text-blue-500">({countdown.current}s) {/* Countdown timer */}</p>
+          <p className="text-blue-500">
+            ({countdown.current}s) {/* Countdown timer */}
+          </p>
         </div>
       </section>
     </div>
-  );
+  )
 }
 
-export default TwoFactorAuthComponent;
+export default TwoFactorAuthComponent

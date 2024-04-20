@@ -24,8 +24,8 @@ npm run dev
 
 ### bugs and solutions
 
-- incase of error during ***step 3** above
-- check for the folder ***node_modules***, if this doesn't exist please run:
+- incase of error during **\*step 3** above
+- check for the folder **_node_modules_**, if this doesn't exist please run:
 
 ```
 npm install --save-dev vite

@@ -1,15 +1,15 @@
-import { NavLink } from 'react-router-dom';
-import { menuData } from '../utils/local-data';
+import { NavLink } from 'react-router-dom'
+import { menuData } from '../utils/local-data'
 
 const NavLinks = () => {
   return (
-    <ul className='flex items-center gap-8 text-[0.95rem] font-medium'>
+    <ul className="flex items-center gap-8 text-[0.95rem] font-medium">
       {menuData.map((item, i) => (
         <li key={i}>
           <NavLink
             to={item.link}
             className={`${(isActive: boolean) => {
-              return isActive ? 'active' : '';
+              return isActive ? 'active' : ''
             }} text-neutral-200`}
           >
             {item.title}
@@ -17,6 +17,6 @@ const NavLinks = () => {
         </li>
       ))}
     </ul>
-  );
-};
-export default NavLinks;
+  )
+}
+export default NavLinks
