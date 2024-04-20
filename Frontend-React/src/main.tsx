@@ -21,6 +21,7 @@ import TwoFactorAuth from './pages/TwoFactorAuth.tsx';
 import ProjectProvider from './context/project-context.tsx';
 import ForgotPasswordComponent from './pages/forgotpassword.tsx';
 import NewPasswordComponent from './pages/Newpassword.tsx';
+import Rsvp from './pages/Rsvp.tsx';
 
 
 const router = createBrowserRouter(
@@ -37,6 +38,7 @@ const router = createBrowserRouter(
       <Route path='twofactorauth' element={<TwoFactorAuth phoneNumber={''} verificationCode={''} timer={0} />} />
       <Route path='forgotpassword' element={<ForgotPasswordComponent />} />
       <Route path='newpassword' element={<NewPasswordComponent />} />
+      <Route path='rsvp' element={<Rsvp />} />
     </Route>
   )
 );
