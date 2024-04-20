@@ -19,6 +19,7 @@ import LoginPage from './pages/LoginPage.tsx';
 import SignUpPage from './pages/SignUpPage.tsx';
 import TwoFactorAuth from './pages/TwoFactorAuth.tsx';
 import ProjectProvider from './context/project-context.tsx';
+import ForgotPasswordComponent from './pages/forgotpassword.tsx';
 
 
 const router = createBrowserRouter(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
       <Route path='login' element={<LoginPage />} />
       <Route path='signup' element={<SignUpPage />} />
       <Route path='twofactorauth' element={<TwoFactorAuth phoneNumber={''} verificationCode={''} timer={0} />} />
+      <Route path='forgotpassword' element={<ForgotPasswordComponent />} />
     </Route>
   )
 );
