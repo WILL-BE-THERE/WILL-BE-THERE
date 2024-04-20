@@ -47,18 +47,18 @@ const AccountsComponent: React.FC = () => {
   };
 
   return (
-    <div className='flex justify-center items-center h-screen bg-gray-200'>
+    <div className='shadow-inner flex justify-center items-center h-screen bg-gray-200 '>
       <section className='two-factor-auth p-4 rounded shadow-md bg-white'>
         <div className='w-full max-w-md'>
           <h1 className='text-2xl font-bold mb-4 text-center'>{data.heading}</h1>
           <p className='text-base font-medium mb-2'>{data.subheading}</p>
           <div className='flex justify-center'>
-            <section >
-              <div className='mt-3 '>
+            <section className='p-5 bg-#ffedd5'>
+              <div className="box-border h-15 w-100 border p-2 box-decoration-slice bg-#ffedd5 ">
                 <Checkbox label={data.AccountTypes.Guest} value='Guest' />
                 <p className='text-sm text-gray-500'>Select if you are attending an event</p>
               </div>
-              <div className='mt-5'>
+              <div className='box-border h-15 w-100 border p-2'>
                 <Checkbox label={data.AccountTypes.Host} value='Host' />
                 <p className='text-sm text-gray-500'>Select if a host creating event</p>
               </div>
