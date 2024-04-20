@@ -29,24 +29,24 @@ const LoginPage = () => {
   };
 
   return (
-    <section className='h-screen w-full bg-white relative flex'>
+    <section className='h-[40rem] w-full bg-white relative flex lg:h-screen'>
       <img
         src={shape1}
         alt='icon'
-        className='absolute right-0 top-1/2 -translate-y-1/2 w-36'
+        className='absolute right-0 top-1/2 -translate-y-1/2 w-36 hidden sm:block'
       />
       <img
         src={shape2}
         alt='icon'
-        className='absolute -bottom-6 left-1/2 -translate-x-1/2 w-44'
+        className='absolute -bottom-6 left-1/2 -translate-x-1/2 w-44 hidden sm:block'
       />
       <img
         src={shape3}
         alt='icon'
-        className='absolute left-[22%] top-1/2 -translate-y-1/2 -translate-x-[22%] w-52'
+        className='absolute left-[22%] top-1/2 -translate-y-1/2 -translate-x-[22%] w-52 hidden sm:block'
       />
-      <aside className='bg-primary-100/[50%] w-1/2 h-full relative z-[2] backdrop-filter backdrop-blur-[15px] grid place-items-center'>
-        <div className='w-[35%] h-fit text-white text-center'>
+      <aside className='bg-primary-100/[50%] w-1/2 h-full relative z-[2] backdrop-filter backdrop-blur-[15px] place-items-center hidden sm:grid'>
+        <div className='w-[55%] h-fit text-white text-center lg:w-[35%]'>
           <h1 className='text-3xl mb-2 font-bold'>Stay in the loop</h1>
           <p className='text-sm mb-8 font-light'>
             Create an account to keep upto date with local and global events
@@ -60,12 +60,12 @@ const LoginPage = () => {
         </div>
       </aside>
 
-      <div className='w-1/2 h-full'>
+      <div className='w-full h-full sm:w-1/2'>
         <form
-          className='w-[65%] ml-[6.8rem] mt-20 flex flex-col gap-6'
+          className='w-[80%] ml-[3rem] mt-20 flex flex-col gap-6 lg:ml-[6.8rem] lg:w-[65%] relative z-10'
           onSubmit={handleSubmit}
         >
-          <h1 className='text-4xl mb-2 font-bold'>Login</h1>
+          <h1 className='text-3xl mb-2 font-bold lg:text-4xl'>Login</h1>
 
           <label htmlFor='Email' className='flex flex-col gap-1 w-full'>
             <p className='flex gap-1 text-sm font-medium text-neutral-200'>
