@@ -12,7 +12,7 @@ interface NewPassword {
 const NewPasswordComponent: React.FC = () => {
     const data: NewPassword = {
         heading: "Setup New Password",
-        subheading: "Enter your new password below.",
+        subheading: "Enter your new password below and retype it ",
         password: "",
         confirmPassword: "",
     };
@@ -35,7 +35,7 @@ const NewPasswordComponent: React.FC = () => {
                                     id="confirmPassword"
                                     value={data.confirmPassword}
                                     onChange={(e) => handleConfirmPasswordChange(e.target.value)}
-                                    placeholder="Confirm Password*"
+                                    placeholder="Password*"
                                     style={{ backgroundColor: "#fffbeb" }}
                                     className="w-full p-2 border border-gray-300 rounded"
                                     required
