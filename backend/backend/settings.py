@@ -37,6 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Auth',
+    'userProfile',
+
+    #third party applications
+    'rest_framework',
+    'rest_framework.authtoken',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +87,25 @@ DATABASES = {
     }
 }
 
+
+#email configurations
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "favor.m.white@gmail.com"
+EMAIL_HOST_PASSWORD = "csmhfnrvounssvju"
+
+# swagger authorization setting
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
