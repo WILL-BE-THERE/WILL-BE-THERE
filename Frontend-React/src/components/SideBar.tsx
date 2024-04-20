@@ -1,9 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { menuData } from '../utils/local-data';
 import { NavLink } from 'react-router-dom';
-import SignUpButton from './Buttons/SignUpButton';
-import LoginButton from './Buttons/LoginButton';
 import { useProjectContext } from '../context/project-context';
+import GetStartedButton from './Buttons/GetStartedButton';
 
 const SideBar = () => {
   const { isSidebarOpen, setIsSidebarOpen } = useProjectContext();
@@ -45,8 +44,7 @@ const SideBar = () => {
             </ul>
 
             <div className=' flex flex-col gap-2 text-center px-8'>
-              <SignUpButton />
-              <LoginButton />
+              <GetStartedButton />
             </div>
           </motion.section>
         </motion.div>

@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 
-const LoginButton = () => {
+const GetStartedButton = () => {
   return (
     <Link
-      to='/login'
+      to='/accounts'
       className='px-5 py-2 bg-primary-100 text-white text-[0.95rem] rounded-md'
     >
-      LogIn
+      Get Started
     </Link>
   );
 };
-export default LoginButton;
+export default GetStartedButton;
