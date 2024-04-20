@@ -58,6 +58,7 @@ const Rsvp = () => {
                             <input type="radio" name="guest" id="no" value="no" className="mr-3"/>
                             <label htmlFor="no">No</label>
                         </div>
+                        <textarea placeholder="send a congratulatory message" rows={4} cols={50} className="border border-black rounded"></textarea>                   
                         <label htmlFor="quantity" className="font">number of guests</label>
                         <input type="number" id="quantity" name="quantity" min={0} max={100} step={1} className="border border-black rounded" />
                         <textarea placeholder="Guest Names" rows={4} cols={50} className="border border-black rounded"></textarea>                   
