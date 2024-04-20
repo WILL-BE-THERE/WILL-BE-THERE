@@ -17,10 +17,6 @@ const NewPasswordComponent: React.FC = () => {
         confirmPassword: "",
     };
 
-    const handlePasswordChange = (value: string) => {
-        data.password = value;
-    };
-
     const handleConfirmPasswordChange = (value: string) => {
         data.confirmPassword = value;
     };
@@ -36,13 +32,19 @@ const NewPasswordComponent: React.FC = () => {
                             <div className="mt-3">
                                 <input
                                     type="password"
-                                    id="password"
-                                    value={data.password}
-                                    onChange={(e) => handlePasswordChange(e.target.value)}
-                                    placeholder="Password*"
+                                    id="confirmPassword"
+                                    value={data.confirmPassword}
+                                    onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+                                    placeholder="Confirm Password*"
                                     style={{ backgroundColor: "#fffbeb" }}
                                     className="w-full p-2 border border-gray-300 rounded"
+                                    required
                                 />
+                                {!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(data.confirmPassword) && (
+                                    <p>
+                                        <small className="text-red-500">Password must contain at least one lowercase letter, one uppercase letter, one number, one special character, and be at least 8 characters long</small>
+                                    </p>
+                                )}
                             </div>
                             <div className="mt-3">
                                 <input
@@ -53,7 +55,14 @@ const NewPasswordComponent: React.FC = () => {
                                     placeholder="Confirm Password*"
                                     style={{ backgroundColor: "#fffbeb" }}
                                     className="w-full p-2 border border-gray-300 rounded"
+                                    required
                                 />
+                                {data.password !== data.confirmPassword && (
+                                    <p>
+                                        <small className="text-red-500">Password does not match</small>
+                                    </p>
+                                )
+                                }
                             </div>
                             <div className="mt-3">
                                 <button className="w-full p-2 bg-blue-700 text-white rounded">
