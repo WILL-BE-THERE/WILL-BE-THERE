@@ -1,9 +1,8 @@
 import logo from '../assets/logo.png';
-import SignUpButton from './Buttons/SignUpButton';
-import LoginButton from './Buttons/LoginButton';
 import NavLinks from './NavLinks';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { useProjectContext } from '../context/project-context';
+import GetStartedButton from './Buttons/GetStartedButton';
 
 const Navbar = () => {
   const { isSidebarOpen, setIsSidebarOpen } = useProjectContext();
@@ -19,12 +18,9 @@ const Navbar = () => {
           {isSidebarOpen ? <FaTimes /> : <FaBars />}
         </button>
         <img src={logo} alt='Project Logo' className='w-24' />
-        <div className='hidden sm:block'>
-          <NavLinks />
-        </div>
         <div className='items-center gap-x-8 font-medium hidden sm:flex'>
-          <SignUpButton />
-          <LoginButton />
+          <NavLinks />
+          <GetStartedButton />
         </div>
       </section>
     </nav>
