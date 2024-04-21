@@ -1,5 +1,6 @@
 import LoginButton from '../components/Buttons/LoginButton'
 import SignUpButton from '../components/Buttons/SignUpButton'
+import ViewDetailsButton from '../components/Buttons/ViewDetailsButton';
 
 const Events = () => {
   return (
@@ -13,8 +14,8 @@ const Events = () => {
             <h3>Event 1</h3>
             <p>Event Description</p>
             <p>Date</p>
-            <button className="px-5 py-2 rounded-md bg-primary-100 text-white text-sm hover:scale-110 active:scale-105 w-fit transition-all border-none outline-none">
-              <a href="#">View Details</a>
+            <button>
+              <ViewDetailsButton />
             </button>
           </div>
           <div className="border rounded-lg shadow-md">
@@ -22,8 +23,8 @@ const Events = () => {
             <h3>Event 2</h3>
             <p>Event Description</p>
             <p>Date</p>
-            <button className="px-5 py-2 rounded-md bg-primary-100 text-white text-sm hover:scale-110 active:scale-105 w-fit transition-all border-none outline-none">
-              <a href="#">View Details</a>
+            <button>
+              <ViewDetailsButton />
             </button>
           </div>
           <div className="border rounded-lg shadow-md">
@@ -31,8 +32,8 @@ const Events = () => {
             <h3>Event 3</h3>
             <p>Event Description</p>
             <p>Date</p>
-            <button className="px-5 py-2 rounded-md bg-primary-100 text-white text-sm hover:scale-110 active:scale-105 w-fit transition-all border-none outline-none">
-              <a href="#">View Details</a>
+            <button>
+              <ViewDetailsButton />
             </button>
           </div>
           <div className="border rounded-lg shadow-md">
@@ -40,8 +41,8 @@ const Events = () => {
             <h3>Event 4</h3>
             <p>Event Description</p>
             <p>Date</p>
-            <button className="px-5 py-2 rounded-md bg-primary-100 text-white text-sm hover:scale-110 active:scale-105 w-fit transition-all border-none outline-none">
-              <a href="#">View Details</a>
+            <button>
+              <ViewDetailsButton />
             </button>
           </div>
           <div className="border rounded-lg shadow-md">
@@ -49,8 +50,8 @@ const Events = () => {
             <h3>Event 5</h3>
             <p>Event Description</p>
             <p>Date</p>
-            <button className="px-5 py-2 rounded-md bg-primary-100 text-white text-sm hover:scale-110 active:scale-105 w-fit transition-all border-none outline-none">
-              <a href="#">View Details</a>
+            <button>
+              <ViewDetailsButton />
             </button>
           </div>
         </div>
