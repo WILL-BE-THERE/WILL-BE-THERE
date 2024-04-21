@@ -1,7 +1,11 @@
-import BackButton from '../components/Buttons/BackButton';
 import RsvpButton from '../components/Buttons/RsvpButton'
 
 const EventDetails = () => {
+    const goBack = () => {
+        window.history.back();
+    };
+
+
   return (
     <section>
         <aside>
@@ -19,8 +23,9 @@ const EventDetails = () => {
                 <p>Location</p>
                 <p>Time</p>
                 <p>Dress code</p>
-                <button >
-                    <BackButton />
+                <button className="w-full mt-8 text-center text-primary-100"
+                onClick={goBack}>
+                    Back
                 </button>
                 <button>
                     <RsvpButton />
