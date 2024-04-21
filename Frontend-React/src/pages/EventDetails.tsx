@@ -1,3 +1,5 @@
+import RsvpButton from '../components/Buttons/RsvpButton'
+
 const EventDetails = () => {
   return (
     <section>
@@ -20,7 +22,7 @@ const EventDetails = () => {
                 <a href="./Events">Back</a>
             </button>
             <button>
-                <a href="./Rsvp">RSVP</a>
+                <RsvpButton />
             </button>
         </div>
         </aside>
