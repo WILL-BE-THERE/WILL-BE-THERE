@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import './index.css'
 import {
   Route,
   RouterProvider,
@@ -23,9 +23,10 @@ import ForgotPasswordComponent from './pages/forgotpassword.tsx';
 import NewPasswordComponent from './pages/Newpassword.tsx';
 import Rsvp from './pages/Rsvp.tsx';
 
+
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path='/' element={<Layout />} errorElement={<ErrorPage />}>
+    <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
       <Route index element={<Home />} />
       <Route path='about' element={<About />} />
       <Route path='contact' element={<Contact />} />
@@ -34,12 +35,7 @@ const router = createBrowserRouter(
       <Route path='faqs' element={<Faqs />} />
       <Route path='login' element={<LoginPage />} />
       <Route path='signup' element={<SignUpPage />} />
-      <Route
-        path='twofactorauth'
-        element={
-          <TwoFactorAuth phoneNumber={''} verificationCode={''} timer={30} />
-        }
-      />
+      <Route path='twofactorauth' element={<TwoFactorAuth phoneNumber={''} verificationCode={''} timer={0} />} />
       <Route path='forgotpassword' element={<ForgotPasswordComponent />} />
       <Route path='newpassword' element={<NewPasswordComponent />} />
       <Route path='rsvp' element={<Rsvp />} />
@@ -52,5 +48,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <ProjectProvider>
       <RouterProvider router={router} />
     </ProjectProvider>
-  </React.StrictMode>
-);
+  </React.StrictMode>,
+)
