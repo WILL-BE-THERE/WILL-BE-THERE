@@ -52,7 +52,7 @@ const Events = () => {
           </div>
         </div>
       </div>
-      <div className="border shadow- shadow-2xl p-10 items-center">
+      <div className="border shadow- shadow-2xl p-10 place-items-center">
         <div className="items-center p-5 mt-3 ">
           <p className="font-bold ">Ready to Take your Events to the Next Level?</p>
           <p className="font-light">Join thousands of organizers and attendees who trust <em className="font-bold">WILL BE THERE</em> for seamless Event management and unforgettable experiences. Whether you're planning an event or looking for your next great gathering, we've got you covered</p>
