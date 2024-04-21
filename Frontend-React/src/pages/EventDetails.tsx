@@ -1,3 +1,4 @@
+import BackButton from '../components/Buttons/BackButton';
 import RsvpButton from '../components/Buttons/RsvpButton'
 
 const EventDetails = () => {
@@ -18,8 +19,8 @@ const EventDetails = () => {
             <p>Location</p>
             <p>Time</p>
             <p>Dress code</p>
-            <button>
-                <a href="./Events">Back</a>
+            <button >
+                <BackButton />
             </button>
             <button>
                 <RsvpButton />
