@@ -107,6 +107,13 @@ const LoginPage = () => {
             </aside>
           </label>
 
+          <Link
+            to='/forgotpassword'
+            className='text-primary-100 text-[0.812rem] font-medium'
+          >
+            Forgot password?
+          </Link>
+
           <div className='w-full flex items-center justify-center'>
             <button
               type='submit'
