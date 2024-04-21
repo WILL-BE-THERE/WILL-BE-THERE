@@ -1,7 +1,5 @@
 # Will Be There
 
-  
-
 ## Table Of content
 
 1. [Getting Started](#getting-started)
@@ -12,36 +10,19 @@
 
 4. [API Endpoints](#api-endpoints)
   
-
 ## Getting Started
 
 Follow these steps to get the server up and running.
 
-  
-
-  
-
 ### Prerequisites
-
-  
 
 - Python Installed
 
-  
-
 - pip Installed
-
-  
 
 - Git
 
-  
-
-  
-
 ### Installation
-
-  
 
 1. first clone the repository and changed directory to the backend folder `cd backend`
 
@@ -61,77 +42,77 @@ Follow these steps to get the server up and running.
 
 Everything is good to go.
 
-  
-
 ### API Endpoints
-to get the documentation via swagger visit the url http://127.0.0.1:8000/swagger/ Or you could use the documentation right here in the Readme
+
+to get the documentation via swagger visit the url <http://127.0.0.1:8000/swagger/> Or you could use the documentation right here in the Readme
 
  1. [signup](#signup-endpoint)
  2. [Log in](#login-endpoint)
 
-#### Signup Endpoint 
-http://127.0.0.1:8000/api/account/signup/
+#### Signup Endpoint
+
+<http://127.0.0.1:8000/api/account/signup/>
 
 - This endpoint allows users to sign up for the service.
 
--  **HTTP Method:** POST
+- **HTTP Method:** POST
 
-  
+##### Request Parameters
 
-##### Request Parameters:
+- `email` (string): User's email address.
 
-  
+- `first_name` (string): User's first name.
 
--  `email` (string): User's email address.
+- `last_name` (string): User's last name.
 
--  `first_name` (string): User's first name.
+- `phone_number` (string): User's phone number.
 
--  `last_name` (string): User's last name.
+- `password` (string): User's password. It must be at least 8 characters long.
 
--  `phone_number` (string): User's phone number.
+- `confirm_password` (string): Confirmation of user's password.
 
--  `password` (string): User's password. It must be at least 8 characters long.
+##### Responses
 
--  `confirm_password` (string): Confirmation of user's password.
-
-##### Responses:
-
-  
-
--  **200 OK:** User signed up successfully. Returns a JSON response with the user's information and authorization token.
+- **200 OK:** User signed up successfully. Returns a JSON response with the user's information and authorization token.
 
 **400 Bad Request:** Invalid request. Check the request parameters and try again.
 
 #### Login Endpoint
-http://127.0.0.1:8000/api/account/login/
+
+<http://127.0.0.1:8000/api/account/login/>
 
 This endpoint allows users to log in to the service.
 
--   **HTTP Method:** POST
+- **HTTP Method:** POST
 This endpoint allows users to log in to the service.
 
-- ##### Request Parameters:
+- ##### Request Parameters
 
--   `email` (string): User's email address.
--   `password` (string): User's password.
+- `email` (string): User's email address.
+- `password` (string): User's password.
 
-##### Responses:
+##### Responses
 
--   **200 OK:** Success. Returns a JSON response with the user's information and authorization token
+- **200 OK:** Success. Returns a JSON response with the user's information and authorization token
 - **401 Unauthorized:** Invalid credentials. The email or password provided is incorrect.
 
 #### Logout Endpoint
-http://127.0.0.1:8000/api/account/logout/
 
--   **HTTP Method:** POST
-- ##### Request Parameters:
+<http://127.0.0.1:8000/api/account/logout/>
 
--   `none but user must be authenticated`
+- **HTTP Method:** POST
+
+- ##### Request Parameters
+
+- `none but user must be authenticated`
+
 - ##### Header
+
 - `Authorization: Token 2d2e5ef111480d71c65c17a6708eabf3befc88a`
 - must be in the above form when adding token to header in postman or through swagger
-##### Responses:
 
--   **200 OK:** Success. Returns a JSON response with user logout successfully
+##### Responses
+
+- **200 OK:** Success. Returns a JSON response with user logout successfully
 - **401 Unauthorized:** unauthorized. Please login to continue if token is invalid
- - **401 Unauthorized:** Authentication details were not provided if token is missing from the header
+- **401 Unauthorized:** Authentication details were not provided if token is missing from the header
