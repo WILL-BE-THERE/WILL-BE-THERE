@@ -1,11 +1,11 @@
-import { Outlet } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import SideBar from './components/SideBar';
-import { useProjectContext } from './context/project-context';
+import { Outlet } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import SideBar from './components/SideBar'
+import { useProjectContext } from './context/project-context'
 
 const Layout = () => {
-  const { isSidebarOpen } = useProjectContext();
+  const { isSidebarOpen } = useProjectContext()
 
   return (
     <div className={`${isSidebarOpen && 'fixed w-full'}`}>
@@ -14,6 +14,6 @@ const Layout = () => {
       <Outlet />
       <Footer />
     </div>
-  );
-};
-export default Layout;
+  )
+}
+export default Layout
