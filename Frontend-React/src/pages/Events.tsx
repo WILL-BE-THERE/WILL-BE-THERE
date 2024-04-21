@@ -40,7 +40,16 @@ const Events = () => {
             <button className="px-5 py-2 rounded-md bg-primary-100 text-white text-sm hover:scale-110 active:scale-105 w-fit transition-all border-none outline-none">
               <a href="#">View Details</a>
             </button>
-            </div>
+          </div>
+          <div className="border rounded-lg shadow-md">
+            <img src="" alt="" />
+            <h3>Event 5</h3>
+            <p>Event Description</p>
+            <p>Date</p>
+            <button className="px-5 py-2 rounded-md bg-primary-100 text-white text-sm hover:scale-110 active:scale-105 w-fit transition-all border-none outline-none">
+              <a href="#">View Details</a>
+            </button>
+          </div>
         </div>
       </div>
       <div className="border shadow- shadow-2xl p-10 items-center">
