@@ -13,6 +13,7 @@ import Home from './pages/Home.tsx'
 import About from './pages/About.tsx'
 import Contact from './pages/Contact.tsx'
 import Events from './pages/Events.tsx'
+import EventDetails from './pages/EventDetails.tsx'
 import Accounts from './pages/Accounts.tsx'
 import Faqs from './pages/Faqs.tsx'
 import LoginPage from './pages/LoginPage.tsx'
@@ -24,6 +25,7 @@ import NewPasswordComponent from './pages/Newpassword.tsx'
 import Rsvp from './pages/Rsvp.tsx'
 import RsvpSuccess from './pages/rsvpsuccess.tsx'
 
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
@@ -31,6 +33,7 @@ const router = createBrowserRouter(
       <Route path="about" element={<About />} />
       <Route path="contact" element={<Contact />} />
       <Route path="events" element={<Events />} />
+      <Route path="eventdetails" element={<EventDetails />} />
       <Route path="accounts" element={<Accounts />} />
       <Route path="faqs" element={<Faqs />} />
       <Route path="login" element={<LoginPage />} />
