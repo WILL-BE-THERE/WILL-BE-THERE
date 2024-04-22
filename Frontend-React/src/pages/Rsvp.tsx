@@ -1,24 +1,28 @@
 import shape1 from '../assets/shape1.png'
 import shape2 from '../assets/shape2.png'
 import { ChangeEvent, FormEvent, useState } from 'react'
-import { useProjectContext } from '../context/project-context'
 import { FaPencil } from 'react-icons/fa6'
+import { useParams } from 'react-router-dom'
+import PlusOneForm from '../components/plusoneform'
 
 const Rsvp = () => {
-  const { eventName } = useProjectContext()
+  const { id } = useParams()
 
   const initialDetails = {
-    eventName: '',
+    eventName: id,
     guestName: '',
     guestEmail: '',
-    isAttending: 'yes',
-    isFriendsComing: 'yes',
+    isAttending: 'Yes',
+    isFriendsComing: 'Yes',
     message: '',
   }
 
   const [userDetails, setUserDetails] = useState(initialDetails)
+  const [comingWithFriends, setComingWithFriends] = useState(false)
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target
     setUserDetails((prevState) => ({ ...prevState, [name]: value }))
     console.log(userDetails.isAttending)
@@ -26,10 +30,14 @@ const Rsvp = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    userDetails.isFriendsComing === 'Yes'
+      ? setComingWithFriends(true)
+      : setComingWithFriends(false)
+    setUserDetails(initialDetails)
   }
 
   return (
-    <section className="h-[50rem] w-full bg-white relative flex">
+    <section className="h-[60rem] w-full bg-white relative flex overflow-hidden">
       <img
         src={shape2}
         alt="icon"
@@ -38,7 +46,7 @@ const Rsvp = () => {
       <img
         src={shape2}
         alt="icon"
-        className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-44"
+        className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-44"
       />
       <img
         src={shape1}
@@ -61,35 +69,21 @@ const Rsvp = () => {
             get added to the guest list
           </p>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-8">
-            <label
-              htmlFor="Enter Password"
-              className="flex flex-col gap-1 w-full"
-            >
-              <p className="flex gap-1 text-sm font-medium text-neutral-200">
-                Event
-              </p>
+            <label htmlFor="eventName" className="flex flex-col gap-1 w-full">
+              <p className="text-sm font-medium text-neutral-200">Event</p>
               <aside className="relative flex">
                 <input
                   type="text"
                   name="eventName"
-                  value={eventName}
+                  value={userDetails.eventName}
+                  onChange={handleChange}
                   disabled
-                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 placeholder:text-sm w-full"
-                  // required
+                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 w-full disabled:bg-gray-200 disabled:cursor-not-allowed disabled:font-medium disabled:text-neutral-200"
                 />
-                <button
-                  type="button"
-                  className="absolute right-5 top-1/2 -translate-y-1/2 border-none outline-none"
-                >
-                  <FaPencil />
-                </button>
               </aside>
             </label>
 
-            <label
-              htmlFor="Enter Password"
-              className="flex flex-col gap-1 w-full"
-            >
+            <label htmlFor="guestName" className="flex flex-col gap-1 w-full">
               <p className="flex gap-1 text-sm font-medium text-neutral-200">
                 Name
               </p>
@@ -100,7 +94,7 @@ const Rsvp = () => {
                   value={userDetails.guestName}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 placeholder:text-sm w-full"
-                  // required
+                  required
                 />
                 <button
                   type="button"
@@ -111,21 +105,18 @@ const Rsvp = () => {
               </aside>
             </label>
 
-            <label
-              htmlFor="Enter Password"
-              className="flex flex-col gap-1 w-full"
-            >
+            <label htmlFor="guestEmail" className="flex flex-col gap-1 w-full">
               <p className="flex gap-1 text-sm font-medium text-neutral-200">
                 Email
               </p>
               <aside className="relative flex">
                 <input
-                  type="text"
+                  type="email"
                   name="guestEmail"
                   value={userDetails.guestEmail}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 placeholder:text-sm w-full"
-                  // required
+                  required
                 />
                 <button
                   type="button"
@@ -137,63 +128,89 @@ const Rsvp = () => {
             </label>
 
             <div className="">
-              <p className="font-light"> will you be attending? </p>
+              <p className="font-medium text-sm text-neutral-200 mb-2 mt-2">
+                {' '}
+                Will you be attending?{' '}
+              </p>
               <input
                 type="radio"
                 name="isAttending"
-                value="yes"
+                id="yes"
+                value="Yes"
                 onChange={handleChange}
-                className="mr-3"
+                checked={userDetails.isAttending === 'Yes'}
+                className="mr-3 cursor-pointer"
               />
-              <label htmlFor="yes" className="mr-3">
+              <label htmlFor="Yes" className="mr-16 text-sm font-semibold">
                 Yes
               </label>
               <input
                 type="radio"
                 name="isAttending"
-                value="no"
-                className="mr-3"
+                id="no"
+                value="No"
+                onChange={handleChange}
+                checked={userDetails.isAttending === 'No'}
+                className="mr-3 cursor-pointer"
               />
-              <label htmlFor="no">No</label>
+              <label htmlFor="No" className=" text-sm font-semibold">
+                No
+              </label>
             </div>
             <div className="">
-              <p className="font-light"> will you be coming with a guest? </p>
+              <p className="font-medium text-sm text-neutral-200 mb-2 mt-2">
+                {' '}
+                Will your friends accompany you?{' '}
+              </p>
               <input
                 type="radio"
-                name="guest"
-                id="yes"
-                value="yes"
-                className="mr-3"
+                name="isFriendsComing"
+                id="yesFriendsComing"
+                value="Yes"
+                onChange={handleChange}
+                checked={userDetails.isFriendsComing === 'Yes'}
+                className="mr-3 cursor-pointer"
               />
-              <label htmlFor="yes" className="mr-3">
+              <label htmlFor="Yes" className="mr-16 text-sm font-semibold">
                 Yes
               </label>
               <input
                 type="radio"
-                name="guest"
-                id="no"
-                value="no"
-                className="mr-3"
+                name="isFriendsComing"
+                id="noFriendsComing"
+                value="No"
+                onChange={handleChange}
+                checked={userDetails.isFriendsComing === 'No'}
+                className="mr-3 cursor-pointer"
               />
-              <label htmlFor="no">No</label>
+              <label htmlFor="No" className=" text-sm font-semibold">
+                No
+              </label>
             </div>
-            <textarea
-              placeholder="send a congratulatory message"
-              rows={4}
-              cols={50}
-              className="border border-black rounded"
-            ></textarea>
-            <div className="flex items-center justify-center">
-              <button
-                type="submit"
-                className="py-2 px-8 mt-5 bg-blue-700 text-white rounded"
-              >
-                RSVP
-              </button>
-            </div>
+            <article className="flex flex-col gap-2 mt-4">
+              <p className="text-sm font-medium text-neutral-200">
+                Send a congratulatory message (
+                <span className="text-xs text-neutral-400">optional</span>)
+              </p>
+              <textarea
+                name="message"
+                rows={5}
+                value={userDetails.message}
+                onChange={handleChange}
+                className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 placeholder:text-sm w-full resize-none"
+              />
+            </article>
+            <button
+              type="submit"
+              className="w-fit py-2 px-8 mt-5 bg-blue-700 text-white rounded"
+            >
+              Submit
+            </button>
           </form>
         </div>
       </aside>
+
+      {comingWithFriends && <PlusOneForm />}
     </section>
   )
 }

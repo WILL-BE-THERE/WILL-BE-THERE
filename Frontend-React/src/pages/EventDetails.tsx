@@ -1,12 +1,10 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { eventPageData } from '../utils/local-data'
-import { useProjectContext } from '../context/project-context'
 
 const EventDetails = () => {
   const navigate = useNavigate()
   const goBack = () => navigate(-1)
   const { id } = useParams()
-  const { setEventName } = useProjectContext()
 
   const data = eventPageData.find((item) => item.eventName === id)
   return (
@@ -63,9 +61,8 @@ const EventDetails = () => {
               Back to events
             </button>
             <Link
-              to="/rsvp"
+              to={`/events/${id}/rsvp`}
               className="px-5 py-2 bg-primary-100 text-white text-[0.95rem] rounded-md"
-              onClick={() => setEventName(data?.eventName || '')}
             >
               RSVP
             </Link>

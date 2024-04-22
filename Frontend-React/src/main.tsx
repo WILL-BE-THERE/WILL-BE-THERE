@@ -23,6 +23,7 @@ import ProjectProvider from './context/project-context.tsx'
 import ForgotPasswordComponent from './pages/forgotpassword.tsx'
 import NewPasswordComponent from './pages/Newpassword.tsx'
 import Rsvp from './pages/Rsvp.tsx'
+import HostPage from './pages/HostPage.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -45,7 +46,8 @@ const router = createBrowserRouter(
       />
       <Route path="forgotpassword" element={<ForgotPasswordComponent />} />
       <Route path="newpassword" element={<NewPasswordComponent />} />
-      <Route path="rsvp" element={<Rsvp />} />
+      <Route path="events/:id/rsvp" element={<Rsvp />} />
+      <Route path="host" element={<HostPage />} />
     </Route>,
   ),
 )
