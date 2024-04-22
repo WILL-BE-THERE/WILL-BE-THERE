@@ -35,7 +35,7 @@ const PlusOneForm = ({
   return (
     <>
       <div className="fixed top-0 left-0 h-screen w-screen bg-[#B5B5B5]/80 flex justify-center items-center z-40">
-        <div className="bg-white p-4 rounded-md w-[25rem]">
+        <div className="bg-white p-6 rounded-md w-[90%] mx-auto sm:w-[25rem] lg:p-4">
           <h1 className="text-2xl mb-2 font-bold">Plus One</h1>
           <p className="text-sm mb-5">
             Please provide the name(s) of your friends so that they can be added

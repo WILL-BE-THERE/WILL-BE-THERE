@@ -54,30 +54,32 @@ const Rsvp = () => {
         <img
           src={shape2}
           alt="icon"
-          className="absolute -right-14 top-1/4 w-36"
+          className="absolute -right-14 top-1/4 w-36 hidden sm:block"
         />
         <img
           src={shape2}
           alt="icon"
-          className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-44"
+          className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-44 hidden sm:block"
         />
         <img
           src={shape1}
           alt="icon"
-          className="absolute left-[22%] top-1/2 -translate-y-1/2 -translate-x-[22%] w-52"
+          className="absolute left-[22%] top-1/2 -translate-y-1/2 -translate-x-[22%] w-52 hidden sm:block"
         />
-        <aside className="bg-primary-100/[50%] w-1/2 h-full relative z-[2] backdrop-filter backdrop-blur-[15px] grid place-items-center">
-          <div className="w-[45%] h-fit text-white text-center">
-            <h1 className="text-3xl mb-2 font-bold">Don't be left behind</h1>
+        <aside className="bg-primary-100/[50%] w-1/2 h-full relative z-[2] backdrop-filter backdrop-blur-[15px] place-items-center hidden sm:grid">
+          <div className="w-[55%] h-fit text-white text-center lg:w-[45%]">
+            <h1 className="text-xl mb-2 font-bold sm:text-2xl lg:text-3xl">
+              Don't be left behind
+            </h1>
             <p className="text-sm mb-8 font-light">
               RSVP to secure a spot and avoid missing out on the next big event
             </p>
           </div>
         </aside>
-        <aside className="w-1/2 h-full relative z-[2] grid py-12">
-          <div className="w-[75%] h-fit text-black px-14">
+        <aside className="w-full h-full relative z-[2] grid py-12 sm:w-1/2">
+          <div className="w-full h-fit text-black px-5 sm:px-14 lg:w-[75%]">
             <h1 className="text-2xl mb-2 font-bold">Confirm your attendace</h1>
-            <p className="text-sm mb-1 font-light">
+            <p className="text-sm mb-1 font-medium text-neutral-200">
               Please fill in the information below to confirm your attendance
               and get added to the guest list
             </p>
