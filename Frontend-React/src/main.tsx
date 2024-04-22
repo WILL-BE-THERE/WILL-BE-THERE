@@ -26,7 +26,7 @@ import Rsvp from './pages/Rsvp.tsx';
 import HostPage from './pages/HostPage.tsx';
 import CreateEvent from './pages/CreateEventGeneralinfo.tsx';
 import CreateEventPayInfo from './pages/CreateEventPayInfo.tsx';
-
+import CreateEventSocials from './pages/CreateEventSocials.tsx';
 
 
 const router = createBrowserRouter(
@@ -48,6 +48,7 @@ const router = createBrowserRouter(
       <Route path='host' element={<HostPage />} />
       <Route path='createevent' element={<CreateEvent />} />
       <Route path='createeventpayinfo' element={<CreateEventPayInfo />} />
+      <Route path='createeventsocials' element={<CreateEventSocials />} />
     </Route>
   )
 );
