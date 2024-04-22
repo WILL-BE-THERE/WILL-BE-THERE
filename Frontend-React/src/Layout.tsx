@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, ScrollRestoration } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import SideBar from './components/SideBar'
@@ -9,6 +9,7 @@ const Layout = () => {
 
   return (
     <div className={`${isSidebarOpen && 'fixed w-full'}`}>
+      <ScrollRestoration />
       <Navbar />
       <SideBar />
       <Outlet />

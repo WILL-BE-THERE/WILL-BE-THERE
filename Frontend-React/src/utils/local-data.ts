@@ -1,8 +1,10 @@
+// Images for the who we are section
 import whoWeAreImage1 from '../assets/who-we-are-icon1.png'
 import whoWeAreImage2 from '../assets/who-we-are-icon2.png'
 import whoWeAreImage3 from '../assets/who-we-are-icon3.png'
 import whoWeAreImage4 from '../assets/who-we-are-icon4.png'
 
+// Images for the testimonial section
 import testmonialImage1 from '../assets/testmonial-icon1.png'
 import testmonialImage2 from '../assets/testmonial-icon2.png'
 import testmonialImage3 from '../assets/testmonial-icon3.png'
@@ -10,10 +12,21 @@ import testmonialImage4 from '../assets/testmonial-icon4.png'
 import testmonialImage5 from '../assets/testmonial-icon5.png'
 import testmonialImage6 from '../assets/testmonial-icon6.png'
 
+// Images for the our features section
 import featureImage1 from '../assets/features-icon1.png'
 import featureImage2 from '../assets/features-icon2.png'
 import featureImage3 from '../assets/features-icon3.png'
 import featureImage4 from '../assets/features-icon4.png'
+
+// Images for the events page
+import eventImage1 from '../assets/events-img1.png'
+import eventImage2 from '../assets/events-img2.png'
+import eventImage3 from '../assets/events-img3.png'
+import eventImage4 from '../assets/events-img4.png'
+import eventImage5 from '../assets/events-img5.png'
+import eventImage6 from '../assets/events-img6.png'
+import eventImage7 from '../assets/events-img7.png'
+import eventImage8 from '../assets/events-img8.png'
 
 export const menuData = [
   { title: 'Home', link: '/' },
@@ -23,6 +36,7 @@ export const menuData = [
   // { title: 'FAQs', link: '/faqs' },
 ] as const
 
+// Data for the who we are section
 export const whoWeAreData = [
   {
     title: 'Simplifying event planning',
@@ -46,6 +60,7 @@ export const whoWeAreData = [
   },
 ] as const
 
+// Data for the testimonial section
 export const testmonialData = [
   {
     desc: 'Will Be There has transformed the way we plan and manage events. It is intuitive, effecient, and has all the features we need to ensure our events are a success.',
@@ -85,6 +100,7 @@ export const testmonialData = [
   },
 ] as const
 
+// Data for the our features section
 export const featureData = [
   {
     title: 'Events creation',
@@ -105,5 +121,81 @@ export const featureData = [
     title: 'Communication tools',
     img: featureImage4,
     desc: 'Engage with attenddees effectively using our built-in communication tools. Send event updates, reminders, and notifications to keep everyone in the loop.',
+  },
+] as const
+
+// Static data for the events page
+export const eventPageData = [
+  {
+    img: eventImage1,
+    eventName: 'Nairobi fashion week',
+    date: '12/04/2024',
+    noOfRsvp: 547,
+    about:
+      'The Nairobi Fashion Week brings together creatives from all over the world for a one week extravaganza. From fashion designers, 3D artists, to sculptors and painters, come meet the who is who, and upcoming creatives.',
+    dressCode: 'Casual',
+  },
+  {
+    img: eventImage2,
+    eventName: 'Unilag nano week',
+    date: '16/04/2024',
+    noOfRsvp: 24,
+    about:
+      'The Nairobi Fashion Week brings together creatives from all over the world for a one week extravaganza. From fashion designers, 3D artists, to sculptors and painters, come meet the who is who, and upcoming creatives.',
+    dressCode: 'Coporate',
+  },
+  {
+    img: eventImage3,
+    eventName: 'October fest',
+    date: '19/04/2024',
+    noOfRsvp: 1004,
+    about:
+      'The Nairobi Fashion Week brings together creatives from all over the world for a one week extravaganza. From fashion designers, 3D artists, to sculptors and painters, come meet the who is who, and upcoming creatives.',
+    dressCode: 'Casual',
+  },
+  {
+    img: eventImage4,
+    eventName: 'Abuja product design',
+    date: '21/04/2024',
+    noOfRsvp: 124,
+    about:
+      'The Nairobi Fashion Week brings together creatives from all over the world for a one week extravaganza. From fashion designers, 3D artists, to sculptors and painters, come meet the who is who, and upcoming creatives.',
+    dressCode: 'Any',
+  },
+  {
+    img: eventImage5,
+    eventName: "Les wanyika Tuesday's",
+    date: '23/04/2024',
+    noOfRsvp: 78,
+    about:
+      'The Nairobi Fashion Week brings together creatives from all over the world for a one week extravaganza. From fashion designers, 3D artists, to sculptors and painters, come meet the who is who, and upcoming creatives.',
+    dressCode: 'Casual',
+  },
+  {
+    img: eventImage6,
+    eventName: 'Burna boy abuja concert',
+    date: '27/04/2024',
+    noOfRsvp: 1789,
+    about:
+      'The Nairobi Fashion Week brings together creatives from all over the world for a one week extravaganza. From fashion designers, 3D artists, to sculptors and painters, come meet the who is who, and upcoming creatives.',
+    dressCode: 'Casual',
+  },
+  {
+    img: eventImage7,
+    eventName: 'Nairobi wine & dine',
+    date: '28/04/2024',
+    noOfRsvp: 46,
+    about:
+      'The Nairobi Fashion Week brings together creatives from all over the world for a one week extravaganza. From fashion designers, 3D artists, to sculptors and painters, come meet the who is who, and upcoming creatives.',
+    dressCode: 'Casual',
+  },
+  {
+    img: eventImage8,
+    eventName: 'Lagos open mic',
+    date: '29/04/2024',
+    noOfRsvp: 56,
+    about:
+      'The Nairobi Fashion Week brings together creatives from all over the world for a one week extravaganza. From fashion designers, 3D artists, to sculptors and painters, come meet the who is who, and upcoming creatives.',
+    dressCode: 'Casual',
   },
 ] as const

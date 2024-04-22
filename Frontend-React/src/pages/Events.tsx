@@ -1,62 +1,26 @@
-import LoginButton from '../components/Buttons/LoginButton'
+import React from 'react'
+import { eventPageData } from '../utils/local-data'
+import SingleEvent from '../components/SingleEvent'
 import SignUpButton from '../components/Buttons/SignUpButton'
-import ViewDetailsButton from '../components/Buttons/ViewDetailsButton';
+import LoginButton from '../components/Buttons/LoginButton'
 
 const Events = () => {
   return (
-    <div className="bg-white">
-      <section className="ml-2">
-        <h1 className="font-bold">Upcoming Events</h1>
-        <p>Here is a list of all the events that are happening in the near future.</p>
-        <div className=" border bg-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
-          <div className="border rounded-lg shadow-md">
-            <img src="" alt="" />
-            <h3>Event 1</h3>
-            <p>Event Description</p>
-            <p>Date</p>
-            <button>
-              <ViewDetailsButton />
-            </button>
-          </div>
-          <div className="border rounded-lg shadow-md">
-            <img src="" alt="" />
-            <h3>Event 2</h3>
-            <p>Event Description</p>
-            <p>Date</p>
-            <button>
-              <ViewDetailsButton />
-            </button>
-          </div>
-          <div className="border rounded-lg shadow-md">
-            <img src="" alt="" />
-            <h3>Event 3</h3>
-            <p>Event Description</p>
-            <p>Date</p>
-            <button>
-              <ViewDetailsButton />
-            </button>
-          </div>
-          <div className="border rounded-lg shadow-md">
-            <img src="" alt="" />
-            <h3>Event 4</h3>
-            <p>Event Description</p>
-            <p>Date</p>
-            <button>
-              <ViewDetailsButton />
-            </button>
-          </div>
-          <div className="border rounded-lg shadow-md">
-            <img src="" alt="" />
-            <h3>Event 5</h3>
-            <p>Event Description</p>
-            <p>Date</p>
-            <button>
-              <ViewDetailsButton />
-            </button>
-          </div>
+    <div className="bg-white pb-12">
+      <section className="w-[90%] mx-auto pt-5 lg:w-[85%]">
+        <h1 className="font-medium mb-8 text-3xl">Upcoming Events</h1>
+        <div className="grid gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-4">
+          {eventPageData.map((item, i) => {
+            return (
+              <React.Fragment key={i}>
+                <SingleEvent {...item} />
+              </React.Fragment>
+            )
+          })}
         </div>
       </section>
-      <section className="h-[30rem] bg-white flex items-center justify-center sm:h-[25rem]">
+
+      <section className="h-[30rem] bg-white flex items-center justify-center sm:h-[25rem] mt-16">
         <div className="w-[90%] mx-auto flex flex-col text-center lg:w-[60%]">
           <h1 className="text-2xl font-semibold">
             Ready to take your <br />
@@ -68,17 +32,14 @@ const Events = () => {
             are planning an event or looking for your next great gathering,
             we've got you covered.
           </p>
-          <div className="mt-10">
-            <button>
-              <SignUpButton />
-              <LoginButton />
-            </button>
+          <div className="mt-10 flex items-center justify-center gap-6">
+            <SignUpButton />
+            <LoginButton />
           </div>
         </div>
       </section>
-
     </div>
   )
 }
 
-export default Events;
+export default Events
