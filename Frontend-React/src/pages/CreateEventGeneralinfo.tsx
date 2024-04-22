@@ -65,7 +65,9 @@ const CreateEvent = () => {
             </section>
             <section>
                 <button>
-                    
+                    <a href="/HostPage">
+                        Back
+                    </a>
                 </button>
                 <button>
                     <a href="/CreateEventPayInfo">

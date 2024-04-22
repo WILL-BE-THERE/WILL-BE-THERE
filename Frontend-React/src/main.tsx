@@ -25,6 +25,7 @@ import NewPasswordComponent from './pages/Newpassword.tsx';
 import Rsvp from './pages/Rsvp.tsx';
 import HostPage from './pages/HostPage.tsx';
 import CreateEvent from './pages/CreateEventGeneralinfo.tsx';
+import CreateEventPayInfo from './pages/CreateEventPayInfo.tsx';
 
 
 
@@ -46,6 +47,7 @@ const router = createBrowserRouter(
       <Route path='rsvp' element={<Rsvp />} />
       <Route path='host' element={<HostPage />} />
       <Route path='createevent' element={<CreateEvent />} />
+      <Route path='createeventpayinfo' element={<CreateEventPayInfo />} />
     </Route>
   )
 );
