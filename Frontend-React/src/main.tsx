@@ -24,6 +24,7 @@ import ForgotPasswordComponent from './pages/forgotpassword.tsx';
 import NewPasswordComponent from './pages/Newpassword.tsx';
 import Rsvp from './pages/Rsvp.tsx';
 import HostPage from './pages/HostPage.tsx';
+import CreateEvent from './pages/CreateEventGeneralinfo.tsx';
 
 
 
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
       <Route path='newpassword' element={<NewPasswordComponent />} />
       <Route path='rsvp' element={<Rsvp />} />
       <Route path='host' element={<HostPage />} />
+      <Route path='createevent' element={<CreateEvent />} />
     </Route>
   )
 );
