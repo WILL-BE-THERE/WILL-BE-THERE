@@ -22,11 +22,11 @@ const CreateEventPayInfo = () => {
                         <label htmlFor="eventprice">Event Price</label>
                         <input type="number" id="eventprice" name="eventprice" className="border outline-none m-2 rounded-sm bg-gray-200" />
                     </div>
+                    
                     <div className="border outline-2 shadow-md mt-4">
                         <label htmlFor="eventcurrency">Currency</label>
-                        <select id="eventcurrency" name="eventcurrency" className="border outline-none m-2 rounded-sm bg-gray-200" />
-                    </div>
-                    <div className="border outline-2 shadow-md mt-4">
+                        <select id="eventcurrency" name="eventcurrency" className="border outline-none m-2 rounded-sm bg-gray-200" />                 
+            
                         <label htmlFor="eventpaymentmethod">Payment Method</label>
                         <select id="eventpaymentmethod" name="eventpaymentmethod" className="border outline-none m-2 rounded-sm bg-gray-200" />
                     </div>
