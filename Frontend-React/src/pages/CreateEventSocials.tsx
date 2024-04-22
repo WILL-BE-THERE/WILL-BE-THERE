@@ -52,7 +52,11 @@ const CreateEventSocials = () => {
                     Back
                 </a>
                 </button>
-                <button>Next</button>
+                <button>
+                    <a href="/CreateEventMessage">
+                        Next
+                    </a>
+                </button>
             </section>
         </div>
     );
