@@ -116,8 +116,7 @@ const NewPasswordComponent = () => {
 
           <button
             type="submit"
-            className="py-2 rounded-md bg-primary-100 text-white font-semibold border-none outline-none w-full"
-          >
+            className="py-2 rounded-md bg-primary-100 text-white font-semibold border-none outline-none w-full">
             Submit
           </button>
         </form>
