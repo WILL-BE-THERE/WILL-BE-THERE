@@ -6,54 +6,59 @@ import {
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
-} from 'react-router-dom';
-import ErrorPage from './components/ErrorPage.tsx';
-import Layout from './Layout.tsx';
-import Home from './pages/Home.tsx';
-import About from './pages/About.tsx';
-import Contact from './pages/Contact.tsx';
-import Events from './pages/Events.tsx';
+} from 'react-router-dom'
+import ErrorPage from './components/ErrorPage.tsx'
+import Layout from './Layout.tsx'
+import Home from './pages/Home.tsx'
+import About from './pages/About.tsx'
+import Contact from './pages/Contact.tsx'
+import Events from './pages/Events.tsx'
 import EventDetails from './pages/EventDetails.tsx'
-import Accounts from './pages/Accounts.tsx';
-import Faqs from './pages/Faqs.tsx';
-import LoginPage from './pages/LoginPage.tsx';
-import SignUpPage from './pages/SignUpPage.tsx';
-import TwoFactorAuth from './pages/TwoFactorAuth.tsx';
-import ProjectProvider from './context/project-context.tsx';
-import ForgotPasswordComponent from './pages/forgotpassword.tsx';
-import NewPasswordComponent from './pages/Newpassword.tsx';
-import Rsvp from './pages/Rsvp.tsx';
-import HostPage from './pages/HostPage.tsx';
 import CreateEvent from './pages/CreateEventGeneralinfo.tsx';
 import CreateEventPayInfo from './pages/CreateEventPayInfo.tsx';
 import CreateEventSocials from './pages/CreateEventSocials.tsx';
 import CreateEventMessage from './pages/CreateEventMessage.tsx';
-
+import Accounts from './pages/Accounts.tsx'
+import Faqs from './pages/Faqs.tsx'
+import LoginPage from './pages/LoginPage.tsx'
+import SignUpPage from './pages/SignUpPage.tsx'
+import TwoFactorAuth from './pages/TwoFactorAuth.tsx'
+import ProjectProvider from './context/project-context.tsx'
+import ForgotPasswordComponent from './pages/forgotpassword.tsx'
+import NewPasswordComponent from './pages/Newpassword.tsx'
+import Rsvp from './pages/Rsvp.tsx'
+import HostPage from './pages/HostPage.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
-      <Route index element={<Home />} />
-      <Route path='about' element={<About />} />
-      <Route path='contact' element={<Contact />} />
-      <Route path='events' element={<Events />} />
-      <Route path="eventdetails" element={<EventDetails />} />
-      <Route path='accounts' element={<Accounts />} />
-      <Route path='faqs' element={<Faqs />} />
-      <Route path='login' element={<LoginPage />} />
-      <Route path='signup' element={<SignUpPage />} />
-      <Route path='twofactorauth' element={<TwoFactorAuth phoneNumber={''} verificationCode={''} timer={0} />} />
-      <Route path='forgotpassword' element={<ForgotPasswordComponent />} />
-      <Route path='newpassword' element={<NewPasswordComponent />} />
+      <Route index element={<Home />} /> 
       <Route path='rsvp' element={<Rsvp />} />
-      <Route path='host' element={<HostPage />} />
       <Route path='createevent' element={<CreateEvent />} />
       <Route path='createeventpayinfo' element={<CreateEventPayInfo />} />
       <Route path='createeventsocials' element={<CreateEventSocials />} />
       <Route path='createeventmessage' element={<CreateEventMessage />} />
-    </Route>
-  )
-);
+      <Route path="about" element={<About />} />
+      <Route path="contact" element={<Contact />} />
+      <Route path="events" element={<Events />} />
+      <Route path="events/:id" element={<EventDetails />} />
+      <Route path="accounts" element={<Accounts />} />
+      <Route path="faqs" element={<Faqs />} />
+      <Route path="login" element={<LoginPage />} />
+      <Route path="signup" element={<SignUpPage />} />
+      <Route
+        path="twofactorauth"
+        element={
+          <TwoFactorAuth phoneNumber={''} verificationCode={''} timer={0} />
+        }
+      />
+      <Route path="forgotpassword" element={<ForgotPasswordComponent />} />
+      <Route path="newpassword" element={<NewPasswordComponent />} />
+      <Route path="events/:id/rsvp" element={<Rsvp />} />
+      <Route path="host" element={<HostPage />} />
+    </Route>,
+  ),
+)
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
