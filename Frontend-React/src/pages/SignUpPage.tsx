@@ -8,18 +8,21 @@ import fbIcon from '../assets/fb-icon.png'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import RegistrationSuccessful from '../components/RegistrationSuccessful'
+import axios from 'axios'
 
 const SignUpPage = () => {
   const initialDetails = {
     firstName: '',
     lastName: '',
     email: '',
+    phoneNumber: '',
     password: '',
     confirmPassword: '',
   }
 
   // const errorMessages ={
   //   emailError:'',
+  //   phoneError:'',
   //   passwordError:'',
   //   confirmPasswordError:''
   // }
@@ -37,15 +40,17 @@ const SignUpPage = () => {
   }
 
   const emailRegex = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim
+  const phoneRegex = /^[6-9]\d{9}$/
   const passRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,16}$/
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (
       userInfo.email.match(emailRegex) &&
       userInfo.firstName &&
       userInfo.lastName &&
+      userInfo.phoneNumber.match(phoneRegex) &&
       userInfo.password.match(passRegex) &&
       userInfo.confirmPassword.match(passRegex)
     ) {
@@ -59,6 +64,12 @@ const SignUpPage = () => {
       setErrors(false)
     }
 
+    if (!phoneRegex.test(userInfo.phoneNumber)) {
+      setErrors(true)
+    } else {
+      setErrors(false)
+    }
+
     if (!passRegex.test(userInfo.password)) {
       setPassErrors(true)
     } else {
@@ -67,6 +78,14 @@ const SignUpPage = () => {
 
     setSeePassword(false)
     setSeeConfirmPassword(false)
+
+    try{
+      const response = await axios.post('http://127.0.0.1:8000/api/account/signup/', userInfo)
+      console.log('{RegistrationSuccessful}' ,response)
+      setRegSuccessful(true)
+    } catch (error){
+      console.log( 'Sign Up failed',error)
+    }
   }
 
   return (
@@ -105,6 +124,7 @@ const SignUpPage = () => {
 
         <div className="w-full h-full sm:w-1/2">
           <form
+            method='POST'
             className="w-[80%] ml-[3rem] mt-20 flex flex-col gap-6 lg:ml-[6.8rem] lg:w-[65%] relative z-10"
             onSubmit={handleSubmit}
           >
@@ -161,6 +181,22 @@ const SignUpPage = () => {
               )}
             </label>
 
+            <label htmlFor="PhoneNumber" className='flex flex-col gap-1 w-full'>
+              <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                Phone Number <span className="text-red-600 font-bold">*</span>
+              </p>
+              <input
+                type="text"
+                name="phoneNumber"
+                value={userInfo.phoneNumber}
+                onChange={handleChange}
+                className={`border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] ${
+                  errors ? 'focus:outline-red-600' : 'focus:outline-primary-100'
+                } rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full`}
+                // required
+              />
+            </label>
+            
             <label
               htmlFor="Enter Password"
               className="flex flex-col gap-1 w-full"
