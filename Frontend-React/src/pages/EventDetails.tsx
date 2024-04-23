@@ -9,16 +9,16 @@ const EventDetails = () => {
   const data = eventPageData.find((item) => item.eventName === id)
   return (
     <section className="bg-white pt-12 pb-20">
-      <div className="w-[90%] mx-auto flex items-center justify-center lg:w-[85%]">
-        <div className="w-1/2">
+      <div className="w-[90%] mx-auto flex flex-col items-center justify-center h-full sm:flex-row sm:h-[36rem] lg:h-full sm:w-[95%] lg:w-[85%]">
+        <div className="w-full h-full sm:w-3/5 sm:mr-8 lg:mr-0 lg:w-1/2">
           <img
             src={data?.img}
             alt={`Image for the event ${data?.eventName}`}
-            className="w-full"
+            className="w-full h-full"
           />
         </div>
 
-        <aside className="w-1/2 ml-32">
+        <aside className="w-full ml-5 sm:ml-0 sm:w-2/5 lg:w-1/2 lg:ml-32">
           <h1 className="text-2xl font-semibold">Event details</h1>
           <section className="flex flex-col mt-5">
             <h1 className="font-semibold">Event name:</h1>
