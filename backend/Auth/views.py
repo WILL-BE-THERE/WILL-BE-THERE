@@ -97,7 +97,9 @@ def logIn(request):
     user = authenticate(username=username, password=password)
     if user is not None:
         token, _ = Token.objects.get_or_create(user=user)
+        print(user)
         return Response({'token': token.key, 'user': userSerializer(user).data}, status=status.HTTP_200_OK)
+    print("incorrect details")
     return Response({'error': 'username and or password incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
 
 class CustomTokenAuthentication(TokenAuthentication):
