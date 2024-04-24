@@ -104,8 +104,8 @@ const CreateEvent = () => {
         <section className=" mt-8 items-center w-[65%] mx-auto">
           <h1 className="font-bold mb-1 text-xl">Event Image</h1>
           <p className="text-neutral-200 text-base font-medium">
-            Upload an image about your event such as event provider. It must be
-            11 or square in size.
+            Upload an image about your event such as event poster. It must be
+            1:1 or square in size.
           </p>
 
           <form className=" " onSubmit={handleSubmitImage}>
