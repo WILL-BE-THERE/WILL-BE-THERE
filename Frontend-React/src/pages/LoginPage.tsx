@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import shape1 from '../assets/shape1.png'
 import shape2 from '../assets/shape2.png'
 import shape3 from '../assets/shape3.png'
@@ -17,6 +17,9 @@ const LoginPage = () => {
   const [seePassword, setSeePassword] = useState(false)
   const [userInfo, setUserInfo] = useState(initialDetails)
 
+  const navigate = useNavigate()
+  const login = () => navigate('/host')
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setUserInfo((prevState) => ({ ...prevState, [name]: value }))
@@ -26,6 +29,7 @@ const LoginPage = () => {
     e.preventDefault()
     setUserInfo(initialDetails)
     setSeePassword(false)
+    login()
   }
 
   return (

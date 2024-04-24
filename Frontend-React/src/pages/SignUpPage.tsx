@@ -32,6 +32,7 @@ const SignUpPage = () => {
   const [userInfo, setUserInfo] = useState(initialDetails)
   const [errors, setErrors] = useState(false)
   const [passErrors, setPassErrors] = useState(false)
+  const [phoneError, setPhoneError] = useState(false)
   const [regSuccessFull, setRegSuccessful] = useState(false)
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +41,8 @@ const SignUpPage = () => {
   }
 
   const emailRegex = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim
-  const phoneRegex = /^[6-9]\d{9}$/
+  const phoneRegex =
+    /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
   const passRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,16}$/
 
@@ -65,9 +67,9 @@ const SignUpPage = () => {
     }
 
     if (!phoneRegex.test(userInfo.phoneNumber)) {
-      setErrors(true)
+      setPhoneError(true)
     } else {
-      setErrors(false)
+      setPhoneError(false)
     }
 
     if (!passRegex.test(userInfo.password)) {
@@ -79,12 +81,15 @@ const SignUpPage = () => {
     setSeePassword(false)
     setSeeConfirmPassword(false)
 
-    try{
-      const response = await axios.post('http://127.0.0.1:8000/api/account/signup/', userInfo)
-      console.log('{RegistrationSuccessful}' ,response)
+    try {
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/account/signup/',
+        userInfo,
+      )
+      console.log('{RegistrationSuccessful}', response)
       setRegSuccessful(true)
-    } catch (error){
-      console.log( 'Sign Up failed',error)
+    } catch (error) {
+      console.log('Sign Up failed', error)
     }
   }
 
@@ -124,7 +129,7 @@ const SignUpPage = () => {
 
         <div className="w-full h-full sm:w-1/2">
           <form
-            method='POST'
+            method="POST"
             className="w-[80%] ml-[3rem] mt-20 flex flex-col gap-6 lg:ml-[6.8rem] lg:w-[65%] relative z-10"
             onSubmit={handleSubmit}
           >
@@ -145,7 +150,6 @@ const SignUpPage = () => {
                   // required
                 />
               </label>
-              {}
 
               <label htmlFor="lastName" className="flex flex-col gap-1 w-1/2">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
@@ -181,12 +185,12 @@ const SignUpPage = () => {
               )}
             </label>
 
-            <label htmlFor="PhoneNumber" className='flex flex-col gap-1 w-full'>
+            <label htmlFor="PhoneNumber" className="flex flex-col gap-1 w-full">
               <p className="flex gap-1 text-sm font-medium text-neutral-200">
                 Phone Number <span className="text-red-600 font-bold">*</span>
               </p>
               <input
-                type="text"
+                type="number"
                 name="phoneNumber"
                 value={userInfo.phoneNumber}
                 onChange={handleChange}
@@ -195,8 +199,11 @@ const SignUpPage = () => {
                 } rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full`}
                 // required
               />
+              {phoneError && (
+                <p className="text-red-600 text-xs">Enter valid phone number</p>
+              )}
             </label>
-            
+
             <label
               htmlFor="Enter Password"
               className="flex flex-col gap-1 w-full"
