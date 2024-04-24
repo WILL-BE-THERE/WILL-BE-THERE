@@ -72,11 +72,11 @@ const SignUpPage = () => {
       setPhoneError(false)
     }
 
-    if (!passRegex.test(userInfo.password)) {
-      setPassErrors(true)
-    } else {
-      setPassErrors(false)
-    }
+    /// if (!passRegex.test(userInfo.password)) {
+    ///   setPassErrors(true)
+    /// } else {
+    ///   setPassErrors(false)
+    /// }
 
     setSeePassword(false)
     setSeeConfirmPassword(false)
