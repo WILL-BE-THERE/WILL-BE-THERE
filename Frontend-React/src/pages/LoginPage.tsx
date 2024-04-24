@@ -7,6 +7,7 @@ import appleIcon from '../assets/apple-icon.png'
 import fbIcon from '../assets/fb-icon.png'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
 import { ChangeEvent, FormEvent, useState } from 'react'
+import axios from 'axios'
 
 const LoginPage = () => {
   const initialDetails = {
@@ -25,8 +26,14 @@ const LoginPage = () => {
     setUserInfo((prevState) => ({ ...prevState, [name]: value }))
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/account/login/', userInfo)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
     setUserInfo(initialDetails)
     setSeePassword(false)
     login()
