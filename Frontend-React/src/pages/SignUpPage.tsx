@@ -72,11 +72,11 @@ const SignUpPage = () => {
       setPhoneError(false)
     }
 
-    /// if (!passRegex.test(userInfo.password)) {
-    ///   setPassErrors(true)
-    /// } else {
-    ///   setPassErrors(false)
-    /// }
+    if (!passRegex.test(userInfo.password)) {
+      setPassErrors(true)
+    } else {
+      setPassErrors(false)
+    }
 
     setSeePassword(false)
     setSeeConfirmPassword(false)
@@ -84,12 +84,11 @@ const SignUpPage = () => {
     try {
       const response = await axios.post(
         'http://127.0.0.1:8000/api/account/signup/',
-        userInfo,
+        userInfo
       )
-      console.log('{RegistrationSuccessful}', response)
-      setRegSuccessful(true)
+      console.log(response)
     } catch (error) {
-      console.log('Sign Up failed', error)
+      console.log(error)
     }
   }
 
