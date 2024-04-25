@@ -14,10 +14,10 @@ import About from './pages/About.tsx'
 import Contact from './pages/Contact.tsx'
 import Events from './pages/Events.tsx'
 import EventDetails from './pages/EventDetails.tsx'
-import CreateEvent from './pages/CreateEventGeneralinfo.tsx';
-import CreateEventPayInfo from './pages/CreateEventPayInfo.tsx';
-import CreateEventSocials from './pages/CreateEventSocials.tsx';
-import CreateEventMessage from './pages/CreateEventMessage.tsx';
+import CreateEvent from './pages/CreateEventGeneralinfo.tsx'
+import CreateEventPayInfo from './pages/CreateEventPayInfo.tsx'
+import CreateEventSocials from './pages/CreateEventSocials.tsx'
+import CreateEventMessage from './pages/CreateEventMessage.tsx'
 import Accounts from './pages/Accounts.tsx'
 import Faqs from './pages/Faqs.tsx'
 import LoginPage from './pages/LoginPage.tsx'
@@ -28,16 +28,17 @@ import ForgotPasswordComponent from './pages/forgotpassword.tsx'
 import NewPasswordComponent from './pages/Newpassword.tsx'
 import Rsvp from './pages/Rsvp.tsx'
 import HostPage from './pages/HostPage.tsx'
+import ManageEvents from '../src/pages/ManageEvents.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
-      <Route index element={<Home />} /> 
-      <Route path='rsvp' element={<Rsvp />} />
-      <Route path='createevent' element={<CreateEvent />} />
-      <Route path='createeventpayinfo' element={<CreateEventPayInfo />} />
-      <Route path='createeventsocials' element={<CreateEventSocials />} />
-      <Route path='createeventmessage' element={<CreateEventMessage />} />
+      <Route index element={<Home />} />
+      <Route path="rsvp" element={<Rsvp />} />
+      <Route path="createevent" element={<CreateEvent />} />
+      <Route path="createeventpayinfo" element={<CreateEventPayInfo />} />
+      <Route path="createeventsocials" element={<CreateEventSocials />} />
+      <Route path="createeventmessage" element={<CreateEventMessage />} />
       <Route path="about" element={<About />} />
       <Route path="contact" element={<Contact />} />
       <Route path="events" element={<Events />} />
@@ -56,6 +57,7 @@ const router = createBrowserRouter(
       <Route path="newpassword" element={<NewPasswordComponent />} />
       <Route path="events/:id/rsvp" element={<Rsvp />} />
       <Route path="host" element={<HostPage />} />
+      <Route path="manageEvents" element={<ManageEvents />} />
     </Route>,
   ),
 )

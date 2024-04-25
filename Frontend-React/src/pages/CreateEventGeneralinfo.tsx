@@ -1,155 +1,316 @@
-import { FaChevronRight, FaEdit } from 'react-icons/fa'
-import { FaBriefcase, FaFaceSmile } from 'react-icons/fa6'
+import axios from 'axios'
+import CreateEventsHeader from '../../src/components/CreateEventsHeader'
+import uploadImgIcon from '../assets/Group 26.png'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { FaArrowRight } from 'react-icons/fa'
+import { useLocation, useNavigate } from 'react-router-dom'
+import Select, { StylesConfig } from 'react-select'
+
+const countriesApi =
+  'https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code'
+// const stateApiByCountryUrl =
+//   'https://countriesnow.space/api/v0.1/countries/states?format=select'
+// const cityByStateURL =
+//   'https://countriesnow.space/api/v0.1/countries/state/cities'
 
 const CreateEvent = () => {
+  const [countries, setCountries] = useState([])
+  const [selectedCountry, setSelectedCountry] = useState({})
+
+  // const [states, setStates] = useState([])
+  // const [selectedstates, setSelectedstates] = useState({})
+
+  // const [city, setCity] = useState([])
+  // const [selectedcity, setSelectedcity] = useState({})
+
+  const fetchCountries = async () => {
+    try {
+      const response = await axios.get(countriesApi)
+      setCountries(response.data?.countries)
+      setSelectedCountry(response.data?.userSelectValue)
+      console.log(response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchCountries()
+  }, [])
+
+  const initialEventInfo = {
+    eventName: '',
+    firstName: '',
+    eventDate: '',
+    eventTime: '',
+    country: '',
+    state: '',
+    city: '',
+    street: '',
+    imageSelected: '',
+  }
+
+  const [selectedImage, setSelectedImage] = useState('')
+  const [imageUploadedMsg, setImageUploadedMsg] = useState('')
+  const [eventInfo, setEventInfo] = useState(initialEventInfo)
+
+  const navigate = useNavigate()
+  const next = () => navigate('/createeventpayinfo')
+  const location = useLocation()
+
+  const colourStyles: StylesConfig = {
+    control: (styles) => ({
+      ...styles,
+      background: '#fafafa',
+      color: '#5E5C5C',
+      border: '1.5px solid #d6d6d6',
+      borderRadius: '0.375rem',
+      fontSize: '0.875rem',
+      padding: '0.3rem 0.4rem',
+      fontFamily: 'Montserrat, sans-serif',
+      fontWeight: '500',
+    }),
+  }
+
+  const fileSelectHandleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return
+    const value = URL.createObjectURL(e.target.files[0])
+    setSelectedImage(value)
+  }
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setEventInfo((prevInfo) => ({ ...prevInfo, [name]: value }))
+  }
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    console.log(eventInfo)
+    next()
+  }
+
+  const handleSubmitImage = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setEventInfo((prev) => ({ ...prev, imageSelected: selectedImage }))
+    setImageUploadedMsg('Uploaded. Click the image to select a different image')
+  }
+
   return (
-    <div className="items-center text-center bg-white">
+    <div className="text-center bg-white pb-24">
       <div className=" w-[70%] mx-auto">
-        <section className="pt-8 text-center">
-          <h1 className="font-bold text-3xl">Create Event</h1>
-          <p className="font-medium text-sm text-neutral-200 mt-1 mb-8">
-            Craft your event and indulge in arefreshing new approach to register
-            your event
-          </p>
-        </section>
+        <CreateEventsHeader textColor={location.pathname} />
 
-        <section className="flex items-center justify-between gap-12 border-b-[3.5px] border-primary-100 py-4 w-[65%] mx-auto px-8">
-          <div className="flex justify-between items-center text-xs text-neutral-500 font-medium w-full">
-            <p className="flex gap-2 items-center">
-              <FaEdit />
-              General Information
-            </p>
-            <FaChevronRight />
-          </div>
-          <div className="flex justify-center items-center text-xs gap-12 text-neutral-500 font-medium w-full">
-            <p className="flex gap-2 items-center">
-              <FaBriefcase /> Payment Info
-            </p>
-            <FaChevronRight />
-          </div>
-          <div className="flex justify-between items-center text-xs text-neutral-500 font-medium">
-            <p className="flex gap-2 items-center">
-              <FaFaceSmile />
-              Socials
-            </p>
-          </div>
-        </section>
-
-        <section className=" mt-8 items-center text-lg w-[65%] mx-auto">
-          <h1 className="font-bold mb-1">Event Image</h1>
-          <p className="text-neutral-200 text-sm font-medium">
-            Upload a captivating image that will attract attendees to your event
+        <section className=" mt-8 items-center w-[65%] mx-auto">
+          <h1 className="font-bold mb-1 text-xl">Event Image</h1>
+          <p className="text-neutral-200 text-base font-medium">
+            Upload an image about your event such as event poster. It must be
+            1:1 or square in size.
           </p>
 
-          <form className=" outline-dashed m-2 rounded-sm p-4 text-center">
-            <div>
-              <label htmlFor="eventimage"></label>
+          <form className=" " onSubmit={handleSubmitImage}>
+            <div className="border-2 border-dashed rounded-xl border-black/30 mt-8 text-center w-52 h-52 mx-auto">
+              <label
+                htmlFor="eventimage"
+                className="w-full h-full cursor-pointer flex items-center justify-center"
+              >
+                <img
+                  src={selectedImage ? selectedImage : uploadImgIcon}
+                  alt="Image upload"
+                  className="w-4/5 h-4/5 rounded-xl"
+                />
+              </label>
               <input
                 type="file"
                 id="eventimage"
                 name="eventimage"
-                className=" file:opacity-0"
+                onChange={fileSelectHandleChange}
+                className=" hidden"
+                required
               />
             </div>
-            <button type="submit">Upload Image</button>
+            <p>{imageUploadedMsg}</p>
+            <button
+              type="submit"
+              className="w-52 bg-primary-100 py-2 text-white font-medium mt-5 rounded-lg text-base hover:bg-primary-200 transition-all"
+            >
+              Upload Image
+            </button>
           </form>
         </section>
 
-        <section className="border-2 border-dashed rounded-xl border-black/30 mt-10 py-5 w-[75%] mx-auto px-12 text-start">
-          <h1 className="font-bold mb-1 text-lg mt-4">General Information</h1>
-          <p className="text-neutral-200 text-sm font-medium">
+        <section className="border-2 border-dashed rounded-xl border-black/30 my-10 py-12 w-[75%] mx-auto px-12 text-start">
+          <h1 className="font-bold mb-1 text-xl">General Information</h1>
+          <p className="text-neutral-200 text-base font-medium">
             The essential details regarding your event, encompassing its
             location and additional information
           </p>
-          <form className="grid grid-cols-2 grid-gap-4">
-            <div className=" outline-2 shadow-md mt-4">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                className=" outline-none m-2 rounded-sm bg-gray-200"
-              />
+          <form
+            id="generalInfoForm"
+            onSubmit={handleSubmit}
+            className="flex flex-col gap-4"
+          >
+            <div className="mt-7 flex gap-5">
+              <label htmlFor="eventName" className="flex flex-col gap-1 w-1/2">
+                <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                  Name <span className="text-red-600 font-bold">*</span>
+                </p>
+                <input
+                  type="text"
+                  name="eventName"
+                  placeholder="Event name"
+                  value={eventInfo.eventName}
+                  onChange={handleChange}
+                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                  required
+                />
+              </label>
+              <label htmlFor="firstName" className="flex flex-col gap-1 w-1/2">
+                <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                  First Name <span className="text-red-600 font-bold">*</span>
+                </p>
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="First name"
+                  value={eventInfo.firstName}
+                  onChange={handleChange}
+                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                  required
+                />
+              </label>
             </div>
-            <div className=" outline-2 shadow-md mt-4">
-              <label htmlFor="firstname">First Name</label>
-              <input
-                type="text"
-                id="firsname"
-                name="firstname"
-                className=" outline-none m-2 rounded-sm bg-gray-200"
-              />
+
+            <div className="mt-7 flex gap-5">
+              <label htmlFor="eventDate" className="flex flex-col gap-1 w-1/2">
+                <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                  Event Date <span className="text-red-600 font-bold">*</span>
+                </p>
+                <input
+                  type="date"
+                  name="eventDate"
+                  value={eventInfo.eventDate}
+                  onChange={handleChange}
+                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                  required
+                />
+              </label>
+              <label htmlFor="eventTime" className="flex flex-col gap-1 w-1/2">
+                <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                  Time of Event{' '}
+                  <span className="text-red-600 font-bold">*</span>
+                </p>
+                <input
+                  type="time"
+                  name="eventTime"
+                  value={eventInfo.eventTime}
+                  onChange={handleChange}
+                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                  required
+                />
+              </label>
             </div>
-            <div className=" outline-2 shadow-md mt-4">
-              <label htmlFor="event date">Date of Event</label>
-              <input
-                type="date"
-                id="eventdate"
-                name="eventdate"
-                className=" outline-none m-2 rounded-sm bg-gray-200"
-              />
+
+            <div className="mt-7 flex gap-5">
+              <label htmlFor="country" className="flex flex-col gap-1 w-1/2">
+                <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                  Country <span className="text-red-600 font-bold">*</span>
+                </p>
+                <Select
+                  className="w-full text-sm text-neutral-200 font-medium"
+                  options={countries}
+                  required
+                  name="country"
+                  value={selectedCountry}
+                  isLoading={countries.length == 0 ? true : false}
+                  onChange={(selectedOption) => {
+                    setSelectedCountry(selectedOption)
+                    // setEventInfo((prev) => ({
+                    //   ...prev,
+                    //   country: selectedOption.label,
+                    // }))
+                    // fetchStateByCountry()
+                  }}
+                  styles={colourStyles}
+                />
+              </label>
+              <label htmlFor="state" className="flex flex-col gap-1 w-1/2">
+                <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                  State <span className="text-red-600 font-bold">*</span>
+                </p>
+                <Select
+                  className="w-full text-sm text-neutral-200 font-medium"
+                  // options={states}
+                  required
+                  name="state"
+                  // value={selectedstates}
+                  // isLoading={states.length == 0 ? true : false}
+                  // onChange={(selectedOption) => {
+                  //   setSelectedstates(selectedOption)
+                  //   setEventInfo((prev) => ({
+                  //     ...prev,
+                  //     state: selectedOption.value,
+                  //   }))
+                  // }}
+                  styles={colourStyles}
+                />
+              </label>
+
+              <label htmlFor="city" className="flex flex-col gap-1 w-1/2">
+                <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                  City <span className="text-red-600 font-bold">*</span>
+                </p>
+                <Select
+                  className="w-full text-sm text-neutral-200 font-medium"
+                  // options={city}
+                  required
+                  name="city"
+                  // value={selectedcity}
+                  // onChange={(selectedOption) => {
+                  //   setSelectedcity(selectedOption)
+                  //   setEventInfo((prev) => ({
+                  //     ...prev,
+                  //     city: selectedOption.value,
+                  //   }))
+                  // }}
+                  styles={colourStyles}
+                />
+              </label>
             </div>
-            <div className=" outline-2 shadow-md mt-4">
-              <label htmlFor="eventclosingdate">Event Closing Date</label>
-              <input
-                type="date"
-                id="eventclosingdate"
-                name="eventclosingdate"
-                className=" outline-none m-2 rounded-sm bg-gray-200"
-              />
-            </div>
-            <div className=" outline-2 shadow-md mt-4">
-              <label htmlFor="Time">Time</label>
-              <input
-                type="time"
-                id="time"
-                name="time"
-                className=" outline-none m-2 rounded-sm bg-gray-200"
-              ></input>
-            </div>
-            <div className="  outline-2 rounded shadow-md mt-4 flex-auto">
-              <label htmlFor="country">Country</label>
-              <select
-                id="country"
-                name="country"
-                className=" outline-none m-2 rounded-sm bg-gray-200"
-              />
-              <label htmlFor="state">State</label>
-              <select
-                id="state"
-                name="state"
-                className=" outline-none m-2 rounded-sm bg-gray-200"
-              />
-              <label htmlFor="city">City</label>
-              <select
-                id="city"
-                name="city"
-                className=" outline-none m-2 rounded-sm bg-gray-200"
-              />
-            </div>
-            <div className=" outline-2 shadow-md mt-4">
-              <label htmlFor="street">Street</label>
-              <p>
-                Enter the street address below, select from the auto complete
-                options and verify that the location appears correctly on the
-                map
-              </p>
-              <input
-                type="text"
-                id="street"
-                name="street"
-                className=" outline-none m-2 rounded-sm bg-gray-200"
-              />
+
+            <div className="mt-7 flex gap-5">
+              <label htmlFor="street" className="flex flex-col gap-1">
+                <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                  Street <span className="text-red-600 font-bold">*</span>
+                </p>
+                <p className="text-sm mt-1 text-neutral-200 mb-1">
+                  Enter the street address below, select from the auto complete
+                  options and verify that the location appears correctly on the
+                  map
+                </p>
+                <input
+                  type="address"
+                  name="street"
+                  placeholder="e.g Dallas, Texas"
+                  value={eventInfo.street}
+                  onChange={handleChange}
+                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                  required
+                />
+              </label>
             </div>
           </form>
-          <div>{/* google map */}</div>
+          <div className="mt-2">Google Map section</div>
         </section>
-        <section>
-          <button>
-            <a href="/HostPage">Back</a>
-          </button>
-          <button>
-            <a href="/CreateEventPayInfo">Next</a>
+
+        <section className="flex items-center justify-end w-3/4 mx-auto">
+          <button
+            type="submit"
+            form="generalInfoForm"
+            className="flex items-center gap-3 text-white bg-primary-100 font-medium border border-primary-100 text-sm py-2 px-4 rounded-md group"
+          >
+            Next
+            <FaArrowRight className=" group-hover:translate-x-1 transition-all hidden sm:block" />
           </button>
         </section>
       </div>

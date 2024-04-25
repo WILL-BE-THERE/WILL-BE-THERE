@@ -1,19 +1,24 @@
 import { Link } from 'react-router-dom'
+import icon from '../assets/Bad_Request.png'
 
 export default function ErrorPage() {
   return (
-    <div
-      id="error-page"
-      className="flex items-center justify-center flex-col gap-6 h-screen bg-[#61dcfb4b] font-lexend"
-    >
-      <h1 className="text-5xl font-bold italic">Oops!</h1>
-      <p className="text-2xl">Sorry, the path entered does not exist.</p>
-      <Link
-        to="/"
-        className="bg-[#0F8931] px-8 py-2 rounded-lg text-white font-lato"
-      >
-        Home
-      </Link>
+    <div className="bg-white pt-8">
+      <section className="w-[60%] mx-auto flex flex-col gap-3 justify-center items-center text-center text-black font-medium">
+        <h1 className="text-3xl font-bold mb-1 mt-12">Page not found</h1>
+
+        <img
+          src={icon}
+          alt="Image showing successful creation of events"
+          className="w-80 mt-12"
+        />
+        <Link
+          to="/"
+          className="mb-32 mt-12 bg-primary-100 text-white font-medium py-2 px-4 rounded-md hover:bg-primary-200 transition-all"
+        >
+          Back to Home page
+        </Link>
+      </section>
     </div>
   )
 }
