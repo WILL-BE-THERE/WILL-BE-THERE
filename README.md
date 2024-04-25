@@ -8,7 +8,7 @@ WILL BE THERE is a cutting-edge platform designed to streamline event management
 
 ## 🛠️ Project Details
 
-WILL BE THERE is a closed-source project developed by ADCH24-GROUP-22 for the [Hackathon Name]. Our team comprises designers, developers, project managers, and PR specialists working collaboratively to deliver an outstanding RSVP service.
+WILL BE THERE is a closed-source project developed by ADCH24-GROUP-22 for the ADCH24 Hackathon 2024. Our team comprises designers, developers, project managers, and PR specialists working collaboratively to deliver an outstanding RSVP service.
 
 ## 📝 Tasks and Features
 
@@ -29,8 +29,7 @@ WILL BE THERE offers a range of functionalities tailored for both hosts and gues
 
 - **Frontend**: TypeScript
 - **Backend**: Django
-- **Database**: [Database Name]
-- **DevOps**: Docker, Kubernetes
+
 
 ## 👨‍💼 Meet the Team
 
