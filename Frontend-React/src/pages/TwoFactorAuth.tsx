@@ -55,6 +55,18 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
       props.onResend()
       setCountdown(countdown) // Reset timer on resend
     }
+
+    axios
+      .post('http://127.0.0.1:8000/api/account/verify/', {
+        email: props.email,
+        verificationCode: code,
+      })
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   return (
