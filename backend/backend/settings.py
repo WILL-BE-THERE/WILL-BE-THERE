@@ -40,11 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Auth',
     'userProfile',
-<<<<<<< HEAD
     'Events',
-=======
     'corsheaders',
->>>>>>> f1763e413ad658c31d7124b11371e3ac22ae620a
 
     #third party applications
     'rest_framework',
