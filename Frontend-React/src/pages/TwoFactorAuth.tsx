@@ -6,9 +6,10 @@ import {
   faCog,
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
+import axios from 'axios'
 
 interface TwoFactorAuth {
-  phoneNumber: string
+  email: string
   verificationCode: string
   timer: number
   onVerify?: () => void
@@ -34,6 +35,19 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
     if (props.onVerify) {
       props.onVerify()
     }
+
+    axios
+      .post('http://127.0.0.1:8000/api/account/verify/', {
+        email: props.email,
+        verificationCode: code,
+      })
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+
   }
 
   const handleResend = () => {
@@ -41,6 +55,18 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
       props.onResend()
       setCountdown(countdown) // Reset timer on resend
     }
+
+    axios
+      .post('http://127.0.0.1:8000/api/account/verify/', {
+        email: props.email,
+        verificationCode: code,
+      })
+      .then((response) => {
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   }
 
   return (
@@ -77,7 +103,7 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
           <p className="font-medium text-neutral-200 mb-2">
             Enter the verification code sent to
           </p>
-          <p className="text-sm text-gray-500">{props.phoneNumber}</p>
+          <p className="text-sm text-gray-500">{props.email}</p>
           <input
             type="text"
             placeholder="Verification Code"

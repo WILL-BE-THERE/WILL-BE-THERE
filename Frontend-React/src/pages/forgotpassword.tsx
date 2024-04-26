@@ -7,12 +7,16 @@ const ForgotPasswordComponent = () => {
 
   const navigate = useNavigate()
   const goBack = () => navigate(-1)
+  const submit = () => navigate('/newpassword')
 
   const emailRegex = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (email.match(emailRegex)) setEmail('')
+    if (email.match(emailRegex)) {
+      setEmail('')
+      submit()
+    }
     if (!emailRegex.test(email)) {
       setEmailError(true)
     } else {
@@ -57,6 +61,7 @@ const ForgotPasswordComponent = () => {
           </button>
         </form>
         <button
+          type="button"
           className="w-full mt-8 text-center text-primary-100"
           onClick={goBack}
         >
