@@ -6,7 +6,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-from .swagger import createEvent_request_body, getEvents_request_body
+from .swagger import createEvent_request_body
 from .serializer import EventSerializer
 from .models import Event
 

@@ -1,12 +1,5 @@
 from drf_yasg import openapi
 
-getEvents_request_body = openapi.Schema(
-    type=openapi.TYPE_OBJECT,
-
-    properties = {
-    }
-)
-
 createEvent_request_body = openapi.Schema(
     type=openapi.TYPE_OBJECT,
     required=['picture', 'eventName', 'generalInfo', 'dateOfEvent',
