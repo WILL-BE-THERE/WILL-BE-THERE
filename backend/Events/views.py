@@ -21,7 +21,7 @@ from .models import Event
 
 @api_view(['GET'])
 def getEvents(request):
-    """ view for fetching all events events"""
+    """ view for fetching all events"""
     try:
         events = Event.objects.all()
         serializer = EventSerializer(events, many=True)
@@ -38,7 +38,7 @@ def getEvents(request):
 
 @api_view(['GET'])
 def getEvent(request, id):
-    """ view for fetching all events events"""
+    """ view for fetching single event"""
     try:
         event = Event.objects.get(id=id)
         serializer = EventSerializer(event)
