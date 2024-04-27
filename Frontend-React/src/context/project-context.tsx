@@ -8,6 +8,8 @@ type ProjectContextProps = {
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<Bool>>
   signUpClicked: boolean
   setSignUpClicked: React.Dispatch<React.SetStateAction<Bool>>
+  isLoggedIn: boolean
+  setIsLoggedIn: React.Dispatch<React.SetStateAction<Bool>>
 }
 
 type ProjectContextProviderProps = {
@@ -19,6 +21,7 @@ const ProjectContext = createContext<ProjectContextProps | null>(null)
 const ProjectProvider = ({ children }: ProjectContextProviderProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<Bool>(false)
   const [signUpClicked, setSignUpClicked] = useState<Bool>(false)
+  const [isLoggedIn, setIsLoggedIn] = useState<Bool>(true)
   return (
     <ProjectContext.Provider
       value={{
@@ -26,6 +29,8 @@ const ProjectProvider = ({ children }: ProjectContextProviderProps) => {
         setIsSidebarOpen,
         signUpClicked,
         setSignUpClicked,
+        isLoggedIn,
+        setIsLoggedIn,
       }}
     >
       {children}

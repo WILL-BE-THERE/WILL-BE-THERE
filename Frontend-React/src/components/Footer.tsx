@@ -41,7 +41,7 @@ const socials = [
 
 const Footer = () => {
   return (
-    <footer className="bg-primary-100 pt-20 relative z-10">
+    <footer className={`bg-primary-100 pt-20 relative z-10`}>
       <section className="w-[90%] grid grid-cols-2 justify-between m-auto gap-y-16 sm:w-[95%] sm:grid-cols-4 lg:flex lg:w-[85%] lg:gap-y-0">
         <div className="w-28 h-10 grid-cols-subgrid col-span-2 sm:col-span-1">
           <img
