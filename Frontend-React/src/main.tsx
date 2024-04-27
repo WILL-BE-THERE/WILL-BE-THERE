@@ -32,8 +32,11 @@ import ManageEvents from '../src/pages/ManageEvents.tsx'
 import Dashboard from '../src/pages/dashboard/Dashboard.tsx'
 import Event from '../src/pages/dashboard/Event.tsx'
 import ProtectedRoutes from '../src/components/ProtectedRoutes.tsx'
-import Settings from '../src/pages/dashboard/Settings.tsx'
 import Overview from '../src/pages/dashboard/Overview.tsx'
+import Revenue from '../src/pages/dashboard/Revenue.tsx'
+import GuestMetrics from '../src/pages/dashboard/GuestMetrics.tsx'
+import EventSettings from '../src/pages/dashboard/EventSettings.tsx'
+import UserInfo from '../src/pages/dashboard/UserInfo.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -76,7 +79,10 @@ const router = createBrowserRouter(
       >
         <Route index element={<Overview />} />
         <Route path="event" element={<Event />} />
-        <Route path="settings" element={<Settings />} />
+        <Route path="revenue" element={<Revenue />} />
+        <Route path="metrics" element={<GuestMetrics />} />
+        <Route path="eventSettings" element={<EventSettings />} />
+        <Route path="userInfo" element={<UserInfo />} />
       </Route>
     </>,
   ),

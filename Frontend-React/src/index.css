@@ -15,8 +15,15 @@ h1 {
   font-family: 'Manrope', sans-serif;
 }
 
-.active {
+ul.navlinks li a.active {
   color: #1a53fd;
+}
+
+ul.dashboard li a.active {
+  width: 100%;
+  background-color: #e8eeff;
+  color: #1a53fd;
+  border-left: 4px solid #1a53fd;
 }
 
 @media screen and (max-width: 430px) {
