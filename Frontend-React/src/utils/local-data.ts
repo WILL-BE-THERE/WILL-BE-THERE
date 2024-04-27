@@ -204,41 +204,51 @@ export const guests = [
   {
     guestName: 'Gizki Design',
     regDate: '4th March, 2024',
+    status: 'Confirmed',
   },
   {
     guestName: 'Daniel Nzau',
     regDate: '7th March, 2024',
+    status: 'Confirmed',
   },
   {
     guestName: 'Winifred Imade',
     regDate: '9th March, 2024',
+    status: 'Pending',
   },
   {
     guestName: 'Abraham John',
     regDate: '9th March, 2024',
+    status: 'Confirmed',
   },
   {
     guestName: 'David Ongora',
     regDate: '14th March, 2024',
+    status: 'Confirmed',
   },
   {
     guestName: 'Ian Masinde',
     regDate: '30th March, 2024',
+    status: 'Confirmed',
   },
   {
     guestName: 'Ian Masinde',
     regDate: '30th March, 2024',
+    status: 'Pending',
   },
   {
     guestName: 'Ian Masinde',
     regDate: '30th March, 2024',
+    status: 'Confirmed',
   },
   {
     guestName: 'Ian Masinde',
     regDate: '30th March, 2024',
+    status: 'Confirmed',
   },
   {
     guestName: 'Ian Masinde',
     regDate: '30th March, 2024',
+    status: 'Pending',
   },
 ] as const

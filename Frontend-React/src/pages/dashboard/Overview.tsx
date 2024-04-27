@@ -1,6 +1,9 @@
 import { guests } from './../../../src/utils/local-data'
 import eventImg from '../../assets/Frame 1171275043.png'
 
+const confirmedGuests = guests.filter((item) => item.status === 'Confirmed')
+const pendingGuests = guests.filter((item) => item.status === 'Pending')
+
 const Overview = () => {
   return (
     <section className="flex flex-col gap-6">
@@ -40,13 +43,17 @@ const Overview = () => {
               <p className="text-base leading-5">
                 Confirmed <br /> Guest
               </p>
-              <p className="text-[#FD901A] font-semibold">06</p>
+              <p className="text-[#FD901A] font-semibold">
+                {confirmedGuests.length}
+              </p>
             </div>
             <div className="bg-white rounded-lg w-full shadow-md flex flex-col items-center justify-center gap-3">
               <p className="text-base leading-5">
                 Pending <br /> Guest
               </p>
-              <p className="text-primary-100 font-semibold">09</p>
+              <p className="text-primary-100 font-semibold">
+                {pendingGuests.length}
+              </p>
             </div>
           </aside>
 
@@ -68,7 +75,7 @@ const Overview = () => {
             <h1 className="text-end">Registration Date</h1>
           </div>
           <ul className="text-[13px] font-semibold font-serrat flex flex-col gap-6 overflow-y-scroll no-scrollbar max-h-[20rem]">
-            {guests.map((guestInfo, i) => {
+            {confirmedGuests.map((guestInfo, i) => {
               return (
                 <li key={i} className="grid grid-cols-3">
                   <p>{i + 1}</p>
@@ -88,7 +95,7 @@ const Overview = () => {
             <h1 className="text-end">Registration Date</h1>
           </div>
           <ul className="text-[13px] font-semibold font-serrat flex flex-col gap-6 overflow-y-scroll no-scrollbar max-h-[20rem]">
-            {guests.map((guestInfo, i) => {
+            {pendingGuests.map((guestInfo, i) => {
               return (
                 <li key={i} className="grid grid-cols-3">
                   <p>{i + 1}</p>

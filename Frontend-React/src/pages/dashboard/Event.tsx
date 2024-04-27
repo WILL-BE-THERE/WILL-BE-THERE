@@ -36,6 +36,7 @@ const Event = () => {
           placeholder="e.g Regular"
           name="name"
           value={ticketInfo.name}
+          required
           onChange={handleChange}
           className="w-full bg-[#FAF6F6] rounded-lg text-sm p-3"
         />
@@ -49,6 +50,7 @@ const Event = () => {
           placeholder="150"
           name="ticketQuantity"
           value={ticketInfo.ticketQuantity}
+          required
           onChange={handleChange}
           className="w-full bg-[#FAF6F6] rounded-lg text-sm p-3"
         />
@@ -62,6 +64,7 @@ const Event = () => {
           placeholder="31-10-2024"
           name="deadline"
           value={ticketInfo.deadline}
+          required
           onChange={handleChange}
           className="w-full bg-[#FAF6F6] rounded-lg text-sm p-3"
         />
@@ -78,6 +81,7 @@ const Event = () => {
           placeholder="NGN 5,000"
           name="price"
           value={ticketInfo.price}
+          required
           onChange={handleChange}
           className="w-full bg-[#FAF6F6] rounded-lg text-sm p-3"
         />
