@@ -199,3 +199,46 @@ export const eventPageData = [
     dressCode: 'Casual',
   },
 ] as const
+
+export const guests = [
+  {
+    guestName: 'Gizki Design',
+    regDate: '4th March, 2024',
+  },
+  {
+    guestName: 'Daniel Nzau',
+    regDate: '7th March, 2024',
+  },
+  {
+    guestName: 'Winifred Imade',
+    regDate: '9th March, 2024',
+  },
+  {
+    guestName: 'Abraham John',
+    regDate: '9th March, 2024',
+  },
+  {
+    guestName: 'David Ongora',
+    regDate: '14th March, 2024',
+  },
+  {
+    guestName: 'Ian Masinde',
+    regDate: '30th March, 2024',
+  },
+  {
+    guestName: 'Ian Masinde',
+    regDate: '30th March, 2024',
+  },
+  {
+    guestName: 'Ian Masinde',
+    regDate: '30th March, 2024',
+  },
+  {
+    guestName: 'Ian Masinde',
+    regDate: '30th March, 2024',
+  },
+  {
+    guestName: 'Ian Masinde',
+    regDate: '30th March, 2024',
+  },
+] as const
