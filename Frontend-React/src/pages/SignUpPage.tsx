@@ -12,12 +12,12 @@ import axios from 'axios'
 
 const SignUpPage = () => {
   const initialDetails = {
-    firstName: '',
-    lastName: '',
+    first_name: '',
+    last_name: '',
     email: '',
-    phoneNumber: '',
+    phone_number: '',
     password: '',
-    confirmPassword: '',
+    confirm_password: '',
   }
 
   // const errorMessages ={
@@ -43,18 +43,17 @@ const SignUpPage = () => {
   const emailRegex = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim
   const phoneRegex =
     /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
-  const passRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&_])[A-Za-z\d$@$!%*?&_]{8,16}$/
+ const passRegex = /[\s\S]*/s;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (
       userInfo.email.match(emailRegex) &&
-      userInfo.firstName &&
-      userInfo.lastName &&
-      userInfo.phoneNumber.match(phoneRegex) &&
+      userInfo.first_name &&
+      userInfo.last_name &&
+      userInfo.phone_number.match(phoneRegex) &&
       userInfo.password.match(passRegex) &&
-      userInfo.confirmPassword.match(passRegex)
+      userInfo.confirm_password.match(passRegex)
     ) {
       setUserInfo(initialDetails)
       setRegSuccessful(true)
@@ -66,7 +65,7 @@ const SignUpPage = () => {
       setErrors(false)
     }
 
-    if (!phoneRegex.test(userInfo.phoneNumber)) {
+    if (!phoneRegex.test(userInfo.phone_number)) {
       setPhoneError(true)
     } else {
       setPhoneError(false)
@@ -136,28 +135,28 @@ const SignUpPage = () => {
               Create your account
             </h1>
             <div className="flex gap-3 w-full">
-              <label htmlFor="firstName" className="flex flex-col gap-1 w-1/2">
+              <label htmlFor="first_name" className="flex flex-col gap-1 w-1/2">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   First Name <span className="text-red-600 font-bold">*</span>
                 </p>
                 <input
                   type="text"
-                  name="firstName"
-                  value={userInfo.firstName}
+                  name="first_name"
+                  value={userInfo.first_name}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
                   // required
                 />
               </label>
 
-              <label htmlFor="lastName" className="flex flex-col gap-1 w-1/2">
+              <label htmlFor="last_name" className="flex flex-col gap-1 w-1/2">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   Last Name <span className="text-red-600 font-bold">*</span>
                 </p>
                 <input
                   type="text"
-                  name="lastName"
-                  value={userInfo.lastName}
+                  name="last_name"
+                  value={userInfo.last_name}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
                   // required
@@ -184,14 +183,14 @@ const SignUpPage = () => {
               )}
             </label>
 
-            <label htmlFor="PhoneNumber" className="flex flex-col gap-1 w-full">
+            <label htmlFor="Phone_number" className="flex flex-col gap-1 w-full">
               <p className="flex gap-1 text-sm font-medium text-neutral-200">
                 Phone Number <span className="text-red-600 font-bold">*</span>
               </p>
               <input
                 type="number"
-                name="phoneNumber"
-                value={userInfo.phoneNumber}
+                name="phone_number"
+                value={userInfo.phone_number}
                 onChange={handleChange}
                 className={`border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] ${
                   errors ? 'focus:outline-red-600' : 'focus:outline-primary-100'
@@ -236,7 +235,7 @@ const SignUpPage = () => {
             </label>
 
             <label
-              htmlFor="Confirm Password"
+              htmlFor="Confirm_password"
               className="flex flex-col gap-1 w-full"
             >
               <p className="flex gap-1 text-sm font-medium text-neutral-200">
@@ -246,8 +245,8 @@ const SignUpPage = () => {
               <aside className="relative flex">
                 <input
                   type={seeConfirmPassword ? 'text' : 'password'}
-                  name="confirmPassword"
-                  value={userInfo.confirmPassword}
+                  name="confirm_password"
+                  value={userInfo.confirm_password}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 placeholder:text-sm w-full"
                   // required
@@ -260,7 +259,7 @@ const SignUpPage = () => {
                   {seeConfirmPassword ? <FaRegEye /> : <FaRegEyeSlash />}
                 </button>
               </aside>
-              {userInfo.password !== userInfo.confirmPassword && (
+              {userInfo.password !== userInfo.confirm_password && (
                 <p className="text-red-600 text-xs">Password doesn't match</p>
               )}
             </label>

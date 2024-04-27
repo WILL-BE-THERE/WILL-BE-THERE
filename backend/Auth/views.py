@@ -24,6 +24,7 @@ from .swagger import signUp_request_body, logIn_request_body, logout_request_bod
 def signUp(request):
     """ view to signup users"""
     data = request.data
+    print(data)
     serializer = userSerializer(data=data, context={
         'phone_number': data.get('phone_number'),
         'confirm_password': data.get('confirm_password')
@@ -37,6 +38,7 @@ def signUp(request):
         user_profile.verification_code = code
         user_profile.save()
         return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_201_CREATED)
+    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @swagger_auto_schema(
