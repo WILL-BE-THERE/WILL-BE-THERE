@@ -102,23 +102,23 @@ def logIn(request):
     print("incorrect details")
     return Response({'error': 'username and or password incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
 
-class CustomTokenAuthentication(TokenAuthentication):
-    """ for custom authentication"""
-    def authenticate(self, request):
-        try:
-            return super().authenticate(request)
-        except AuthenticationFailed:
-            raise AuthenticationFailed('unauthorized. Please login to continue')
+# class CustomTokenAuthentication(TokenAuthentication):
+#     """ for custom authentication"""
+#     def authenticate(self, request):
+#         try:
+#             return super().authenticate(request)
+#         except AuthenticationFailed:
+#             raise AuthenticationFailed('unauthorized. Please login to continue')
 
 @swagger_auto_schema(
     method='post',
     request_body=logout_request_body,
     operation_description=" endpoint: http://127.0.0.1:8000/api/account/logout/",
-     operation_summary="its Auth protected"
+    operation_summary="its Auth protected"
 )
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([CustomTokenAuthentication])
+@authentication_classes([TokenAuthentication])
 def logout(request):
     try:
         token = Token.objects.get(user=request.user)
