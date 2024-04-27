@@ -9,7 +9,11 @@ const Dashboard = () => {
 
       <section className="w-full ml-72">
         <TopNav />
-        <Outlet />
+        <aside className="w-[calc(100vw-18rem)] mt-24">
+          <div className="w-[92%] mx-auto pt-6">
+            <Outlet />
+          </div>
+        </aside>
       </section>
     </div>
   )
