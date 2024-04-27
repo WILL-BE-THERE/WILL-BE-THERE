@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
+
 * {
   scroll-behavior: smooth;
 }
@@ -15,8 +27,15 @@ h1 {
   font-family: 'Manrope', sans-serif;
 }
 
-.active {
+ul.navlinks li a.active {
   color: #1a53fd;
+}
+
+ul.dashboard li a.active {
+  width: 100%;
+  background-color: #e8eeff;
+  color: #1a53fd;
+  border-left: 4px solid #1a53fd;
 }
 
 @media screen and (max-width: 430px) {

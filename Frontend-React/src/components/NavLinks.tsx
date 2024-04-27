@@ -3,7 +3,7 @@ import { menuData } from '../utils/local-data'
 
 const NavLinks = () => {
   return (
-    <ul className="flex items-center gap-8 text-[0.95rem] font-medium">
+    <ul className="navlinks flex items-center gap-8 text-[0.95rem] font-medium">
       {menuData.map((item, i) => (
         <li key={i}>
           <NavLink
