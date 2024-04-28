@@ -1,15 +1,16 @@
 // cookieUtils.tsx
 
 // Function to set a cookie
-export const setCookie = (name: string, value: string, days: number) => {
+const setCookie = (name: string, value: string, days: number) => {
     const date = new Date();
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
     const expires = "expires=" + date.toUTCString();
     document.cookie = name + "=" + value + ";" + expires + ";path=/";
   };
   
+
   // Function to get a cookie by name
-  export const getCookie = (name: string) => {
+const getCookie = (name: string) => {
     const cookieName = name + "=";
     const decodedCookie = decodeURIComponent(document.cookie);
     const cookieArray = decodedCookie.split(';');
@@ -24,4 +25,11 @@ export const setCookie = (name: string, value: string, days: number) => {
     }
     return "";
   };
+
+  // Function to delete a cookie by name
+const deleteCookie = (name: string) => {
+    document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  };
+
+  export { setCookie, getCookie, deleteCookie }
   

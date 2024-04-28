@@ -11,6 +11,8 @@ import axios from 'axios'
 import { useProjectContext } from './../../src/context/project-context'
 import { FaSpinner } from 'react-icons/fa'
 import LoginSuccessful from '../../src/components/LoginSuccessful'
+import generateApiHeaders from './headers'
+import { getCookie } from './CookieUtils' 
 
 const LoginPage = () => {
   const {
@@ -40,6 +42,9 @@ const LoginPage = () => {
       const response = await axios.post(
         'http://127.0.0.1:8000/api/account/login/',
         loginUserInfo,
+        {
+          headers: generateApiHeaders(),
+        }
       )
       setLoggedInUserInfo(response.data)
       setIsLoggedIn(true)
@@ -49,6 +54,9 @@ const LoginPage = () => {
         login()
       }, 3000)
       setLoading(false)
+
+      getCookie('Token')
+
     } catch (error) {
       console.log(error)
       setWrongInfoLogin(true)
