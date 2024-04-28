@@ -8,20 +8,20 @@ import Select, { StylesConfig } from 'react-select'
 
 const countriesApi =
   'https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code'
-// const stateApiByCountryUrl =
-//   'https://countriesnow.space/api/v0.1/countries/states?format=select'
-// const cityByStateURL =
-//   'https://countriesnow.space/api/v0.1/countries/state/cities'
+ // const stateApiByCountryUrl =
+ //   'https://countriesnow.space/api/v0.1/countries/states?format=select'
+ // const cityByStateURL =
+ //   'https://countriesnow.space/api/v0.1/countries/state/cities'
 
 const CreateEvent = () => {
   const [countries, setCountries] = useState([])
   const [selectedCountry, setSelectedCountry] = useState({})
 
-  // const [states, setStates] = useState([])
-  // const [selectedstates, setSelectedstates] = useState({})
+   // const [states, setStates] = useState([])
+   // const [selectedstates, setSelectedstates] = useState({})
 
-  // const [city, setCity] = useState([])
-  // const [selectedcity, setSelectedcity] = useState({})
+   // const [city, setCity] = useState([])
+   // const [selectedcity, setSelectedcity] = useState({})
 
   const fetchCountries = async () => {
     try {

@@ -18,14 +18,19 @@ const HostPage = () => {
         </p>
       </Link>
 
-      <section className="border-2 border-dashed border-neutral-400 rounded-xl text-center cursor-pointer flex flex-col items-center justify-center h-56 w-72 sm:w-80 mt-10">
-        <div className="mb-3">
-          <img src={manageEventIcon} alt="Manage event icon" />
-        </div>
-        <h1 className="font-bold text-lg">Manage Event</h1>
-        <p className="text-sm text-neutral-200 font-medium">
-          Take control of your event
-        </p>
+      <section className="border-neutral-400 rounded-xl text-center cursor-pointer flex flex-col items-center justify-center h-56 w-72 sm:w-80 mt-10">
+        <Link
+          to="/dashboard"
+          className="border-2 border-dashed border-neutral-400 rounded-xl text-center cursor-pointer flex flex-col items-center justify-center h-56 w-80 sm:w-96"
+        >
+          <div className="mb-3">
+            <img src={manageEventIcon} alt="Manage event icon" />
+          </div>
+          <h1 className="font-bold text-lg">Manage Event</h1>
+          <p className="text-sm text-neutral-200 font-medium">
+            Take control of your event
+          </p>
+        </Link>
       </section>
     </div>
   )

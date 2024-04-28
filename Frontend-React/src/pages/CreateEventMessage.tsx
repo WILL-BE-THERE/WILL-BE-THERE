@@ -19,7 +19,7 @@ const CreateEventMessage = () => {
           className="w-80 mt-12"
         />
         <Link
-          to="/manageEvents"
+          to="/dashboard"
           className="mb-32 mt-12 bg-primary-100 text-white font-medium py-2 px-4 rounded-md hover:bg-primary-200 transition-all"
         >
           Manage Events
