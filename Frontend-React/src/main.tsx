@@ -29,36 +29,62 @@ import NewPasswordComponent from './pages/Newpassword.tsx'
 import Rsvp from './pages/Rsvp.tsx'
 import HostPage from './pages/HostPage.tsx'
 import ManageEvents from '../src/pages/ManageEvents.tsx'
+import Dashboard from '../src/pages/dashboard/Dashboard.tsx'
+import Event from '../src/pages/dashboard/Event.tsx'
+import ProtectedRoutes from '../src/components/ProtectedRoutes.tsx'
+import Overview from '../src/pages/dashboard/Overview.tsx'
+import Revenue from '../src/pages/dashboard/Revenue.tsx'
+import GuestMetrics from '../src/pages/dashboard/GuestMetrics.tsx'
+import EventSettings from '../src/pages/dashboard/EventSettings.tsx'
+import UserInfo from '../src/pages/dashboard/UserInfo.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
-      <Route index element={<Home />} />
-      <Route path="rsvp" element={<Rsvp />} />
-      <Route path="createevent" element={<CreateEvent />} />
-      <Route path="createeventpayinfo" element={<CreateEventPayInfo />} />
-      <Route path="createeventsocials" element={<CreateEventSocials />} />
-      <Route path="createeventmessage" element={<CreateEventMessage />} />
-      <Route path="about" element={<About />} />
-      <Route path="contact" element={<Contact />} />
-      <Route path="events" element={<Events />} />
-      <Route path="events/:id" element={<EventDetails />} />
-      <Route path="accounts" element={<Accounts />} />
-      <Route path="faqs" element={<Faqs />} />
-      <Route path="login" element={<LoginPage />} />
-      <Route path="signup" element={<SignUpPage />} />
+    <>
+      <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
+        <Route index element={<Home />} />
+        <Route path="rsvp" element={<Rsvp />} />
+        <Route path="createevent" element={<CreateEvent />} />
+        <Route path="createeventpayinfo" element={<CreateEventPayInfo />} />
+        <Route path="createeventsocials" element={<CreateEventSocials />} />
+        <Route path="createeventmessage" element={<CreateEventMessage />} />
+        <Route path="about" element={<About />} />
+        <Route path="contact" element={<Contact />} />
+        <Route path="events" element={<Events />} />
+        <Route path="events/:id" element={<EventDetails />} />
+        <Route path="accounts" element={<Accounts />} />
+        <Route path="faqs" element={<Faqs />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="signup" element={<SignUpPage />} />
+        <Route
+          path="twofactorauth"
+          element={
+            <TwoFactorAuth phoneNumber={''} verificationCode={''} timer={0} />
+          }
+        />
+        <Route path="forgotpassword" element={<ForgotPasswordComponent />} />
+        <Route path="newpassword" element={<NewPasswordComponent />} />
+        <Route path="events/:id/rsvp" element={<Rsvp />} />
+        <Route path="host" element={<HostPage />} />
+        <Route path="manageEvents" element={<ManageEvents />} />
+      </Route>
+
       <Route
-        path="twofactorauth"
+        path="dashboard"
         element={
-          <TwoFactorAuth phoneNumber={''} verificationCode={''} timer={0} />
+          <ProtectedRoutes>
+            <Dashboard />
+          </ProtectedRoutes>
         }
-      />
-      <Route path="forgotpassword" element={<ForgotPasswordComponent />} />
-      <Route path="newpassword" element={<NewPasswordComponent />} />
-      <Route path="events/:id/rsvp" element={<Rsvp />} />
-      <Route path="host" element={<HostPage />} />
-      <Route path="manageEvents" element={<ManageEvents />} />
-    </Route>,
+      >
+        <Route index element={<Overview />} />
+        <Route path="event" element={<Event />} />
+        <Route path="revenue" element={<Revenue />} />
+        <Route path="metrics" element={<GuestMetrics />} />
+        <Route path="eventSettings" element={<EventSettings />} />
+        <Route path="userInfo" element={<UserInfo />} />
+      </Route>
+    </>,
   ),
 )
 
