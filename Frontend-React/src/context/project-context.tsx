@@ -21,7 +21,7 @@ const ProjectContext = createContext<ProjectContextProps | null>(null)
 const ProjectProvider = ({ children }: ProjectContextProviderProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<Bool>(false)
   const [signUpClicked, setSignUpClicked] = useState<Bool>(false)
-  const [isLoggedIn, setIsLoggedIn] = useState<Bool>(true)
+  const [isLoggedIn, setIsLoggedIn] = useState<Bool>(false)
   return (
     <ProjectContext.Provider
       value={{
