@@ -6,14 +6,21 @@ import { PropsWithChildren, useEffect } from 'react'
 type ProtectedRoutesProps = PropsWithChildren
 
 const ProtectedRoutes = ({ children }: ProtectedRoutesProps) => {
-  const { isLoggedIn } = useProjectContext()
+  const { loggedInUserInfo, isLoggedIn } = useProjectContext()
   const navigate = useNavigate()
 
+  localStorage.setItem('token', loggedInUserInfo.token)
+  localStorage.setItem('id', loggedInUserInfo.user.id)
+  localStorage.setItem('username', loggedInUserInfo.user.username)
+  localStorage.setItem('email', loggedInUserInfo.user.email)
+  localStorage.setItem('first_name', loggedInUserInfo.user.first_name)
+  localStorage.setItem('last_name', loggedInUserInfo.user.last_name)
+
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!loggedInUserInfo.token && !isLoggedIn) {
       navigate('/', { replace: true })
     }
-  }, [isLoggedIn, navigate])
+  }, [loggedInUserInfo.token, isLoggedIn, navigate])
 
   return children
 }

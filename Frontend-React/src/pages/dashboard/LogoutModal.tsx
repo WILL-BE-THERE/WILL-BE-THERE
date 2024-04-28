@@ -1,12 +1,24 @@
 import { useProjectContext } from './../../context/project-context'
 import logoutIcon from '../../assets/Frame 1171275239.png'
+import axios from 'axios'
 
 type LogoutModalProps = {
   setLogOut: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const LogoutModal = ({ setLogOut }: LogoutModalProps) => {
-  const { setIsLoggedIn } = useProjectContext()
+  const { loggedInUserInfo, setIsLoggedIn } = useProjectContext()
+  const logout = async () => {
+    try {
+      const response = axios.post(
+        'http://127.0.0.1:8000/api/account/logout/',
+        {},
+      )
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <section className="fixed z-50 bg-[#d2cdcdaf] h-screen w-screen flex justify-center items-center">
@@ -21,6 +33,9 @@ const LogoutModal = ({ setLogOut }: LogoutModalProps) => {
           <button
             type="button"
             onClick={() => {
+              localStorage.clear()
+              loggedInUserInfo.token = ''
+              logout()
               setIsLoggedIn(false)
               setLogOut(false)
             }}
