@@ -8,8 +8,11 @@ import fbIcon from '../assets/fb-icon.png'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import axios from 'axios'
+import { useProjectContext } from './../../src/context/project-context'
 
 const LoginPage = () => {
+  const { setIsLoggedIn } = useProjectContext()
+
   const initialDetails = {
     email: '',
     password: '',
@@ -19,23 +22,27 @@ const LoginPage = () => {
   const [userInfo, setUserInfo] = useState(initialDetails)
 
   const navigate = useNavigate()
-  const login = () => navigate('/host')
+  const login = () => navigate('/dashboard')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setUserInfo((prevState) => ({ ...prevState, [name]: value }))
   }
 
-  const handleSubmit = async(e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/account/login/', userInfo)
+      const response = await axios.post(
+        'http://127.0.0.1:8000/api/account/login/',
+        userInfo,
+      )
       console.log(response.data)
     } catch (error) {
       console.log(error)
     }
     setUserInfo(initialDetails)
     setSeePassword(false)
+    setIsLoggedIn(true)
     login()
   }
 
