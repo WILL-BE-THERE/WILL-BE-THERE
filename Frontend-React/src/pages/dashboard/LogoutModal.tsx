@@ -6,7 +6,7 @@ type LogoutModalProps = {
 }
 
 const LogoutModal = ({ setLogOut }: LogoutModalProps) => {
-  const { setIsLoggedIn } = useProjectContext()
+  const { loggedInUserInfo, setIsLoggedIn } = useProjectContext()
 
   return (
     <section className="fixed z-50 bg-[#d2cdcdaf] h-screen w-screen flex justify-center items-center">
@@ -21,6 +21,8 @@ const LogoutModal = ({ setLogOut }: LogoutModalProps) => {
           <button
             type="button"
             onClick={() => {
+              localStorage.clear()
+              loggedInUserInfo.token = ''
               setIsLoggedIn(false)
               setLogOut(false)
             }}
