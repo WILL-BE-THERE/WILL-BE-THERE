@@ -7,6 +7,8 @@ import {
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
+import { getCookie } from './CookieUtils'
+import generateApiHeaders from './headers'
 
 interface TwoFactorAuth {
   email: string
@@ -40,9 +42,17 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
       .post('http://127.0.0.1:8000/api/account/verify/', {
         email: props.email,
         verificationCode: code,
-      })
+      },
+      {
+        headers: generateApiHeaders(),
+      }
+      )
       .then((response) => {
         console.log(response.data)
+        Promise.resolve(getCookie('Token'))
+          .then((cookieData) => {
+            console.log(cookieData)
+          });
       })
       .catch((error) => {
         console.error(error)
@@ -53,16 +63,21 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
   const handleResend = () => {
     if (props.onResend) {
       props.onResend()
-      setCountdown(countdown) // Reset timer on resend
+      setCountdown(props.timer) // Reset timer on resend
     }
 
     axios
       .post('http://127.0.0.1:8000/api/account/verify/', {
         email: props.email,
         verificationCode: code,
+      },
+      {
+        headers: generateApiHeaders(),
       })
       .then((response) => {
         console.log(response.data)
+        Promise.resolve(getCookie('Token'))
+          .then((cookieData) => { console.log(cookieData); });
       })
       .catch((error) => {
         console.error(error)
