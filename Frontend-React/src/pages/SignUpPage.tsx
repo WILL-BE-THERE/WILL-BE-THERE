@@ -10,6 +10,7 @@ import { ChangeEvent, FormEvent, useState } from 'react'
 import RegistrationSuccessful from '../components/RegistrationSuccessful'
 import axios from 'axios'
 import { useProjectContext } from './../../src/context/project-context'
+import { setCookie } from './CookieUtils'
 
 const SignUpPage = () => {
   const { setSignUpUserInfo, signUpUserInfo, initSignup } = useProjectContext()
@@ -72,6 +73,11 @@ const SignUpPage = () => {
       const response = await axios.post(
         'http://127.0.0.1:8000/api/account/signup/',
         signUpUserInfo,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
       )
       console.log(response.data)
       setEmailExist({ exist: false, msg: '' })
@@ -79,6 +85,10 @@ const SignUpPage = () => {
       setLoading(false)
       initSignup()
       // setSignUpUserInfo(response.data)
+
+      const Token = response.data.token
+      setCookie('token', response.data.token, 1)
+      console.log(response)
     } catch (error) {
       console.log(error)
       setEmailExist({ exist: true, msg: error.response.data.email[0] })
