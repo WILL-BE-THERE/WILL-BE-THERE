@@ -1,10 +1,43 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { eventPageData } from '../utils/local-data'
 import SingleEvent from '../components/SingleEvent'
 import SignUpButton from '../components/Buttons/SignUpButton'
 import LoginButton from '../components/Buttons/LoginButton'
+import axios from 'axios'
+import  generateApiHeaders  from './headers'
+import { getCookie } from './CookieUtils'
+
+const fetchALLEvents = async () => {
+  try {
+    getCookie('Token');
+
+    const response = await axios.get('http://127.0.0.1:8000/api/events/event/'
+    , {
+      headers:{
+        ...generateApiHeaders(),
+        Authorization: `Token ${getCookie('Token')}`
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('error fetching events:',error);
+    return null;
+  }
+}
 
 const Events = () => {
+  const [events, setEvents] = React.useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchALLEvents();
+      if (data) {
+        setEvents(data);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <div className="bg-white pb-12">
       <section className="w-[90%] mx-auto pt-5 lg:w-[85%]">
