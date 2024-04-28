@@ -1,29 +1,25 @@
-import React, { useEffect } from 'react'
-import { eventPageData } from '../utils/local-data'
-import SingleEvent from '../components/SingleEvent'
-import SignUpButton from '../components/Buttons/SignUpButton'
-import LoginButton from '../components/Buttons/LoginButton'
-import axios from 'axios'
-import  generateApiHeaders  from './headers'
-import { getCookie } from './CookieUtils'
+import React, { useEffect } from 'react';
+import SingleEvent from '../components/SingleEvent';
+import SignUpButton from '../components/Buttons/SignUpButton';
+import LoginButton from '../components/Buttons/LoginButton';
+import axios from 'axios';
+import generateApiHeaders from './headers';
+import { getCookie } from './CookieUtils';
 
 const fetchALLEvents = async () => {
   try {
-    getCookie('Token');
-
-    const response = await axios.get('http://127.0.0.1:8000/api/events/event/'
-    , {
-      headers:{
+    const response = await axios.get(`http://127.0.0.1:8000/api/events/event/`, {
+      headers: {
         ...generateApiHeaders(),
         Authorization: `Token ${getCookie('Token')}`
       }
     });
     return response.data;
   } catch (error) {
-    console.error('error fetching events:',error);
+    console.error('error fetching events:', error);
     return null;
   }
-}
+};
 
 const Events = () => {
   const [events, setEvents] = React.useState([]);
@@ -43,12 +39,12 @@ const Events = () => {
       <section className="w-[90%] mx-auto pt-5 lg:w-[85%]">
         <h1 className="font-medium mb-8 text-3xl">Upcoming Events</h1>
         <div className="grid gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-4">
-          {eventPageData.map((item, i) => {
+          {events.map((item, i) => {
             return (
               <React.Fragment key={i}>
                 <SingleEvent {...item} />
               </React.Fragment>
-            )
+            );
           })}
         </div>
       </section>
@@ -72,7 +68,7 @@ const Events = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Events
+export default Events;

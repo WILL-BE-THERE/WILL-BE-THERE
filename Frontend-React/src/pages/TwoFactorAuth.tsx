@@ -67,7 +67,7 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
     }
 
     axios
-      .post('http://127.0.0.1:8000/api/account/verify/', {
+      .post(`http://127.0.0.1:8000/api/account/verify/`, {
         email: props.email,
         verificationCode: code,
       },
