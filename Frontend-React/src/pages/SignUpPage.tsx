@@ -10,6 +10,7 @@ import { ChangeEvent, FormEvent, useState } from 'react'
 import RegistrationSuccessful from '../components/RegistrationSuccessful'
 import axios from 'axios'
 import { setCookie } from './CookieUtils'
+import generateApiHeaders from './headers'
 
 const SignUpPage = () => {
   const initialDetails = {
@@ -86,15 +87,10 @@ const SignUpPage = () => {
         'http://127.0.0.1:8000/api/account/signup/',
         userInfo,
         {
-          headers: {
-            'Content-Type': 'application/json',
-
-
-          },
+          headers: generateApiHeaders(),
         }
       )
-      const Token = response.data.token
-      setCookie('token', response.data.token, 1)
+      setCookie('Token', response.data.token, 7)
       console.log(response)
     } catch (error) {
       console.log(error)
