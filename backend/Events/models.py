@@ -15,10 +15,10 @@ class Event(models.Model):
     state = models.CharField(max_length=200)
     city = models.CharField(max_length=200)
     street = models.CharField(max_length=200)
-    bankName = models.CharField(max_length=200)
-    accountNumber = models.CharField(max_length=30)
-    accountName = models.CharField(max_length=200)
-    socialMedia = models.URLField()
+    instagram = models.URLField(blank=True, null=True)
+    facebook = models.URLField(blank=True, null=True) 
+    twitter = models.URLField(blank=True, null=True)  
+    linkedIn = models.URLField(blank=True, null=True) 
     congratulatoryMessage = models.TextField(blank=True, null=True)
 
     def __str__(self):
