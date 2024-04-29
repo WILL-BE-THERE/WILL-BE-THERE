@@ -1,5 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState } from 'react'
+import { getCookie } from '../pages/CookieUtils'
 
 type Bool = true | false
 
@@ -42,16 +43,17 @@ const loginInfo = {
 }
 
 const loggedInDetails = {
-  token: localStorage.getItem('token') || '',
+  token: getCookie('Token') || '',
 
   user: {
-    id: localStorage.getItem('id') || '',
-    username: localStorage.getItem('username') || '',
-    email: localStorage.getItem('email') || '',
-    first_name: localStorage.getItem('first_name') || '',
-    last_name: localStorage.getItem('last_name') || '',
+    id: getCookie('id') || '',
+    username: getCookie('username') || '',
+    email: getCookie('email') || '',
+    first_name: getCookie('first_name') || '',
+    last_name: getCookie('last_name') || '',
   },
-}
+};
+
 
 const ProjectProvider = ({ children }: ProjectContextProviderProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<Bool>(false)
