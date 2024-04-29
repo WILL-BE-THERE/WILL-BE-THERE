@@ -28,7 +28,7 @@ const LoginPage = () => {
   const [wrongInfoLogin, setWrongInfoLogin] = useState(false)
 
   const navigate = useNavigate()
-  const login = () => navigate('/dashboard')
+  const login = () => navigate('/host')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
