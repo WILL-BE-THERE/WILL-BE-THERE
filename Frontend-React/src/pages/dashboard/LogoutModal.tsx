@@ -1,7 +1,7 @@
 import { useProjectContext } from './../../context/project-context'
 import logoutIcon from '../../assets/Frame 1171275239.png'
 import axios from 'axios'
-// import generateApiHeaders from '../headers'
+import generateApiHeaders from '../headers'
 import { getCookie } from '../CookieUtils'
 
 type LogoutModalProps = {

@@ -175,15 +175,14 @@ const LoginPage = () => {
             <p className="text-center">or signup via</p>
 
             <div className="flex w-full items-center justify-center gap-6">
-              <a href="#">
+              
+              <a href="> /////////////(ROUTE THIS TO THE GOOGLELOGIN COMPONENT)
                 <img src={googleIcon} alt="google icon" className="w-6" />
               </a>
               <a href="#">
                 <img src={appleIcon} alt="apple icon" className="w-6" />
               </a>
-              <a href="#">
-                <img src={fbIcon} alt="facebook icon" className="w-6" />
-              </a>
+              <div class="fb-login-button" data-width="" data-size="" data-button-type="" data-layout="" data-auto-logout-link="false" data-use-continue-as="true"></div>
             </div>
           </form>
         </div>
