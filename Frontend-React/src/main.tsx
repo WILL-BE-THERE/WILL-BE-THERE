@@ -28,7 +28,6 @@ import ForgotPasswordComponent from './pages/forgotpassword.tsx'
 import NewPasswordComponent from './pages/Newpassword.tsx'
 import Rsvp from './pages/Rsvp.tsx'
 import HostPage from './pages/HostPage.tsx'
-import ManageEvents from '../src/pages/ManageEvents.tsx'
 import Dashboard from '../src/pages/dashboard/Dashboard.tsx'
 import Event from '../src/pages/dashboard/Event.tsx'
 import ProtectedRoutes from '../src/components/ProtectedRoutes.tsx'
@@ -37,6 +36,7 @@ import Revenue from '../src/pages/dashboard/Revenue.tsx'
 import GuestMetrics from '../src/pages/dashboard/GuestMetrics.tsx'
 import EventSettings from '../src/pages/dashboard/EventSettings.tsx'
 import UserInfo from '../src/pages/dashboard/UserInfo.tsx'
+import Googlelogin from '../src/components/Googlesign/googlelogin.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -55,18 +55,16 @@ const router = createBrowserRouter(
         <Route path="accounts" element={<Accounts />} />
         <Route path="faqs" element={<Faqs />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="googleloginpage" element={<Googlelogin />} />
         <Route path="signup" element={<SignUpPage />} />
         <Route
           path="twofactorauth"
-          element={
-            <TwoFactorAuth phoneNumber={''} verificationCode={''} timer={0} />
-          }
+          element={<TwoFactorAuth email={''} verificationCode={''} timer={0} />}
         />
         <Route path="forgotpassword" element={<ForgotPasswordComponent />} />
         <Route path="newpassword" element={<NewPasswordComponent />} />
         <Route path="events/:id/rsvp" element={<Rsvp />} />
         <Route path="host" element={<HostPage />} />
-        <Route path="manageEvents" element={<ManageEvents />} />
       </Route>
 
       <Route

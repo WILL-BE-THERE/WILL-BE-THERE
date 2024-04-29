@@ -128,4 +128,5 @@ def logout(request):
     except Token.DoesNotExist:
         return Response({'detail': 'Please login'}, status=status.HTTP_401_UNAUTHORIZED)
     except Exception as e:
+        print(str(e))
         return Response({'detail': str(e)}, status=status.HTTP_401_UNAUTHORIZED)

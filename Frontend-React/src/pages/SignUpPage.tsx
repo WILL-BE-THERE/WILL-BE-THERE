@@ -76,7 +76,7 @@ const SignUpPage = () => {
         signUpUserInfo,
         {
           headers: generateApiHeaders(),
-        }
+        },
       )
       console.log(response.data)
       setEmailExist({ exist: false, msg: '' })
@@ -290,9 +290,9 @@ const SignUpPage = () => {
             <p className="text-center">or signup via</p>
 
             <div className="flex w-full items-center justify-center gap-6">
-              <a href="#">
+              <Link to="/googleloginpage">
                 <img src={googleIcon} alt="google icon" className="w-6" />
-              </a>
+              </Link>
               <a href="#">
                 <img src={appleIcon} alt="apple icon" className="w-6" />
               </a>

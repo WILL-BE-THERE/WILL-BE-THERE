@@ -9,7 +9,7 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`bg-white h-20 flex items-center justify-center border-b border-black/10 `}
+      className={`${location.pathname === '/host' && 'hidden'} bg-white h-20 flex items-center justify-center border-b border-black/10 `}
     >
       <section className="w-[90%] flex items-center justify-between m-auto sm:w-[95%] lg:w-[85%]">
         <button

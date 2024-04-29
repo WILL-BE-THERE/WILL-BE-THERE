@@ -1,51 +1,20 @@
-import axios from 'axios'
 import CreateEventsHeader from '../../src/components/CreateEventsHeader'
 import uploadImgIcon from '../assets/Group 26.png'
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { FaArrowRight } from 'react-icons/fa'
 import { useLocation, useNavigate } from 'react-router-dom'
-import Select, { StylesConfig } from 'react-select'
-
-const countriesApi =
-  'https://valid.layercode.workers.dev/list/countries?format=select&flags=true&value=code'
-// const stateApiByCountryUrl =
-//   'https://countriesnow.space/api/v0.1/countries/states?format=select'
-// const cityByStateURL =
-//   'https://countriesnow.space/api/v0.1/countries/state/cities'
+import { Country, State, City } from 'country-state-city'
 
 const CreateEvent = () => {
-  const [countries, setCountries] = useState([])
-  const [selectedCountry, setSelectedCountry] = useState({})
-
-  // const [states, setStates] = useState([])
-  // const [selectedstates, setSelectedstates] = useState({})
-
-  // const [city, setCity] = useState([])
-  // const [selectedcity, setSelectedcity] = useState({})
-
-  const fetchCountries = async () => {
-    try {
-      const response = await axios.get(countriesApi)
-      setCountries(response.data?.countries)
-      setSelectedCountry(response.data?.userSelectValue)
-      console.log(response.data)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  useEffect(() => {
-    fetchCountries()
-  }, [])
 
   const initialEventInfo = {
     eventName: '',
     firstName: '',
     eventDate: '',
     eventTime: '',
-    country: '',
-    state: '',
-    city: '',
+    country: 'AF',
+    state: 'BDS',
+    city: 'Badakhstan',
     street: '',
     imageSelected: '',
   }
@@ -58,27 +27,15 @@ const CreateEvent = () => {
   const next = () => navigate('/createeventpayinfo')
   const location = useLocation()
 
-  const colourStyles: StylesConfig = {
-    control: (styles) => ({
-      ...styles,
-      background: '#fafafa',
-      color: '#5E5C5C',
-      border: '1.5px solid #d6d6d6',
-      borderRadius: '0.375rem',
-      fontSize: '0.875rem',
-      padding: '0.3rem 0.4rem',
-      fontFamily: 'Montserrat, sans-serif',
-      fontWeight: '500',
-    }),
-  }
-
   const fileSelectHandleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     const value = URL.createObjectURL(e.target.files[0])
     setSelectedImage(value)
   }
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target
     setEventInfo((prevInfo) => ({ ...prevInfo, [name]: value }))
   }
@@ -211,70 +168,70 @@ const CreateEvent = () => {
               </label>
             </div>
 
-            <div className="mt-7 flex gap-5">
-              <label htmlFor="country" className="flex flex-col gap-1 w-1/2">
+            <div className="mt-7 grid grid-cols-3 gap-5">
+              <label htmlFor="country" className="flex flex-col gap-1">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   Country <span className="text-red-600 font-bold">*</span>
                 </p>
-                <Select
-                  className="w-full text-sm text-neutral-200 font-medium"
-                  options={countries}
-                  required
+
+                <select
                   name="country"
-                  value={selectedCountry}
-                  isLoading={countries.length == 0 ? true : false}
-                  onChange={(selectedOption) => {
-                    setSelectedCountry(selectedOption)
-                    // setEventInfo((prev) => ({
-                    //   ...prev,
-                    //   country: selectedOption.label,
-                    // }))
-                    // fetchStateByCountry()
-                  }}
-                  styles={colourStyles}
-                />
+                  title="Countries"
+                  onChange={handleChange}
+                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-2 py-3 text-sm text-neutral-200 font-medium"
+                >
+                  {Country.getAllCountries().map((option, index) => {
+                    return (
+                      <option key={index} value={option.isoCode}>
+                        {option.name}
+                      </option>
+                    )
+                  })}
+                </select>
               </label>
-              <label htmlFor="state" className="flex flex-col gap-1 w-1/2">
+              <label htmlFor="state" className="flex flex-col gap-1">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   State <span className="text-red-600 font-bold">*</span>
                 </p>
-                <Select
-                  className="w-full text-sm text-neutral-200 font-medium"
-                  // options={states}
-                  required
+                <select
                   name="state"
-                  // value={selectedstates}
-                  // isLoading={states.length == 0 ? true : false}
-                  // onChange={(selectedOption) => {
-                  //   setSelectedstates(selectedOption)
-                  //   setEventInfo((prev) => ({
-                  //     ...prev,
-                  //     state: selectedOption.value,
-                  //   }))
-                  // }}
-                  styles={colourStyles}
-                />
+                  title="States"
+                  onChange={handleChange}
+                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-2 py-3 text-sm text-neutral-200 font-medium"
+                >
+                  {State.getStatesOfCountry(eventInfo.country).map(
+                    (option, index) => {
+                      return (
+                        <option key={index} value={option.isoCode}>
+                          {option.name}
+                        </option>
+                      )
+                    },
+                  )}
+                </select>
               </label>
 
-              <label htmlFor="city" className="flex flex-col gap-1 w-1/2">
+              <label htmlFor="city" className="flex flex-col gap-1">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   City <span className="text-red-600 font-bold">*</span>
                 </p>
-                <Select
-                  className="w-full text-sm text-neutral-200 font-medium"
-                  // options={city}
-                  required
+                <select
                   name="city"
-                  // value={selectedcity}
-                  // onChange={(selectedOption) => {
-                  //   setSelectedcity(selectedOption)
-                  //   setEventInfo((prev) => ({
-                  //     ...prev,
-                  //     city: selectedOption.value,
-                  //   }))
-                  // }}
-                  styles={colourStyles}
-                />
+                  title="Cities"
+                  onChange={handleChange}
+                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-2 py-3 text-sm text-neutral-200 font-medium"
+                >
+                  {City.getCitiesOfState(
+                    eventInfo.country,
+                    eventInfo.state,
+                  ).map((option, index) => {
+                    return (
+                      <option key={index} value={option.name}>
+                        {option.name}
+                      </option>
+                    )
+                  })}
+                </select>
               </label>
             </div>
 
@@ -284,9 +241,7 @@ const CreateEvent = () => {
                   Street <span className="text-red-600 font-bold">*</span>
                 </p>
                 <p className="text-sm mt-1 text-neutral-200 mb-1">
-                  Enter the street address below, select from the auto complete
-                  options and verify that the location appears correctly on the
-                  map
+                  Enter the street address below
                 </p>
                 <input
                   type="address"
@@ -300,7 +255,6 @@ const CreateEvent = () => {
               </label>
             </div>
           </form>
-          <div className="mt-2">Google Map section</div>
         </section>
 
         <section className="flex items-center justify-end w-3/4 mx-auto">
