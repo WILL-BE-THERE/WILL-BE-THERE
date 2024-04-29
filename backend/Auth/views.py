@@ -24,7 +24,6 @@ from .swagger import signUp_request_body, logIn_request_body, logout_request_bod
 def signUp(request):
     """ view to signup users"""
     data = request.data
-    print(data)
     serializer = userSerializer(data=data, context={
         'phone_number': data.get('phone_number'),
         'confirm_password': data.get('confirm_password')

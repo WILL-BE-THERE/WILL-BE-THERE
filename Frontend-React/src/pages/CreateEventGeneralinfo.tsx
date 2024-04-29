@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { Country, State, City } from 'country-state-city'
 
 const CreateEvent = () => {
+
   const initialEventInfo = {
     eventName: '',
     firstName: '',
