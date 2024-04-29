@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { auth, provider } from './config';
 import { signInWithPopup } from 'firebase/auth';
-import { getCookie, setCookie } from 'pages/CookieUtils'; // Assuming you have set and getCookie methods in your CookieUtils
+//import { getCookie, setCookie } from 'pages/CookieUtils'; // Assuming you have set and getCookie methods in your CookieUtils
 
 function Googlelogin() {
     const [value, setValue] = useState('');

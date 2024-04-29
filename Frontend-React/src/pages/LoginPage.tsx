@@ -174,7 +174,7 @@ const LoginPage = () => {
             <p className="text-center">or signup via</p>
 
             <div className="flex w-full items-center justify-center gap-6">
-              <Link to="/googleloginpage">
+              <Link to="/googlelogin">
                 <img src={googleIcon} alt="google icon" className="w-6" />
               </Link>
               <a href="#">
