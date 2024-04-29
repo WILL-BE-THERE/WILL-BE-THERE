@@ -1,6 +1,8 @@
 import { useProjectContext } from './../../context/project-context'
 import logoutIcon from '../../assets/Frame 1171275239.png'
 import axios from 'axios'
+import generateApiHeaders from '../headers'
+import { getCookie } from '../CookieUtils'
 
 type LogoutModalProps = {
   setLogOut: React.Dispatch<React.SetStateAction<boolean>>
@@ -10,9 +12,11 @@ const LogoutModal = ({ setLogOut }: LogoutModalProps) => {
   const { loggedInUserInfo, setIsLoggedIn } = useProjectContext()
   const logout = async () => {
     try {
+      getCookie('Token')
       const response = axios.post(
         'http://127.0.0.1:8000/api/account/logout/',
-        {},
+        loggedInUserInfo,
+        { headers: generateApiHeaders() },
       )
       console.log(response)
     } catch (error) {
@@ -34,7 +38,7 @@ const LogoutModal = ({ setLogOut }: LogoutModalProps) => {
             type="button"
             onClick={() => {
               localStorage.clear()
-              loggedInUserInfo.token = ''
+              loggedInUserInfo.Token = ''
               logout()
               setIsLoggedIn(false)
               setLogOut(false)
