@@ -5,31 +5,21 @@ import shape3 from '../assets/shape3.png'
 import googleIcon from '../assets/google-icon.png'
 import appleIcon from '../assets/apple-icon.png'
 import fbIcon from '../assets/fb-icon.png'
-import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
+import { FaRegEye, FaRegEyeSlash, FaSpinner } from 'react-icons/fa6'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import RegistrationSuccessful from '../components/RegistrationSuccessful'
 import axios from 'axios'
+import { useProjectContext } from './../../src/context/project-context'
+import { setCookie } from './CookieUtils'
+import generateApiHeaders from './headers'
 
 const SignUpPage = () => {
-  const initialDetails = {
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone_number: '',
-    password: '',
-    confirm_password: '',
-  }
-
-  // const errorMessages ={
-  //   emailError:'',
-  //   phoneError:'',
-  //   passwordError:'',
-  //   confirmPasswordError:''
-  // }
+  const { setSignUpUserInfo, signUpUserInfo, initSignup } = useProjectContext()
 
   const [seePassword, setSeePassword] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [seeConfirmPassword, setSeeConfirmPassword] = useState(false)
-  const [userInfo, setUserInfo] = useState(initialDetails)
+  const [emailExist, setEmailExist] = useState({ exist: false, msg: '' })
   const [errors, setErrors] = useState(false)
   const [passErrors, setPassErrors] = useState(false)
   const [phoneError, setPhoneError] = useState(false)
@@ -37,41 +27,40 @@ const SignUpPage = () => {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    setUserInfo((prevState) => ({ ...prevState, [name]: value }))
+    setSignUpUserInfo((prevState) => ({ ...prevState, [name]: value }))
   }
 
   const emailRegex = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim
   const phoneRegex =
     /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
- const passRegex = /[\s\S]*/s;
+  const passRegex = /[\s\S]*/s
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (
-      userInfo.email.match(emailRegex) &&
-      userInfo.first_name &&
-      userInfo.last_name &&
-      userInfo.phone_number.match(phoneRegex) &&
-      userInfo.password.match(passRegex) &&
-      userInfo.confirm_password.match(passRegex)
-    ) {
-      setUserInfo(initialDetails)
-      setRegSuccessful(true)
-    }
+    // if (
+    //   signUpUserInfo.email.match(emailRegex) &&
+    //   signUpUserInfo.first_name &&
+    //   signUpUserInfo.last_name &&
+    //   signUpUserInfo.phone_number.match(phoneRegex) &&
+    //   signUpUserInfo.password.match(passRegex) &&
+    //   signUpUserInfo.confirm_password.match(passRegex)
+    // ) {
+    //   initSignup()
+    // }
 
-    if (!emailRegex.test(userInfo.email)) {
+    if (!emailRegex.test(signUpUserInfo.email)) {
       setErrors(true)
     } else {
       setErrors(false)
     }
 
-    if (!phoneRegex.test(userInfo.phone_number)) {
+    if (!phoneRegex.test(signUpUserInfo.phone_number)) {
       setPhoneError(true)
     } else {
       setPhoneError(false)
     }
 
-    if (!passRegex.test(userInfo.password)) {
+    if (!passRegex.test(signUpUserInfo.password)) {
       setPassErrors(true)
     } else {
       setPassErrors(false)
@@ -79,15 +68,30 @@ const SignUpPage = () => {
 
     setSeePassword(false)
     setSeeConfirmPassword(false)
+    setLoading(true)
 
     try {
       const response = await axios.post(
         'http://127.0.0.1:8000/api/account/signup/',
-        userInfo,
+        signUpUserInfo,
+        {
+          headers: generateApiHeaders(),
+        }
       )
+      console.log(response.data)
+      setEmailExist({ exist: false, msg: '' })
+      setRegSuccessful(true)
+      setLoading(false)
+      initSignup()
+      // setSignUpUserInfo(response.data)
+
+      setCookie('Token', response.data.token, 7)
       console.log(response)
     } catch (error) {
       console.log(error)
+      setEmailExist({ exist: true, msg: error.response.data.email[0] })
+      setRegSuccessful(false)
+      setLoading(false)
     }
   }
 
@@ -134,6 +138,7 @@ const SignUpPage = () => {
             <h1 className="text-3xl mb-2 font-bold lg:text-4xl">
               Create your account
             </h1>
+
             <div className="flex gap-3 w-full">
               <label htmlFor="first_name" className="flex flex-col gap-1 w-1/2">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
@@ -142,7 +147,7 @@ const SignUpPage = () => {
                 <input
                   type="text"
                   name="first_name"
-                  value={userInfo.first_name}
+                  value={signUpUserInfo.first_name}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
                   // required
@@ -156,7 +161,7 @@ const SignUpPage = () => {
                 <input
                   type="text"
                   name="last_name"
-                  value={userInfo.last_name}
+                  value={signUpUserInfo.last_name}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
                   // required
@@ -171,7 +176,7 @@ const SignUpPage = () => {
               <input
                 type="text"
                 name="email"
-                value={userInfo.email}
+                value={signUpUserInfo.email}
                 onChange={handleChange}
                 className={`border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] ${
                   errors ? 'focus:outline-red-600' : 'focus:outline-primary-100'
@@ -183,14 +188,17 @@ const SignUpPage = () => {
               )}
             </label>
 
-            <label htmlFor="Phone_number" className="flex flex-col gap-1 w-full">
+            <label
+              htmlFor="Phone_number"
+              className="flex flex-col gap-1 w-full"
+            >
               <p className="flex gap-1 text-sm font-medium text-neutral-200">
                 Phone Number <span className="text-red-600 font-bold">*</span>
               </p>
               <input
                 type="number"
                 name="phone_number"
-                value={userInfo.phone_number}
+                value={signUpUserInfo.phone_number}
                 onChange={handleChange}
                 className={`border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] ${
                   errors ? 'focus:outline-red-600' : 'focus:outline-primary-100'
@@ -213,7 +221,7 @@ const SignUpPage = () => {
                 <input
                   type={seePassword ? 'text' : 'password'}
                   name="password"
-                  value={userInfo.password}
+                  value={signUpUserInfo.password}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 placeholder:text-sm w-full"
                   // required
@@ -246,7 +254,7 @@ const SignUpPage = () => {
                 <input
                   type={seeConfirmPassword ? 'text' : 'password'}
                   name="confirm_password"
-                  value={userInfo.confirm_password}
+                  value={signUpUserInfo.confirm_password}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 placeholder:text-sm w-full"
                   // required
@@ -259,17 +267,23 @@ const SignUpPage = () => {
                   {seeConfirmPassword ? <FaRegEye /> : <FaRegEyeSlash />}
                 </button>
               </aside>
-              {userInfo.password !== userInfo.confirm_password && (
+              {signUpUserInfo.password !== signUpUserInfo.confirm_password && (
                 <p className="text-red-600 text-xs">Password doesn't match</p>
               )}
             </label>
 
+            {emailExist.exist && (
+              <p className="text-xs font-medium text-red-600 my-3">
+                {emailExist.msg}
+              </p>
+            )}
+
             <div className="w-full flex items-center justify-center">
               <button
                 type="submit"
-                className="px-5 py-2 rounded-md bg-primary-100 text-white text-sm border-none outline-none hover:scale-110 active:scale-105 w-fit transition-all"
+                className="w-28 h-10 rounded-md bg-primary-100 text-white text-sm border-none outline-none hover:scale-110 active:scale-105 transition-all flex items-center justify-center"
               >
-                Sign Up
+                {loading ? <FaSpinner className=" animate-spin" /> : 'Sign Up'}
               </button>
             </div>
 

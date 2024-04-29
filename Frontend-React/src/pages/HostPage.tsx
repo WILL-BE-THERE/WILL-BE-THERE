@@ -18,7 +18,10 @@ const HostPage = () => {
         </p>
       </Link>
 
-      <section className="border-2 border-dashed border-neutral-400 rounded-xl text-center cursor-pointer flex flex-col items-center justify-center h-56 w-72 sm:w-80 mt-10">
+      <Link
+        to="/dashboard"
+        className="border-2 border-dashed border-neutral-400 rounded-xl text-center cursor-pointer flex flex-col items-center justify-center h-56 w-72 sm:w-80 mt-10"
+      >
         <div className="mb-3">
           <img src={manageEventIcon} alt="Manage event icon" />
         </div>
@@ -26,7 +29,7 @@ const HostPage = () => {
         <p className="text-sm text-neutral-200 font-medium">
           Take control of your event
         </p>
-      </section>
+      </Link>
     </div>
   )
 }
