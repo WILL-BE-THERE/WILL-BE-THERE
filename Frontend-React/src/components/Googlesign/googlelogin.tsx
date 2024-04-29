@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Auth, Provider } from './config';
+import { auth, provider } from './config';
 import { signInWithPopup } from 'firebase/auth';
-import { getCookie, setCookie } from 'pages/CookieUtils';
-import { set } from 'firebase/database';
+import { getCookie, setCookie } from 'pages/CookieUtils'; // Assuming you have set and getCookie methods in your CookieUtils
 
 function Googlelogin() {
-    const [value, setvalue] = useState('')
-    const handleclick = () => {
-        signInWithPopup(Auth, Provider)
+    const [value, setValue] = useState('');
+
+    const handleClick = () => {
+        signInWithPopup(auth, provider)
             .then((result) => {
-                setvalue(result.user.email + ' ' + result.user.displayName)
-                getCookie('email', result.user.email)
+                setValue(result.user.email + ' ' + result.user.displayName);
+                setCookie('email', result.user.email); // Set cookie here
                 console.log(result);
             })
             .catch((error) => {
@@ -19,16 +19,14 @@ function Googlelogin() {
     };
 
     useEffect(() => {
-        setvalue(getCookie('email'));
+        setValue(getCookie('email'));
     }, []);
 
     return (
         <div>
-            
-            <button onClick={handleclick}>Sign In with Google</button>
+            <button onClick={handleClick}>Sign In with Google</button>
         </div>
     );
 }
-
 
 export default Googlelogin;
