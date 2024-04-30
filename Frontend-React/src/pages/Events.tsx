@@ -5,7 +5,7 @@ import LoginButton from '../components/Buttons/LoginButton'
 import axios from 'axios'
 import generateApiHeaders from './headers'
 import { getCookie } from './CookieUtils'
-import { eventPageData } from 'utils/local-data'
+import { eventPageData } from '../utils/local-data'
 
 const fetchALLEvents = async () => {
   try {
