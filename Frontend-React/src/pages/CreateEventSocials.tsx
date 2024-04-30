@@ -62,7 +62,7 @@ const CreateEventSocials = () => {
               </label>
               <label htmlFor="linkedin" className="flex flex-col gap-1 w-1/2">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
-                  Snapchat <span className="text-red-600 font-bold">*</span>
+                  linkedin <span className="text-red-600 font-bold">*</span>
                 </p>
                 <input
                   type="text"
