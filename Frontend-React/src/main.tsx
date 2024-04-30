@@ -14,10 +14,7 @@ import About from './pages/About.tsx'
 import Contact from './pages/Contact.tsx'
 import Events from './pages/Events.tsx'
 import EventDetails from './pages/EventDetails.tsx'
-import CreateEvent from './pages/CreateEventGeneralinfo.tsx'
-import CreateEventPayInfo from './pages/CreateEventPayInfo.tsx'
-import CreateEventSocials from './pages/CreateEventSocials.tsx'
-import CreateEventMessage from './pages/CreateEventMessage.tsx'
+import CreateEvent from './pages/CreateEvent.tsx'
 import Accounts from './pages/Accounts.tsx'
 import Faqs from './pages/Faqs.tsx'
 import LoginPage from './pages/LoginPage.tsx'
@@ -45,9 +42,6 @@ const router = createBrowserRouter(
         <Route index element={<Home />} />
         <Route path="rsvp" element={<Rsvp />} />
         <Route path="createevent" element={<CreateEvent />} />
-        <Route path="createeventpayinfo" element={<CreateEventPayInfo />} />
-        <Route path="createeventsocials" element={<CreateEventSocials />} />
-        <Route path="createeventmessage" element={<CreateEventMessage />} />
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="events" element={<Events />} />

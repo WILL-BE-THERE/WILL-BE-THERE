@@ -1,12 +1,10 @@
-import CreateEventsHeader from '../../src/components/CreateEventsHeader'
 import uploadImgIcon from '../assets/Group 26.png'
 import { ChangeEvent, FormEvent, useState } from 'react'
-import { FaArrowRight } from 'react-icons/fa'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { Country, State, City } from 'country-state-city'
+import { FaArrowRight } from 'react-icons/fa'
+import { useNavigate } from 'react-router-dom'
 
 const CreateEvent = () => {
-
   const initialEventInfo = {
     eventName: '',
     firstName: '',
@@ -17,6 +15,10 @@ const CreateEvent = () => {
     city: 'Badakhstan',
     street: '',
     imageSelected: '',
+    instagram: '',
+    linkedin: '',
+    facebook: '',
+    twitter: '',
   }
 
   const [selectedImage, setSelectedImage] = useState('')
@@ -24,8 +26,7 @@ const CreateEvent = () => {
   const [eventInfo, setEventInfo] = useState(initialEventInfo)
 
   const navigate = useNavigate()
-  const next = () => navigate('/createeventpayinfo')
-  const location = useLocation()
+  const submitForm = () => navigate('/createeventmessage')
 
   const fileSelectHandleChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
@@ -42,9 +43,8 @@ const CreateEvent = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     console.log(eventInfo)
-    next()
+    submitForm()
   }
 
   const handleSubmitImage = (e: FormEvent<HTMLFormElement>) => {
@@ -55,12 +55,16 @@ const CreateEvent = () => {
 
   return (
     <div className="text-center bg-white pb-24">
+      <section className="pt-8 text-center">
+        <h1 className="font-bold text-3xl">Create Event</h1>
+        <p className="font-medium text-base text-neutral-200 mt-1 border-b-2 border-b-neutral-200 w-3/5 mx-auto pb-3 mb-6">
+          Craft your event and indulge in a refreshing new approach to register
+          your event
+        </p>
+      </section>
       <div className=" w-[70%] mx-auto">
-        <CreateEventsHeader textColor={location.pathname} />
-
         <section className=" mt-8 items-center w-[65%] mx-auto">
-          <h1 className="font-bold mb-1 text-xl">Event Image</h1>
-          <p className="text-neutral-200 text-base font-medium">
+          <p className="text-neutral-200 text-sm font-medium">
             Upload an image about your event such as event poster. It must be
             1:1 or square in size.
           </p>
@@ -103,14 +107,14 @@ const CreateEvent = () => {
             location and additional information
           </p>
           <form
-            id="generalInfoForm"
+            id="eventInfoForm"
             onSubmit={handleSubmit}
             className="flex flex-col gap-4"
           >
             <div className="mt-7 flex gap-5">
               <label htmlFor="eventName" className="flex flex-col gap-1 w-1/2">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
-                  Name <span className="text-red-600 font-bold">*</span>
+                  Event Name <span className="text-red-600 font-bold">*</span>
                 </p>
                 <input
                   type="text"
@@ -178,6 +182,7 @@ const CreateEvent = () => {
                   name="country"
                   title="Countries"
                   onChange={handleChange}
+                  required
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-2 py-3 text-sm text-neutral-200 font-medium"
                 >
                   {Country.getAllCountries().map((option, index) => {
@@ -197,6 +202,7 @@ const CreateEvent = () => {
                   name="state"
                   title="States"
                   onChange={handleChange}
+                  required
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-2 py-3 text-sm text-neutral-200 font-medium"
                 >
                   {State.getStatesOfCountry(eventInfo.country).map(
@@ -235,7 +241,7 @@ const CreateEvent = () => {
               </label>
             </div>
 
-            <div className="mt-7 flex gap-5">
+            <div className="mt-7 w-full gap-5">
               <label htmlFor="street" className="flex flex-col gap-1">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   Street <span className="text-red-600 font-bold">*</span>
@@ -254,20 +260,87 @@ const CreateEvent = () => {
                 />
               </label>
             </div>
+            <section className="text-start border-t-2 border-dashed border-black/30 mt-12 pt-12">
+              <h1 className="font-bold mb-1 text-xl">Social Media Accounts</h1>
+              <p className="text-neutral-200 text-base font-medium">
+                Fill in your social information.
+              </p>
+              <div className="mt-7 flex gap-5 mb-9">
+                <label htmlFor="linkedin" className="flex flex-col gap-1 w-1/2">
+                  <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                    linkedin <span className="text-red-600 font-bold">*</span>
+                  </p>
+                  <input
+                    type="text"
+                    name="linkedin"
+                    placeholder="Your linkedin link"
+                    value={eventInfo.linkedin}
+                    onChange={handleChange}
+                    className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                    required
+                  />
+                </label>
+                <label
+                  htmlFor="instagram"
+                  className="flex flex-col gap-1 w-1/2"
+                >
+                  <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                    Instagram
+                  </p>
+                  <input
+                    type="text"
+                    name="instagram"
+                    placeholder="Your instagram link"
+                    value={eventInfo.instagram}
+                    onChange={handleChange}
+                    className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                  />
+                </label>
+              </div>
+
+              <div className="mt-2 flex gap-5">
+                <label htmlFor="facebook" className="flex flex-col gap-1 w-1/2">
+                  <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                    Facebook
+                  </p>
+                  <input
+                    type="text"
+                    name="facebook"
+                    placeholder="Your facebook"
+                    value={eventInfo.facebook}
+                    onChange={handleChange}
+                    className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                  />
+                </label>
+                <label htmlFor="twitter" className="flex flex-col gap-1 w-1/2">
+                  <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                    Twitter
+                  </p>
+                  <input
+                    type="text"
+                    name="twitter"
+                    placeholder="Your twitter link"
+                    value={eventInfo.twitter}
+                    onChange={handleChange}
+                    className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                  />
+                </label>
+              </div>
+            </section>
           </form>
         </section>
-
-        <section className="flex items-center justify-end w-3/4 mx-auto">
-          <button
-            type="submit"
-            form="generalInfoForm"
-            className="flex items-center gap-3 text-white bg-primary-100 font-medium border border-primary-100 text-sm py-2 px-4 rounded-md group"
-          >
-            Next
-            <FaArrowRight className=" group-hover:translate-x-1 transition-all hidden sm:block" />
-          </button>
-        </section>
       </div>
+
+      <section className="flex items-center justify-end w-[53%] mx-auto">
+        <button
+          type="submit"
+          form="eventInfoForm"
+          className="flex items-center gap-3 text-white bg-primary-100 font-medium border border-primary-100 text-sm py-2 px-4 rounded-md group"
+        >
+          Submit
+          <FaArrowRight className=" group-hover:translate-x-1 transition-all hidden sm:block" />
+        </button>
+      </section>
     </div>
   )
 }
