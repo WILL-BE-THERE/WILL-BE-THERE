@@ -36,6 +36,7 @@ import Revenue from '../src/pages/dashboard/Revenue.tsx'
 import GuestMetrics from '../src/pages/dashboard/GuestMetrics.tsx'
 import EventSettings from '../src/pages/dashboard/EventSettings.tsx'
 import UserInfo from '../src/pages/dashboard/UserInfo.tsx'
+import Googlelogin from '../src/components/Googlesign/googlelogin.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -54,12 +55,11 @@ const router = createBrowserRouter(
         <Route path="accounts" element={<Accounts />} />
         <Route path="faqs" element={<Faqs />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="googleloginpage" element={<Googlelogin />} />
         <Route path="signup" element={<SignUpPage />} />
         <Route
           path="twofactorauth"
-          element={
-            <TwoFactorAuth email={''} verificationCode={''} timer={0} />
-          }
+          element={<TwoFactorAuth email={''} verificationCode={''} timer={0} />}
         />
         <Route path="forgotpassword" element={<ForgotPasswordComponent />} />
         <Route path="newpassword" element={<NewPasswordComponent />} />

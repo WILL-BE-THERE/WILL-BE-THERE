@@ -12,7 +12,7 @@ import { useProjectContext } from './../../src/context/project-context'
 import { FaSpinner } from 'react-icons/fa'
 import LoginSuccessful from '../../src/components/LoginSuccessful'
 import generateApiHeaders from './headers'
-import { getCookie } from './CookieUtils' 
+import { getCookie } from './CookieUtils'
 
 const LoginPage = () => {
   const {
@@ -28,7 +28,7 @@ const LoginPage = () => {
   const [wrongInfoLogin, setWrongInfoLogin] = useState(false)
 
   const navigate = useNavigate()
-  const login = () => navigate('/host')
+  const login = () => navigate('/dashboard')
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -44,7 +44,7 @@ const LoginPage = () => {
         loginUserInfo,
         {
           headers: generateApiHeaders(),
-        }
+        },
       )
       setLoggedInUserInfo(response.data)
       setIsLoggedIn(true)
@@ -56,7 +56,6 @@ const LoginPage = () => {
       setLoading(false)
 
       getCookie('Token')
-
     } catch (error) {
       console.log(error)
       setWrongInfoLogin(true)
@@ -175,9 +174,9 @@ const LoginPage = () => {
             <p className="text-center">or signup via</p>
 
             <div className="flex w-full items-center justify-center gap-6">
-              <a href="#">
+              <Link to="/googlelogin">
                 <img src={googleIcon} alt="google icon" className="w-6" />
-              </a>
+              </Link>
               <a href="#">
                 <img src={appleIcon} alt="apple icon" className="w-6" />
               </a>
