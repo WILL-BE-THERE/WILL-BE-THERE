@@ -47,7 +47,7 @@ const Events = () => {
           {eventPageData.map((item) => {
             return (
               <React.Fragment key={item.date}>
-                <SingleEvent img="" eventName="" date="" noOfRsvp={0} />
+                <SingleEvent {...item} />
               </React.Fragment>
             )
           })}

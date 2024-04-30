@@ -1,13 +1,9 @@
 // import { eventPageData } from '../utils/local-data'
+import { eventPageData } from 'utils/local-data'
 import ViewDetailsButton from './Buttons/ViewDetailsButton'
 
 // type SingleEventProps = (typeof eventPageData)[number]
-type SingleEventProps = {
-  img: string
-  eventName: string
-  date: string
-  noOfRsvp: number
-}
+type SingleEventProps = (typeof eventPageData)[number]
 
 const SingleEvent = (props: SingleEventProps) => {
   const { img, eventName, date, noOfRsvp } = props
