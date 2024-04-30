@@ -5,7 +5,7 @@ import { useProjectContext } from '../context/project-context'
 import GetStartedButton from './Buttons/GetStartedButton'
 
 const Navbar = () => {
-  const { isLoggedIn, isSidebarOpen, setIsSidebarOpen } = useProjectContext()
+  const { isSidebarOpen, setIsSidebarOpen } = useProjectContext()
 
   return (
     <nav
@@ -22,7 +22,7 @@ const Navbar = () => {
         <img src={logo} alt="Project Logo" className="w-24" />
         <div className="items-center gap-x-8 font-medium hidden sm:flex">
           <NavLinks />
-          <GetStartedButton isLoggedIn={isLoggedIn} />
+          <GetStartedButton />
         </div>
       </section>
     </nav>
