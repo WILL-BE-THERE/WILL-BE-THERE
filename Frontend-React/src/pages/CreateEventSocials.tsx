@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 const CreateEventSocials = () => {
   const initialSocialsLinks = {
     instagram: '',
-    snapchat: '',
+    linkedin: '',
     facebook: '',
     twitter: '',
   }
@@ -60,15 +60,15 @@ const CreateEventSocials = () => {
                   required
                 />
               </label>
-              <label htmlFor="snapchat" className="flex flex-col gap-1 w-1/2">
+              <label htmlFor="linkedin" className="flex flex-col gap-1 w-1/2">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   Snapchat <span className="text-red-600 font-bold">*</span>
                 </p>
                 <input
                   type="text"
-                  name="snapchat"
-                  placeholder="Your snapchat link"
-                  value={socialLinks.snapchat}
+                  name="linkedin"
+                  placeholder="Your linkedin link"
+                  value={socialLinks.linkedin}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
                   required
