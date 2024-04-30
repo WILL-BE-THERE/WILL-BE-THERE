@@ -57,13 +57,13 @@ const CreateEvent = () => {
     <div className="text-center bg-white pb-24">
       <section className="pt-8 text-center">
         <h1 className="font-bold text-3xl">Create Event</h1>
-        <p className="font-medium text-base text-neutral-200 mt-1 border-b-2 border-b-neutral-200 w-3/5 mx-auto pb-3 mb-6">
+        <p className="font-medium text-base text-neutral-200 mt-1 border-b-2 border-b-neutral-200 w-[90%] pt-3 mx-auto pb-3 mb-6 sm:w-4/5 lg:w-3/5">
           Craft your event and indulge in a refreshing new approach to register
           your event
         </p>
       </section>
-      <div className=" w-[70%] mx-auto">
-        <section className=" mt-8 items-center w-[65%] mx-auto">
+      <div className=" w-full mx-auto lg:w-[70%]">
+        <section className=" mt-8 items-center w-[90%] mx-auto lg:w-[65%]">
           <p className="text-neutral-200 text-sm font-medium">
             Upload an image about your event such as event poster. It must be
             1:1 or square in size.
@@ -100,7 +100,7 @@ const CreateEvent = () => {
           </form>
         </section>
 
-        <section className="border-2 border-dashed rounded-xl border-black/30 my-10 py-12 w-[75%] mx-auto px-12 text-start">
+        <section className="border-2 border-dashed rounded-xl border-black/30 my-10 py-6 w-[90%] mx-auto px-5 text-start sm:px-12 sm:py-12 lg:w-[75%]">
           <h1 className="font-bold mb-1 text-xl">General Information</h1>
           <p className="text-neutral-200 text-base font-medium">
             The essential details regarding your event, encompassing its
@@ -111,8 +111,11 @@ const CreateEvent = () => {
             onSubmit={handleSubmit}
             className="flex flex-col gap-4"
           >
-            <div className="mt-7 flex gap-5">
-              <label htmlFor="eventName" className="flex flex-col gap-1 w-1/2">
+            <div className="mt-7 flex flex-col gap-5 sm:flex-row">
+              <label
+                htmlFor="eventName"
+                className="flex flex-col gap-1 sm:w-1/2"
+              >
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   Event Name <span className="text-red-600 font-bold">*</span>
                 </p>
@@ -126,7 +129,10 @@ const CreateEvent = () => {
                   required
                 />
               </label>
-              <label htmlFor="firstName" className="flex flex-col gap-1 w-1/2">
+              <label
+                htmlFor="firstName"
+                className="flex flex-col gap-1 sm:w-1/2"
+              >
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   First Name <span className="text-red-600 font-bold">*</span>
                 </p>
@@ -142,8 +148,11 @@ const CreateEvent = () => {
               </label>
             </div>
 
-            <div className="mt-7 flex gap-5">
-              <label htmlFor="eventDate" className="flex flex-col gap-1 w-1/2">
+            <div className="mt-7 flex flex-col gap-5 sm:flex-row">
+              <label
+                htmlFor="eventDate"
+                className="flex flex-col gap-1 sm:w-1/2"
+              >
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   Event Date <span className="text-red-600 font-bold">*</span>
                 </p>
@@ -156,7 +165,10 @@ const CreateEvent = () => {
                   required
                 />
               </label>
-              <label htmlFor="eventTime" className="flex flex-col gap-1 w-1/2">
+              <label
+                htmlFor="eventTime"
+                className="flex flex-col gap-1 sm:w-1/2"
+              >
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   Time of Event{' '}
                   <span className="text-red-600 font-bold">*</span>
@@ -172,7 +184,7 @@ const CreateEvent = () => {
               </label>
             </div>
 
-            <div className="mt-7 grid grid-cols-3 gap-5">
+            <div className="mt-7 grid gap-5 sm:grid-cols-3">
               <label htmlFor="country" className="flex flex-col gap-1">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   Country <span className="text-red-600 font-bold">*</span>
@@ -265,10 +277,10 @@ const CreateEvent = () => {
               <p className="text-neutral-200 text-base font-medium">
                 Fill in your social information.
               </p>
-              <div className="mt-7 flex gap-5 mb-9">
-                <label htmlFor="linkedin" className="flex flex-col gap-1 w-1/2">
+              <div className="mt-7 grid gap-5 mb-7 sm:grid-cols-2">
+                <label htmlFor="linkedin" className="flex flex-col gap-1">
                   <p className="flex gap-1 text-sm font-medium text-neutral-200">
-                    linkedin <span className="text-red-600 font-bold">*</span>
+                    Linkedin <span className="text-red-600 font-bold">*</span>
                   </p>
                   <input
                     type="text"
@@ -280,10 +292,7 @@ const CreateEvent = () => {
                     required
                   />
                 </label>
-                <label
-                  htmlFor="instagram"
-                  className="flex flex-col gap-1 w-1/2"
-                >
+                <label htmlFor="instagram" className="flex flex-col gap-1">
                   <p className="flex gap-1 text-sm font-medium text-neutral-200">
                     Instagram
                   </p>
@@ -298,8 +307,8 @@ const CreateEvent = () => {
                 </label>
               </div>
 
-              <div className="mt-2 flex gap-5">
-                <label htmlFor="facebook" className="flex flex-col gap-1 w-1/2">
+              <div className="mt-2 grid gap-5 sm:grid-cols-2">
+                <label htmlFor="facebook" className="flex flex-col gap-1">
                   <p className="flex gap-1 text-sm font-medium text-neutral-200">
                     Facebook
                   </p>
@@ -312,7 +321,7 @@ const CreateEvent = () => {
                     className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
                   />
                 </label>
-                <label htmlFor="twitter" className="flex flex-col gap-1 w-1/2">
+                <label htmlFor="twitter" className="flex flex-col gap-1">
                   <p className="flex gap-1 text-sm font-medium text-neutral-200">
                     Twitter
                   </p>
@@ -331,7 +340,7 @@ const CreateEvent = () => {
         </section>
       </div>
 
-      <section className="flex items-center justify-end w-[53%] mx-auto">
+      <section className="flex items-center justify-end w-[90%] mx-auto lg:w-[53%]">
         <button
           type="submit"
           form="eventInfoForm"
