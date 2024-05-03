@@ -50,7 +50,10 @@ INSTALLED_APPS = [
     'backend',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = [ True
+    'will-be-there-x5pq.onrender.com'
+
+]
 CORS_ALLOW_METHODS =[
         'DELETE',
         'GET',
