@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '127.0.0.1'
     'localhost',
-    'will-be-there-x5pq.onrender.com/',
+    'will-be-there-x5pq.onrender.com',
 ]
 
 
