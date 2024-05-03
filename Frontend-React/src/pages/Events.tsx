@@ -10,7 +10,7 @@ import { eventPageData } from '../utils/local-data'
 const fetchALLEvents = async () => {
   try {
     const response = await axios.get(
-      `http://127.0.0.1:8000/api/events/event/`,
+      `http://will-be-there-x5pq.onrender.com/api/events/event/`,
       {
         headers: {
           ...generateApiHeaders(),
