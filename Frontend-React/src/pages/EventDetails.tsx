@@ -1,12 +1,36 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { eventPageData } from '../utils/local-data'
+// import axios from 'axios'
+// import { useEffect, useState } from 'react'
 
 const EventDetails = () => {
   const navigate = useNavigate()
-  const goBack = () => navigate(-1)
   const { id } = useParams()
+  // const [eventData, setEventData] = useState(null)
 
   const data = eventPageData.find((item) => item.eventName === id)
+
+  // useEffect(() => {
+  //   const fetchEventData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://will-be-there-x5pq.onrender.com/api/events/event/id`,
+  //       )
+  //       setEventData(response.data)
+  //     } catch (error) {
+  //       console.error('error fetching events:', error)
+  //     }
+  //   }
+
+  //   fetchEventData()
+  // }, [id])
+
+  const goBack = () => navigate(-1)
+
+  // if (!eventData){
+  //   return <div>Loading ...</div>;
+  // }
+
   return (
     <section className="bg-white pt-12 pb-20">
       <div className="w-[90%] mx-auto flex flex-col items-center justify-center h-full sm:flex-row sm:h-[36rem] lg:h-full sm:w-[95%] lg:w-[85%]">
