@@ -72,7 +72,7 @@ const SignUpPage = () => {
 
     try {
       const response = await axios.post(
-        'http://will-be-there-x5pq.onrender.com/api/account/signup/',
+        'http://127.0.0.1:8000/api/account/signup/',
         signUpUserInfo,
         {
           headers: generateApiHeaders(),

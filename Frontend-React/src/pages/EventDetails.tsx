@@ -14,7 +14,7 @@ const EventDetails = () => {
   //   const fetchEventData = async () => {
   //     try {
   //       const response = await axios.get(
-  //         `http://will-be-there-x5pq.onrender.com/api/events/event/id`,
+  //         `http://127.0.0.1:8000/api/events/event/id`,
   //       )
   //       setEventData(response.data)
   //     } catch (error) {

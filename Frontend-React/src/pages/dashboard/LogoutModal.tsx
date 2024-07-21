@@ -14,7 +14,7 @@ const LogoutModal = ({ setLogOut }: LogoutModalProps) => {
     try {
       const token = getCookie('Token')
       const response = await axios.post(
-        'http://will-be-there-x5pq.onrender.com/api/account/logout/',
+        'http://127.0.0.1:8000/api/account/logout/',
         {},
         { headers: { Authorization: `Token ${token}` } },
       )

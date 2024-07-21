@@ -39,7 +39,7 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
     }
 
     axios
-      .post('http://will-be-there-x5pq.onrender.com/api/account/verify/', {
+      .post('http://127.0.0.1:8000/api/account/verify/', {
         email: props.email,
         verificationCode: code,
       },

@@ -40,7 +40,7 @@ const LoginPage = () => {
     setLoading(true)
     try {
       const response = await axios.post(
-        'http://will-be-there-x5pq.onrender.com/api/account/login/',
+        'http://127.0.0.1:8000/api/account/login/',
         loginUserInfo,
         {
           headers: generateApiHeaders(),
