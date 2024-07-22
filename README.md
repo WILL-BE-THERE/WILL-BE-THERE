@@ -32,7 +32,6 @@ WILL BE THERE offers a range of functionalities tailored for both hosts and gues
 - **Frontend**: TypeScript
 - **Backend**: Django
 
-
 ## 👨‍💼 Meet the Team
 
 Meet the talented individuals behind WILL BE THERE:
