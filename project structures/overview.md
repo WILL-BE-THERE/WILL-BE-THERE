@@ -17,5 +17,5 @@
 - Event organizers can display or hide the guest list.
 - Event organizers can display or hide the total guest count.
 - Event organizers can create a list of items that guests can select and bring to the event (such as food items or drinks).
-- If a guest chooses an item to bring, they can receive this info in the confirmation message, along with the Event location.
+- If a guest chooses a friend or plus one to bring, they can receive this info in the confirmation message, along with the Event location.
 - Guests can register using Google or other social accounts.
