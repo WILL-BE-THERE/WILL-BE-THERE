@@ -29,7 +29,7 @@ const ForgotPasswordComponent = () => {
       <section className="rounded-lg shadow-md bg-white h-[25rem] w-[min(90%,30rem)] flex flex-col items-center justify-center">
         <form onSubmit={handleSubmit} className="w-[80%] sm:w-3/4 sm:mx-auto">
           <h1 className="text-2xl font-bold mb-3 text-center sm:text-3xl">
-            Forgot Password?
+            Forgot Password ?
           </h1>
           <p className="text-sm font-medium mb-2 text-center text-neutral-200 w-full px-4 sm:px-0">
             Enter your email to reset your password
