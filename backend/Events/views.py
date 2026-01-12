@@ -61,7 +61,7 @@ def getEvent(request, id):
 def createEvents(request):
     """ view for events"""
     user = request.user
-    serializer = EventSerializer(data=request.data, context={'username': user.username})
+    serializer = EventSerializer(data=request.data, context={'user': user})
     if serializer.is_valid():
         serializer.save()
         return Response({'event': serializer.data}, status=status.HTTP_201_CREATED)

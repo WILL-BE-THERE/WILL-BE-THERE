@@ -6,11 +6,12 @@ class EventSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         fields = '__all__'
+        read_only_fields = ['user']
     
     def create(self, validated_data):
         """ creating a new event"""
-        username = self.context['username']
-        validated_data['username'] = username
+        user = self.context['user']
+        validated_data['user'] = user
         return Event.objects.create(**validated_data)
     
     def update(self, instance, validated_data):

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Event(models.Model):
     "model for creating events"
-    username = models.CharField(max_length=200, default='will be gotten from request.user')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='events')
     picture =  models.ImageField(upload_to='events')
     eventName = models.CharField(max_length=200)
     generalInfo = models.TextField()

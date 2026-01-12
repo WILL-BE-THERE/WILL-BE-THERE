@@ -61,8 +61,8 @@ def Verify_account(request):
             return Response({'success': '[profile verified]'})
         else:
             return Response({'error': '[incorrect verification code]',})
-    except User.DoesNotExist or userProfile.DoesNotExist:
-        return Response({'error': 'user with this email dose not exit'}, status=status.HTTP_404_NOT_FOUND)
+    except (User.DoesNotExist, userProfile.DoesNotExist):
+        return Response({'error': 'user with this email does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
 @swagger_auto_schema(
     method='post',
@@ -80,9 +80,9 @@ def resend_Verification_code(request):
         code = verify_email(email)
         user_profile.verification_code = code
         user_profile.save()
-        return Response({'success': '[verification code sent successfully]', 'verification code': [code]})
-    except User.DoesNotExist or userProfile.DoesNotExist:
-        return Response({'error': 'user with this email dose not exit'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'success': '[verification code sent successfully]'})
+    except (User.DoesNotExist, userProfile.DoesNotExist):
+        return Response({'error': 'user with this email does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
 @swagger_auto_schema(
     method='post',
