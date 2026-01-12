@@ -5,22 +5,20 @@ import { signInWithPopup } from 'firebase/auth'
 
 function Googlelogin() {
   const [value, setValue] = useState('')
-  console.log(value)
 
   const handleClick = () => {
     signInWithPopup(auth, provider)
       .then((result) => {
         setValue(result.user.email + ' ' + result.user.displayName)
-        // setCookie('email', result.user.email); // Set cookie here
-        console.log(result)
+        // TODO: Send user credentials to backend and create/authenticate user
       })
       .catch((error) => {
-        console.log(error.message)
+        // Error handling - log to monitoring service in production
       })
   }
 
   useEffect(() => {
-    // setValue(getCookie('email'));
+    // TODO: Implement Google login integration with backend
   }, [])
 
   return (

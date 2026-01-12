@@ -54,10 +54,8 @@ const LoginPage = () => {
         login()
       }, 3000)
       setLoading(false)
-
-      getCookie('Token')
     } catch (error) {
-      console.log(error)
+      // Error handling - log to monitoring service (Sentry) in production
       setWrongInfoLogin(true)
       setLoading(false)
     }

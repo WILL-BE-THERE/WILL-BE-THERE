@@ -18,9 +18,9 @@ const LogoutModal = ({ setLogOut }: LogoutModalProps) => {
         {},
         { headers: { Authorization: `Token ${token}` } },
       )
-      console.log(response)
+      // Logout successful
     } catch (error) {
-      console.log(error)
+      // Error handling
     }
   }
 

@@ -48,14 +48,14 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
       }
       )
       .then((response) => {
-        console.log(response.data)
+        // Verification successful
         Promise.resolve(getCookie('Token'))
           .then((cookieData) => {
-            console.log(cookieData)
+            // Cookie data retrieved
           });
       })
       .catch((error) => {
-        console.error(error)
+        // Error handling
       })
 
   }
@@ -75,12 +75,14 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
         headers: generateApiHeaders(),
       })
       .then((response) => {
-        console.log(response.data)
+        // Resend successful
         Promise.resolve(getCookie('Token'))
-          .then((cookieData) => { console.log(cookieData); });
+          .then((cookieData) => { 
+            // Cookie data retrieved
+          });
       })
       .catch((error) => {
-        console.error(error)
+        // Error handling
       })
   }
 

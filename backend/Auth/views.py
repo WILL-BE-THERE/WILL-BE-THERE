@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes, throttle_classes
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
@@ -9,10 +9,21 @@ from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import ValidationError
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from .email import verify_email
 from userProfile.models import userProfile
 from drf_yasg.utils import swagger_auto_schema
 from .swagger import signUp_request_body, logIn_request_body, logout_request_body, resendVerification_request_body, VerifyAccount_request_body
+
+# Custom throttle classes for auth endpoints
+class SignUpThrottle(AnonRateThrottle):
+    scope = 'signup'
+
+class LoginThrottle(AnonRateThrottle):
+    scope = 'login'
+
+class VerifyThrottle(AnonRateThrottle):
+    scope = 'verify'
 
 @swagger_auto_schema(
     method='post',
@@ -21,6 +32,7 @@ from .swagger import signUp_request_body, logIn_request_body, logout_request_bod
     responses={200: 'Success', 400: 'Bad Request'}
 )
 @api_view(['POST'])
+@throttle_classes([SignUpThrottle])
 def signUp(request):
     """ view to signup users"""
     data = request.data
@@ -37,7 +49,6 @@ def signUp(request):
         user_profile.verification_code = code
         user_profile.save()
         return Response({'token': token.key, 'user': serializer.data}, status=status.HTTP_201_CREATED)
-    print(serializer.errors)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @swagger_auto_schema(
@@ -48,6 +59,7 @@ def signUp(request):
 )
 
 @api_view(['POST'])
+@throttle_classes([VerifyThrottle])
 def Verify_account(request):
     """resend verification code"""
     email = request.data.get('email')
@@ -91,16 +103,29 @@ def resend_Verification_code(request):
     responses={200: 'Success', 401: 'Unauthorized'}
 )
 @api_view(['POST'])
+@throttle_classes([LoginThrottle])
 def logIn(request):
     username = request.data.get('email')
     password = request.data.get('password')
 
     user = authenticate(username=username, password=password)
     if user is not None:
+        # Check if user's email is verified
+        try:
+            user_profile = userProfile.objects.get(user=user)
+            if not user_profile.is_verified:
+                return Response(
+                    {'error': 'Email not verified. Please verify your email before logging in.'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        except userProfile.DoesNotExist:
+            return Response(
+                {'error': 'User profile not found'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
         token, _ = Token.objects.get_or_create(user=user)
-        print(user)
         return Response({'token': token.key, 'user': userSerializer(user).data}, status=status.HTTP_200_OK)
-    print("incorrect details")
     return Response({'error': 'username and or password incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
 
 # class CustomTokenAuthentication(TokenAuthentication):
@@ -128,5 +153,4 @@ def logout(request):
     except Token.DoesNotExist:
         return Response({'detail': 'Please login'}, status=status.HTTP_401_UNAUTHORIZED)
     except Exception as e:
-        print(str(e))
         return Response({'detail': str(e)}, status=status.HTTP_401_UNAUTHORIZED)

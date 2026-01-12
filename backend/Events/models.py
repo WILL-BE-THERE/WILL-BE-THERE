@@ -20,6 +20,8 @@ class Event(models.Model):
     twitter = models.URLField(blank=True, null=True)  
     linkedIn = models.URLField(blank=True, null=True) 
     congratulatoryMessage = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when event was created")
+    updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when event was last updated")
 
     def __str__(self):
         return self.eventName

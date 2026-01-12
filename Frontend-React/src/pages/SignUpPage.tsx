@@ -78,17 +78,13 @@ const SignUpPage = () => {
           headers: generateApiHeaders(),
         },
       )
-      console.log(response.data)
       setEmailExist({ exist: false, msg: '' })
       setRegSuccessful(true)
       setLoading(false)
       initSignup()
-      // setSignUpUserInfo(response.data)
-
       setCookie('Token', response.data.token, 7)
-      console.log(response)
     } catch (error) {
-      console.log(error)
+      // Error handling - log to monitoring service (Sentry) in production
       setEmailExist({ exist: true, msg: error.response.data.email[0] })
       setRegSuccessful(false)
       setLoading(false)

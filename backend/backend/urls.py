@@ -23,19 +23,33 @@ from drf_yasg import openapi
 from django.conf import settings
 from django.conf.urls.static import static
 
+# Custom permission class for Swagger access
+class IsAdminOrLocalhost(permissions.BasePermission):
+    """
+    Allow access to Swagger only for admins or localhost (development).
+    """
+    def has_permission(self, request, view):
+        # Allow localhost in development
+        if settings.DEBUG and request.META.get('REMOTE_ADDR') in ('127.0.0.1', 'localhost'):
+            return True
+        # Allow authenticated admin users
+        return request.user and request.user.is_staff
+
 schema_view = get_schema_view(
    openapi.Info(
       title="API Documentation",
       default_version='v1',
-      description="Appliction Api",
+      description="Application Api - PROTECTED: Requires admin access or localhost",
    ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+   public=False,  # Changed from public=True to protect documentation
+   permission_classes=(IsAdminOrLocalhost,),
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('apis.urls')),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    # Swagger protected endpoint - moved to /api/docs/
+    re_path(r'^api/docs/swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path(r'^api/docs/redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc-ui'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

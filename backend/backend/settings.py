@@ -26,6 +26,10 @@ env = environ.Env(
 # Read .env file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
+# Validate required environment variables
+from .env_validation import validate_env_vars
+validate_env_vars()
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -59,15 +63,22 @@ INSTALLED_APPS = [
     'backend',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_METHODS =[
-        'DELETE',
-        'GET',
-        'OPTIONS',
-        'PATCH',
-        'POST',
-        'PUT',
-    ]
+# CORS Configuration - Restrict to allowed origins
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:5173',
+    'http://localhost:3000',
+    'http://localhost:5173',
+])
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 CORS_ALLOWED_HEADERS = [
     'accept',
     'accept-encoding',
@@ -85,13 +96,13 @@ CORS_ALLOWED_CREDENTIALS = True
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'backend.urls'
@@ -183,6 +194,34 @@ MEDIA_URL = '/media/'
 
 # Define the directory where uploaded files will be stored
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# REST Framework Configuration
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/hour',
+        'user': '1000/hour',
+        'signup': '3/hour',
+        'login': '5/hour',
+        'verify': '10/hour',
+    }
+}
+
+# Rate Limiting Configuration
+RATELIMIT_SETTINGS = {
+    'AUTH_LOGIN': '5/h',      # 5 login attempts per hour
+    'AUTH_SIGNUP': '3/h',     # 3 signup attempts per hour
+    'AUTH_VERIFY': '10/h',    # 10 verification attempts per hour
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

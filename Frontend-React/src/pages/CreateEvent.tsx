@@ -43,7 +43,6 @@ const CreateEvent = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    console.log(eventInfo)
     submitForm()
   }
 

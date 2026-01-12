@@ -27,7 +27,6 @@ const fetchALLEvents = async () => {
 
 const Events = () => {
   const [events, setEvents] = React.useState([])
-  console.log(events)
 
   useEffect(() => {
     const fetchData = async () => {
