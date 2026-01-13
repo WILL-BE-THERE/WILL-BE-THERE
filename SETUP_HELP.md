@@ -1,6 +1,7 @@
 # PowerShell & SSL Installation Guide
 
 ## Issue Summary
+
 You've encountered two problems:
 
 1. **PowerShell Syntax Error**: PowerShell uses `;` instead of `&&` to chain commands
@@ -9,16 +10,19 @@ You've encountered two problems:
 ## Fix #1: PowerShell Command Syntax
 
 **Wrong (Bash/Linux syntax):**
+
 ```powershell
 cd backend && pip install -r requirements.txt && python manage.py migrate
 ```
 
 **Correct (PowerShell syntax):**
+
 ```powershell
 cd backend; C:\Users\lenovo\AJ\WILL-BE-THERE\.venv\Scripts\python.exe -m pip install -r requirements.txt; python manage.py migrate; python manage.py runserver
 ```
 
 Or use the ampersand for background processes:
+
 ```powershell
 python manage.py runserver &  # Run in background
 ```
@@ -28,6 +32,7 @@ python manage.py runserver &  # Run in background
 ## Fix #2: SSL Certificate Error (Persistent Issue)
 
 The error `SSLError(EOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING]')` indicates:
+
 - PyPI server connection is being interrupted
 - Your network, firewall, or ISP may be blocking/interfering with SSL
 - Antivirus/VPN could be intercepting SSL handshakes
@@ -54,6 +59,7 @@ pip install --trusted-host pypi.python.org --trusted-host pypi.org --trusted-hos
 ### Option C: Use a Different Network
 
 Try:
+
 - Different WiFi network
 - Hotspot from phone
 - Company VPN instead of home network
@@ -108,6 +114,7 @@ python manage.py runserver
 ```
 
 Run it:
+
 ```powershell
 .\setup.ps1
 ```
@@ -176,6 +183,7 @@ Once both servers are running:
 ## If SSL Persists
 
 Contact your network administrator about:
+
 - Checking firewall rules for PyPI domains
 - Verifying SSL certificate chain is complete
 - Checking antivirus/VPN settings

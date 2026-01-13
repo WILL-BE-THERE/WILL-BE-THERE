@@ -39,25 +39,25 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
     }
 
     axios
-      .post('http://127.0.0.1:8000/api/account/verify/', {
-        email: props.email,
-        verificationCode: code,
-      },
-      {
-        headers: generateApiHeaders(),
-      }
+      .post(
+        'http://127.0.0.1:8000/api/account/verify/',
+        {
+          email: props.email,
+          verificationCode: code,
+        },
+        {
+          headers: generateApiHeaders(),
+        },
       )
       .then((response) => {
         // Verification successful
-        Promise.resolve(getCookie('Token'))
-          .then((cookieData) => {
-            // Cookie data retrieved
-          });
+        Promise.resolve(getCookie('Token')).then((cookieData) => {
+          // Cookie data retrieved
+        })
       })
       .catch((error) => {
         // Error handling
       })
-
   }
 
   const handleResend = () => {
@@ -67,19 +67,21 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
     }
 
     axios
-      .post(`http://127.0.0.1:8000/api/account/verify/`, {
-        email: props.email,
-        verificationCode: code,
-      },
-      {
-        headers: generateApiHeaders(),
-      })
+      .post(
+        `http://127.0.0.1:8000/api/account/verify/`,
+        {
+          email: props.email,
+          verificationCode: code,
+        },
+        {
+          headers: generateApiHeaders(),
+        },
+      )
       .then((response) => {
         // Resend successful
-        Promise.resolve(getCookie('Token'))
-          .then((cookieData) => { 
-            // Cookie data retrieved
-          });
+        Promise.resolve(getCookie('Token')).then((cookieData) => {
+          // Cookie data retrieved
+        })
       })
       .catch((error) => {
         // Error handling

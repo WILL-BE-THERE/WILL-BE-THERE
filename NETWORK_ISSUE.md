@@ -5,10 +5,12 @@
 Your system **cannot reach ANY external Python package repositories** due to network/DNS issues.
 
 ### Error Progression:
+
 1. **First error**: `SSLError(EOFError)` — SSL connection broken
 2. **Second error**: `getaddrinfo failed` — **DNS resolution failed** ← This is the root cause
 
 ### What This Means
+
 - Your computer cannot resolve domain names (e.g., `files.pythonhosted.org` → IP address)
 - This blocks ALL external Python package installation
 - **This is a network infrastructure issue**, not a project or Python issue
@@ -18,18 +20,22 @@ Your system **cannot reach ANY external Python package repositories** due to net
 ## Likely Causes (Ranked by Probability)
 
 1. **🔴 DNS Broken** - Your network's DNS is down or misconfigured
+
    - Symptom: Can't resolve any domain
    - Fix: Check network settings, restart router, change DNS to 8.8.8.8
 
 2. **🔴 VPN Interference** - Active VPN may be blocking DNS
+
    - Symptom: Works on other networks, not this one
    - Fix: Disable VPN temporarily, try again
 
 3. **🔴 Firewall Rules** - Corporate/ISP firewall blocking package downloads
+
    - Symptom: Works on mobile hotspot but not WiFi
    - Fix: Use mobile hotspot to verify, then contact IT
 
 4. **🔴 Antivirus SSL Inspection** - Security software breaking SSL
+
    - Symptom: All HTTPS fails
    - Fix: Temporarily disable Norton/McAfee/Avast, retry
 
@@ -60,6 +66,7 @@ ipconfig /all | findstr "DNS"
 **Expected result**: Should see IP addresses. If not → DNS is broken.
 
 **If DNS fails:**
+
 - Change to Google DNS: `netsh int ip set dns name="Wi-Fi" static 8.8.8.8`
 - Or Cloudflare DNS: `netsh int ip set dns name="Wi-Fi" static 1.1.1.1`
 - Then test again
@@ -102,11 +109,13 @@ netsh winhttp reset proxy
 ⚠️ **Only do this if safe on your network!**
 
 Temporarily disable:
+
 - Windows Defender real-time protection
 - Norton/McAfee/Avast SSL inspection
 - Any other security software
 
 Then retry:
+
 ```powershell
 pip install Django==5.0.7
 ```
@@ -154,7 +163,7 @@ python manage.py runserver
 ## What To Do NOW
 
 1. **Run Step 1** above (DNS test) and report results
-2. **Try Step 2** (mobile hotspot) if possible  
+2. **Try Step 2** (mobile hotspot) if possible
 3. **If mobile hotspot works** → WiFi network issue (contact IT)
 4. **If mobile hotspot fails** → Computer configuration issue
 
@@ -171,13 +180,17 @@ python manage.py runserver
 ## Can't Wait For Network Fix?
 
 ### Option A: Use Cloud IDE
+
 No local environment needed:
+
 - GitHub Codespaces: https://github.com/features/codespaces
 - Replit: https://replit.com/
 - AWS Cloud9: https://aws.amazon.com/cloud9/
 
 ### Option B: Use Docker
+
 Isolates your system environment:
+
 ```bash
 docker run -it python:3.13 bash
 # Now you're in a container, try pip install
@@ -186,6 +199,7 @@ docker run -it python:3.13 bash
 ### Option C: Wait & Document
 
 For now, I've created these guides for when network is fixed:
+
 - `QUICK_START.md` — Full setup instructions
 - `SETUP_HELP.md` — PowerShell-specific fixes
 - `SSL_TROUBLESHOOTING.md` — Detailed SSL diagnostics
@@ -198,7 +212,7 @@ For now, I've created these guides for when network is fixed:
 **Impact**: Cannot install Python packages  
 **Cause**: DNS resolution failing (`getaddrinfo failed`)  
 **Solution**: Fix network (not project code)  
-**ETA**: Depends on your network access  
+**ETA**: Depends on your network access
 
 **Next Step**: Run DNS diagnostics above and report findings.
 

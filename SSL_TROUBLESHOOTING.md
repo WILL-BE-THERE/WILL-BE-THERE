@@ -1,6 +1,7 @@
 # SSL Certificate Issue - Troubleshooting & Workarounds
 
 ## The Problem
+
 Your system cannot establish secure SSL connections to PyPI (Python Package Index).
 
 ```
@@ -34,6 +35,7 @@ python -c "import certifi; print(certifi.where())"
 ```
 
 Then retry:
+
 ```powershell
 pip install Django==5.0.7
 ```
@@ -45,24 +47,28 @@ pip install Django==5.0.7
 PyPI has mirrors hosted worldwide. Try these:
 
 ### Option A: Tsinghua University (China - very reliable)
+
 ```powershell
 pip config set global.index-url https://pypi.tsinghua.edu.cn/simple
 pip install -r requirements.txt
 ```
 
 ### Option B: Aliyun Mirror (China - also good)
+
 ```powershell
 pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/
 pip install -r requirements.txt
 ```
 
 ### Option C: Official PyPI (reset to default)
+
 ```powershell
 pip config unset global.index-url
 pip install -r requirements.txt
 ```
 
 ### Option D: Temporary per-command (don't persist)
+
 ```powershell
 pip install -i https://pypi.tsinghua.edu.cn/simple -r requirements.txt
 ```
@@ -88,6 +94,7 @@ pip install -r requirements.txt
 ```
 
 Or per-command:
+
 ```powershell
 pip install --trusted-host files.pythonhosted.org --trusted-host pypi.org Django==5.0.7
 ```
@@ -141,6 +148,7 @@ docker run -p 8000:8000 will-be-there-backend
 ## Solution 6: GitHub Codespaces (Cloud IDE)
 
 No local environment issues:
+
 1. Go to https://github.com/WILL-BE-THERE/repo
 2. Click "Code" → "Codespaces" → "Create"
 3. Terminal already has working pip/Python
@@ -193,6 +201,7 @@ npm run dev
 ## Contact Support If Stuck
 
 If none of these work:
+
 - Check your corporate IT policies
 - Ask your network admin about PyPI access
 - Try from a different network (mobile hotspot)
