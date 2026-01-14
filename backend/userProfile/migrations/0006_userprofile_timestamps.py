@@ -1,5 +1,6 @@
 # Generated migration file
 from django.db import migrations, models
+from django.utils import timezone
 
 
 class Migration(migrations.Migration):
@@ -12,8 +13,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='userprofile',
             name='created_at',
-            field=models.DateTimeField(auto_now_add=True, default=None, help_text='Timestamp when profile was created'),
-            preserve_default=False,
+            field=models.DateTimeField(auto_now_add=True, default=timezone.now, help_text='Timestamp when profile was created'),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='userprofile',
