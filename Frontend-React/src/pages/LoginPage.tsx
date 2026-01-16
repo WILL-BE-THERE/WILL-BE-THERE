@@ -8,10 +8,10 @@ import fbIcon from '../assets/fb-icon.png'
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa6'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import axios from 'axios'
-import { useProjectContext } from './../../src/context/project-context'
+import { useProjectContext } from './../../src/context/ProjectContext'
 import { FaSpinner } from 'react-icons/fa'
 import LoginSuccessful from '../../src/components/LoginSuccessful'
-import generateApiHeaders from './headers'
+import generateApiHeaders from './Headers'
 import { getCookie } from './CookieUtils'
 
 const LoginPage = () => {

@@ -1,0 +1,44 @@
+# Node modules
+node_modules/
+Frontend-React/node_modules/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+env/
+.env
+.env.local
+
+# Django
+*.sqlite3
+*.sqlite
+db.sqlite3
+/media/
+/static/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Test coverage
+.coverage
+htmlcov/
+
+# Cache
+.pytest_cache/
+.cache/
+
+# Build artifacts
+.pre-commit-config.yaml.bak

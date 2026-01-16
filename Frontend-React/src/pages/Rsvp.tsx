@@ -3,7 +3,7 @@ import shape2 from '../assets/shape2.png'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { FaPencil } from 'react-icons/fa6'
 import { useParams } from 'react-router-dom'
-import PlusOneForm from '../components/plusoneform'
+import PlusOneForm from '../components/PlusOneForm'
 import RsvpSuccessful from '../components/RsvpSuccessful'
 
 const Rsvp = () => {

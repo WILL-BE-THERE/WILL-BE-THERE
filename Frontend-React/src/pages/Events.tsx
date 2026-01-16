@@ -3,7 +3,7 @@ import SingleEvent from '../components/SingleEvent'
 import SignUpButton from '../components/Buttons/SignUpButton'
 import LoginButton from '../components/Buttons/LoginButton'
 import axios from 'axios'
-import generateApiHeaders from './headers'
+import generateApiHeaders from './Headers'
 import { getCookie } from './CookieUtils'
 import { eventPageData } from '../utils/local-data'
 

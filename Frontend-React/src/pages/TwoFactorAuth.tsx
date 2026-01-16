@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { getCookie } from './CookieUtils'
-import generateApiHeaders from './headers'
+import generateApiHeaders from './Headers'
 
 interface TwoFactorAuth {
   email: string

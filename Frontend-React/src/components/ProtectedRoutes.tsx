@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { useProjectContext } from '../context/project-context'
+import { useProjectContext } from '../context/ProjectContext'
 // import Dashboard from '../pages/dashboard/Dashboard'
 import { PropsWithChildren, useEffect } from 'react'
 

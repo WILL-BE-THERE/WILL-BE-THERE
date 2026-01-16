@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { menuData } from '../utils/local-data'
 import { NavLink } from 'react-router-dom'
-import { useProjectContext } from '../context/project-context'
+import { useProjectContext } from '../context/ProjectContext'
 import GetStartedButton from './Buttons/GetStartedButton'
 
 const SideBar = () => {

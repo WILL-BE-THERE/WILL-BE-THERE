@@ -2,7 +2,7 @@ import { Outlet, ScrollRestoration } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import SideBar from './components/SideBar'
-import { useProjectContext } from './context/project-context'
+import { useProjectContext } from './context/ProjectContext'
 
 const Layout = () => {
   const { isSidebarOpen } = useProjectContext()

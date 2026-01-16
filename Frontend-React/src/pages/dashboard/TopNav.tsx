@@ -1,4 +1,4 @@
-import { useProjectContext } from '../../context/project-context'
+import { useProjectContext } from '../../context/ProjectContext'
 import userImg from '../../assets/Frame 1171275068.png'
 import { IoSearchOutline, IoSettingsOutline } from 'react-icons/io5'
 import { VscBellDot } from 'react-icons/vsc'

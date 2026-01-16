@@ -1,7 +1,7 @@
 import logo from '../assets/logo.png'
 import NavLinks from './NavLinks'
 import { FaBars, FaTimes } from 'react-icons/fa'
-import { useProjectContext } from '../context/project-context'
+import { useProjectContext } from '../context/ProjectContext'
 import GetStartedButton from './Buttons/GetStartedButton'
 
 const Navbar = () => {

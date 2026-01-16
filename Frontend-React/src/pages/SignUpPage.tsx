@@ -9,9 +9,9 @@ import { FaRegEye, FaRegEyeSlash, FaSpinner } from 'react-icons/fa6'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import RegistrationSuccessful from '../components/RegistrationSuccessful'
 import axios from 'axios'
-import { useProjectContext } from './../../src/context/project-context'
+import { useProjectContext } from './../../src/context/ProjectContext'
 import { setCookie } from './CookieUtils'
-import generateApiHeaders from './headers'
+import generateApiHeaders from './Headers'
 
 const SignUpPage = () => {
   const { setSignUpUserInfo, signUpUserInfo, initSignup } = useProjectContext()
