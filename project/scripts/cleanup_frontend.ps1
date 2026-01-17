@@ -14,4 +14,4 @@ foreach ($item in $items) {
     }
 }
 
-Write-Host "Cleanup complete. Please run 'git reset' then 'git add .' again." -ForegroundColor Green
+Write-Host "Cleanup complete." -ForegroundColor Green

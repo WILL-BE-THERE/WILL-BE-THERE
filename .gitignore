@@ -42,3 +42,22 @@ htmlcov/
 
 # Build artifacts
 .pre-commit-config.yaml.bak
+
+# Vite / frontend build cache
+frontend/.vite/
+frontend/.vite/**
+
+# Frontend package lock (if you prefer not to commit it)
+# (keep if you want deterministic installs) Uncomment to ignore
+# frontend/package-lock.json
+
+# Legacy folder (already migrated)
+Frontend-React/
+
+# Local frontend artifacts
+frontend/.package-lock.json
+frontend/.env
+
+# Ignore any remaining python bytecode caches anywhere
+**/__pycache__/
+*.pyc
