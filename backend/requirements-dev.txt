@@ -1,0 +1,6 @@
+ruff
+mypy
+django-stubs
+pytest
+pytest-django
+black
