@@ -30,8 +30,12 @@ const CreateEvent = () => {
   const submitForm = () => navigate('/createeventmessage')
 
   const fileSelectHandleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return
-    const value = URL.createObjectURL(e.target.files[0])
+    if (!e.target.files || e.target.files.length === 0) return
+    const file = e.target.files[0]
+    if (!file.type || !file.type.startsWith('image/')) {
+      return
+    }
+    const value = URL.createObjectURL(file)
     setSelectedImage(value)
   }
 
