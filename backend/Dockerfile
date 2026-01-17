@@ -16,8 +16,8 @@ RUN apt-get update && apt-get install -y \
 
 # Install python dependencies
 COPY requirements.txt /app/
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip --default-timeout=100
+RUN pip install -r requirements.txt --default-timeout=100
 
 # Copy project
 COPY . /app/
