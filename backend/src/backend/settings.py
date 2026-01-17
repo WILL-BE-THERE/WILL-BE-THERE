@@ -250,3 +250,7 @@ RATELIMIT_SETTINGS = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Encryption Keys (Fernet)
+# Default key provided for development convenience only. Generate a new one for production!
+FERNET_KEYS = [env("FERNET_KEY", default="b7wDkLmqK0f0J8Gk3h6n5yX9dZ2a1c4vBNmMlLjK5_g=")]

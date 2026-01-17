@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
+from fernet_fields import EncryptedCharField
 
 
 # Create your models here.
 class userProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone_number = models.CharField(max_length=200)
+    phone_number = EncryptedCharField(max_length=200)
     is_verified = models.BooleanField(default=False)
     verification_code = models.CharField(
         max_length=50, editable=False, default="hftrg&dhdywezvxddjdd"
