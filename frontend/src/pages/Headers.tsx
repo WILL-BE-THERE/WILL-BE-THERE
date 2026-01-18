@@ -1,11 +1,17 @@
 import { getCookie } from "./CookieUtils";
 
 const generateApiHeaders = () => {
-    return {
+    const token = getCookie('Token');
+    const headers: Record<string, string> = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'X-CSRFToken': getCookie('Token'),
     };
+
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return headers;
 };
 
 export default generateApiHeaders

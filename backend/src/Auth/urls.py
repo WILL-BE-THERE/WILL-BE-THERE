@@ -7,5 +7,5 @@ urlpatterns = [
     path("login/", views.logIn, name="login"),
     path("logout/", views.logout, name="logout"),
     path("verify/", views.Verify_account, name="verify"),
-    path("resendVerification/", views.resend_Verification_code, name="resendVerification"),
+    path("resend-verification/", views.resend_Verification_code, name="resendVerification"),
 ]

@@ -4,18 +4,22 @@ import { FaArrowRight } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import SocialMediaInputs from '../components/CreateEvent/SocialMediaInputs'
 import ImageUploadSection from '../components/CreateEvent/ImageUploadSection'
+import axios from 'axios'
+import API_ENDPOINTS from '../config/api'
+import generateApiHeaders from './Headers'
 
 const CreateEvent = () => {
   const initialEventInfo = {
     eventName: '',
-    firstName: '',
-    eventDate: '',
-    eventTime: '',
+    generalInfo: '',
+    dateOfEvent: '',
+    eventClosingDate: '',
+    time: '',
     country: 'AF',
     state: 'BDS',
     city: 'Badakhstan',
     street: '',
-    imageSelected: '',
+    imageSelected: null as File | null,
     instagram: '',
     linkedin: '',
     facebook: '',
@@ -35,8 +39,8 @@ const CreateEvent = () => {
     if (!file.type || !file.type.startsWith('image/')) {
       return
     }
-    const value = URL.createObjectURL(file)
-    setSelectedImage(value)
+    setEventInfo(prev => ({ ...prev, imageSelected: file }))
+    setSelectedImage(URL.createObjectURL(file))
   }
 
   const handleChange = (
@@ -46,15 +50,45 @@ const CreateEvent = () => {
     setEventInfo((prevInfo) => ({ ...prevInfo, [name]: value }))
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    submitForm()
+
+    const formData = new FormData()
+    formData.append('eventName', eventInfo.eventName)
+    formData.append('generalInfo', eventInfo.generalInfo)
+    formData.append('dateOfEvent', eventInfo.dateOfEvent)
+    formData.append('eventClosingDate', eventInfo.eventClosingDate)
+    formData.append('time', eventInfo.time)
+    formData.append('country', eventInfo.country)
+    formData.append('state', eventInfo.state)
+    formData.append('city', eventInfo.city)
+    formData.append('street', eventInfo.street)
+    formData.append('instagram', eventInfo.instagram)
+    formData.append('facebook', eventInfo.facebook)
+    formData.append('twitter', eventInfo.twitter)
+    formData.append('linkedIn', eventInfo.linkedin)
+
+    if (eventInfo.imageSelected) {
+      formData.append('picture', eventInfo.imageSelected)
+    }
+
+    try {
+      await axios.post(API_ENDPOINTS.EVENTS.CREATE, formData, {
+        headers: {
+          ...generateApiHeaders(),
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      submitForm()
+    } catch (error) {
+      console.error('Error creating event:', error)
+      alert('Failed to create event. Please check your inputs.')
+    }
   }
 
   const handleSubmitImage = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setEventInfo((prev) => ({ ...prev, imageSelected: selectedImage }))
-    setImageUploadedMsg('Uploaded. Click the image to select a different image')
+    setImageUploadedMsg('Image ready for upload with event.')
   }
 
   return (
@@ -83,74 +117,72 @@ const CreateEvent = () => {
           <form
             id="eventInfoForm"
             onSubmit={handleSubmit}
-            className="flex flex-col gap-4"
+            className="flex flex-col gap-4 mt-7"
           >
-            <div className="mt-7 flex flex-col gap-5 sm:flex-row">
-              <label
-                htmlFor="eventName"
-                className="flex flex-col gap-1 sm:w-1/2"
-              >
-                <p className="flex gap-1 text-sm font-medium text-neutral-200">
-                  Event Name <span className="text-red-600 font-bold">*</span>
-                </p>
-                <input
-                  type="text"
-                  name="eventName"
-                  placeholder="Event name"
-                  value={eventInfo.eventName}
-                  onChange={handleChange}
-                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
-                  required
-                />
-              </label>
-              <label
-                htmlFor="firstName"
-                className="flex flex-col gap-1 sm:w-1/2"
-              >
-                <p className="flex gap-1 text-sm font-medium text-neutral-200">
-                  First Name <span className="text-red-600 font-bold">*</span>
-                </p>
-                <input
-                  type="text"
-                  name="firstName"
-                  placeholder="First name"
-                  value={eventInfo.firstName}
-                  onChange={handleChange}
-                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
-                  required
-                />
-              </label>
-            </div>
+            <label htmlFor="eventName" className="flex flex-col gap-1 w-full">
+              <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                Event Name <span className="text-red-600 font-bold">*</span>
+              </p>
+              <input
+                type="text"
+                name="eventName"
+                placeholder="Event name"
+                value={eventInfo.eventName}
+                onChange={handleChange}
+                className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                required
+              />
+            </label>
 
-            <div className="mt-7 flex flex-col gap-5 sm:flex-row">
-              <label
-                htmlFor="eventDate"
-                className="flex flex-col gap-1 sm:w-1/2"
-              >
+            <label htmlFor="generalInfo" className="flex flex-col gap-1 w-full mt-4">
+              <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                Description <span className="text-red-600 font-bold">*</span>
+              </p>
+              <textarea
+                name="generalInfo"
+                placeholder="Tell us about your event..."
+                value={eventInfo.generalInfo}
+                onChange={handleChange}
+                className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full h-32 resize-none"
+                required
+              />
+            </label>
+
+            <div className="flex flex-col gap-5 sm:flex-row mt-4">
+              <label htmlFor="dateOfEvent" className="flex flex-col gap-1 sm:w-1/3">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   Event Date <span className="text-red-600 font-bold">*</span>
                 </p>
                 <input
                   type="date"
-                  name="eventDate"
-                  value={eventInfo.eventDate}
+                  name="dateOfEvent"
+                  value={eventInfo.dateOfEvent}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
                   required
                 />
               </label>
-              <label
-                htmlFor="eventTime"
-                className="flex flex-col gap-1 sm:w-1/2"
-              >
+              <label htmlFor="eventClosingDate" className="flex flex-col gap-1 sm:w-1/3">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
-                  Time of Event{' '}
-                  <span className="text-red-600 font-bold">*</span>
+                  Closing Date <span className="text-red-600 font-bold">*</span>
+                </p>
+                <input
+                  type="date"
+                  name="eventClosingDate"
+                  value={eventInfo.eventClosingDate}
+                  onChange={handleChange}
+                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                  required
+                />
+              </label>
+              <label htmlFor="time" className="flex flex-col gap-1 sm:w-1/3">
+                <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                  Time <span className="text-red-600 font-bold">*</span>
                 </p>
                 <input
                   type="time"
-                  name="eventTime"
-                  value={eventInfo.eventTime}
+                  name="time"
+                  value={eventInfo.time}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
                   required
@@ -158,26 +190,23 @@ const CreateEvent = () => {
               </label>
             </div>
 
-            <div className="mt-7 grid gap-5 sm:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-3 mt-4">
               <label htmlFor="country" className="flex flex-col gap-1">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   Country <span className="text-red-600 font-bold">*</span>
                 </p>
-
                 <select
                   name="country"
-                  title="Countries"
+                  value={eventInfo.country}
                   onChange={handleChange}
                   required
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-2 py-3 text-sm text-neutral-200 font-medium"
                 >
-                  {Country.getAllCountries().map((option, index) => {
-                    return (
-                      <option key={index} value={option.isoCode}>
-                        {option.name}
-                      </option>
-                    )
-                  })}
+                  {Country.getAllCountries().map((option) => (
+                    <option key={option.isoCode} value={option.isoCode}>
+                      {option.name}
+                    </option>
+                  ))}
                 </select>
               </label>
               <label htmlFor="state" className="flex flex-col gap-1">
@@ -186,66 +215,52 @@ const CreateEvent = () => {
                 </p>
                 <select
                   name="state"
-                  title="States"
+                  value={eventInfo.state}
                   onChange={handleChange}
                   required
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-2 py-3 text-sm text-neutral-200 font-medium"
                 >
-                  {State.getStatesOfCountry(eventInfo.country).map(
-                    (option, index) => {
-                      return (
-                        <option key={index} value={option.isoCode}>
-                          {option.name}
-                        </option>
-                      )
-                    },
-                  )}
+                  {State.getStatesOfCountry(eventInfo.country).map((option) => (
+                    <option key={option.isoCode} value={option.isoCode}>
+                      {option.name}
+                    </option>
+                  ))}
                 </select>
               </label>
-
               <label htmlFor="city" className="flex flex-col gap-1">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">
                   City <span className="text-red-600 font-bold">*</span>
                 </p>
                 <select
                   name="city"
-                  title="Cities"
+                  value={eventInfo.city}
                   onChange={handleChange}
                   className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-2 py-3 text-sm text-neutral-200 font-medium"
                 >
-                  {City.getCitiesOfState(
-                    eventInfo.country,
-                    eventInfo.state,
-                  ).map((option, index) => {
-                    return (
-                      <option key={index} value={option.name}>
-                        {option.name}
-                      </option>
-                    )
-                  })}
+                  {City.getCitiesOfState(eventInfo.country, eventInfo.state).map((option) => (
+                    <option key={option.name} value={option.name}>
+                      {option.name}
+                    </option>
+                  ))}
                 </select>
               </label>
             </div>
 
-            <div className="mt-7 w-full gap-5">
-              <label htmlFor="street" className="flex flex-col gap-1">
-                <p className="flex gap-1 text-sm font-medium text-neutral-200">
-                  Street <span className="text-red-600 font-bold">*</span>
-                </p>
-                <p className="text-sm mt-1 text-neutral-200 mb-1">
-                  Enter the street address below
-                </p>
-                <input
-                  type="address"
-                  name="street"
-                  placeholder="e.g Dallas, Texas"
-                  value={eventInfo.street}
-                  onChange={handleChange}
-                  className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
-                  required
-                />
-              </label>
-            </div>
+            <label htmlFor="street" className="flex flex-col gap-1 mt-4">
+              <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                Street Address <span className="text-red-600 font-bold">*</span>
+              </p>
+              <input
+                type="text"
+                name="street"
+                placeholder="e.g 123 Event Lane"
+                value={eventInfo.street}
+                onChange={handleChange}
+                className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 placeholder:text-sm w-full"
+                required
+              />
+            </label>
+
             <SocialMediaInputs eventInfo={eventInfo} handleChange={handleChange} />
           </form>
         </section>
@@ -257,7 +272,7 @@ const CreateEvent = () => {
           form="eventInfoForm"
           className="flex items-center gap-3 text-white bg-primary-100 font-medium border border-primary-100 text-sm py-2 px-4 rounded-md group"
         >
-          Submit
+          Create Event
           <FaArrowRight className=" group-hover:translate-x-1 transition-all hidden sm:block" />
         </button>
       </section>

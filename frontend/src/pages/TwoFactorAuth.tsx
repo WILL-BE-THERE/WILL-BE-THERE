@@ -7,8 +7,8 @@ import {
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
-import { getCookie } from './CookieUtils'
 import generateApiHeaders from './Headers'
+import API_ENDPOINTS from '../config/api'
 
 interface TwoFactorAuth {
   email: string
@@ -40,10 +40,10 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
 
     axios
       .post(
-        'http://127.0.0.1:8000/api/account/verify/',
+        API_ENDPOINTS.AUTH.VERIFY,
         {
           email: props.email,
-          verificationCode: code,
+          verification_code: code,
         },
         {
           headers: generateApiHeaders(),
@@ -51,12 +51,12 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
       )
       .then((response) => {
         // Verification successful
-        Promise.resolve(getCookie('Token')).then((cookieData) => {
-          // Cookie data retrieved
-        })
+        if (response.data.access) {
+           // If backend returns new tokens on verify
+        }
       })
       .catch((error) => {
-        // Error handling
+        console.error('Verification failed:', error)
       })
   }
 
@@ -68,23 +68,19 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
 
     axios
       .post(
-        `http://127.0.0.1:8000/api/account/verify/`,
+        API_ENDPOINTS.AUTH.RESEND_VERIFICATION,
         {
           email: props.email,
-          verificationCode: code,
         },
         {
           headers: generateApiHeaders(),
         },
       )
-      .then((response) => {
-        // Resend successful
-        Promise.resolve(getCookie('Token')).then((cookieData) => {
-          // Cookie data retrieved
-        })
+      .then(() => {
+        console.log('Resend successful')
       })
       .catch((error) => {
-        // Error handling
+        console.error('Resend failed:', error)
       })
   }
 

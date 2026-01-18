@@ -4,36 +4,32 @@ import SignUpButton from '../components/Buttons/SignUpButton'
 import LoginButton from '../components/Buttons/LoginButton'
 import axios from 'axios'
 import generateApiHeaders from './Headers'
-import { getCookie } from './CookieUtils'
-import { eventPageData } from '../utils/local-data'
+import generateApiHeaders from './Headers'
+
+import API_ENDPOINTS from '../config/api'
 
 const fetchALLEvents = async () => {
   try {
     const response = await axios.get(
-      `http://127.0.0.1:8000/api/events/event/`,
+      API_ENDPOINTS.EVENTS.LIST,
       {
-        headers: {
-          ...generateApiHeaders(),
-          Authorization: `Token ${getCookie('Token')}`,
-        },
+        headers: generateApiHeaders(),
       },
     )
     return response.data
   } catch (error) {
     console.error('error fetching events:', error)
-    return null
+    return []
   }
 }
 
 const Events = () => {
-  const [events, setEvents] = React.useState([])
+  const [events, setEvents] = React.useState<any[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchALLEvents()
-      if (data) {
-        setEvents(data)
-      }
+      setEvents(data || [])
     }
     fetchData()
   }, [])
@@ -43,9 +39,9 @@ const Events = () => {
       <section className="w-[90%] mx-auto pt-5 lg:w-[85%]">
         <h1 className="font-medium mb-8 text-3xl">Upcoming Events</h1>
         <div className="grid gap-x-3 gap-y-6 sm:grid-cols-3 lg:grid-cols-4">
-          {eventPageData.map((item) => {
+          {events.map((item) => {
             return (
-              <React.Fragment key={item.date}>
+              <React.Fragment key={item.id}>
                 <SingleEvent {...item} />
               </React.Fragment>
             )

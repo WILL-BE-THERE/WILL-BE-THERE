@@ -1,6 +1,5 @@
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import (
     api_view,
     authentication_classes,
@@ -62,7 +61,7 @@ def getEvent(request, id):
 )
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-@authentication_classes([TokenAuthentication])
+@authentication_classes([JWTAuthentication])
 def createEvents(request):
     """view for events"""
     user = request.user

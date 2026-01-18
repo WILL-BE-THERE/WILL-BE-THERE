@@ -10,6 +10,7 @@ import { useProjectContext } from './../../src/context/ProjectContext'
 import { setCookie } from './CookieUtils'
 import generateApiHeaders from './Headers'
 import SocialLoginButtons from '../components/SignUp/SocialLoginButtons'
+import API_ENDPOINTS from '../config/api'
 
 const SignUpPage = () => {
   const { setSignUpUserInfo, signUpUserInfo, initSignup } = useProjectContext()
@@ -70,7 +71,7 @@ const SignUpPage = () => {
 
     try {
       const response = await axios.post(
-        'http://127.0.0.1:8000/api/account/signup/',
+        API_ENDPOINTS.AUTH.SIGNUP,
         signUpUserInfo,
         {
           headers: generateApiHeaders(),
@@ -80,7 +81,14 @@ const SignUpPage = () => {
       setRegSuccessful(true)
       setLoading(false)
       initSignup()
-      setCookie('Token', response.data.token, 7)
+
+      const { access, user } = response.data
+      setCookie('Token', access, 7) // Store access token
+      if (user) {
+        setCookie('id', user.id, 7)
+        setCookie('username', user.username, 7)
+        setCookie('email', user.email, 7)
+      }
     } catch (error) {
       // Error handling - log to monitoring service (Sentry) in production
       setEmailExist({ exist: true, msg: error.response.data.email[0] })

@@ -61,13 +61,17 @@ def signUp(request):
 
     if serializer.is_valid():
         user = serializer.save()
-        token, _ = Token.objects.get_or_create(user=user)
+        refresh = RefreshToken.for_user(user)
         code = verify_email(data.get("email"))
         user_profile = userProfile.objects.get(user=user)
         user_profile.verification_code = code
         user_profile.save()
         return Response(
-            {"token": token.key, "user": serializer.data},
+            {
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+                "user": serializer.data,
+            },
             status=status.HTTP_201_CREATED,
         )
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

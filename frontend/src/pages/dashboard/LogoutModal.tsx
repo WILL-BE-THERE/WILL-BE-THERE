@@ -1,8 +1,8 @@
 import { useProjectContext } from './../../context/ProjectContext'
 import logoutIcon from '../../assets/Frame 1171275239.png'
 import axios from 'axios'
-// import generateApiHeaders from '../headers'
-import { getCookie } from '../CookieUtils'
+import generateApiHeaders from '../Headers'
+import API_ENDPOINTS from '../../config/api'
 
 type LogoutModalProps = {
   setLogOut: React.Dispatch<React.SetStateAction<boolean>>
@@ -12,15 +12,13 @@ const LogoutModal = ({ setLogOut }: LogoutModalProps) => {
   const { loggedInUserInfo, setIsLoggedIn } = useProjectContext()
   const logout = async () => {
     try {
-      const token = getCookie('Token')
-      const response = await axios.post(
-        'http://127.0.0.1:8000/api/account/logout/',
+      await axios.post(
+        API_ENDPOINTS.AUTH.LOGOUT,
         {},
-        { headers: { Authorization: `Token ${token}` } },
+        { headers: generateApiHeaders() },
       )
-      // Logout successful
     } catch (error) {
-      // Error handling
+      console.error('Logout error:', error)
     }
   }
 
