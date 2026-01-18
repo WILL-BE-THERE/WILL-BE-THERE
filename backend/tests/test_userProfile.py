@@ -10,9 +10,7 @@ class UserProfileCreationTestCase(TestCase):
     """Test cases for userProfile creation"""
 
     def setUp(self):
-        self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="TestPass123!"
-        )
+        self.user = User.objects.create_user(username="testuser", email="testuser@example.com", password="TestPass123!")
 
     def test_profile_created_with_user(self):
         """Test that userProfile can be created"""
@@ -42,9 +40,7 @@ class UserProfileVerificationTestCase(APITestCase):
     """Test cases for user profile verification workflow"""
 
     def setUp(self):
-        self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="TestPass123!"
-        )
+        self.user = User.objects.create_user(username="testuser", email="testuser@example.com", password="TestPass123!")
         self.profile = userProfile.objects.create(
             user=self.user,
             phone_number="+1234567890",
@@ -75,9 +71,7 @@ class UserProfileUpdateTestCase(TestCase):
     """Test cases for updating user profile"""
 
     def setUp(self):
-        self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="TestPass123!"
-        )
+        self.user = User.objects.create_user(username="testuser", email="testuser@example.com", password="TestPass123!")
         self.profile = userProfile.objects.create(user=self.user, phone_number="+1234567890")
 
     def test_update_verification_code(self):

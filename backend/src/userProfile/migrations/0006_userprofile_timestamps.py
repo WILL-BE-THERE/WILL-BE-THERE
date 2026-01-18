@@ -22,8 +22,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="userprofile",
             name="updated_at",
-            field=models.DateTimeField(
-                auto_now=True, help_text="Timestamp when profile was last updated"
-            ),
+            field=models.DateTimeField(auto_now=True, help_text="Timestamp when profile was last updated"),
         ),
     ]

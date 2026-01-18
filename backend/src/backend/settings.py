@@ -14,9 +14,14 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+import django.utils.encoding
 import environ
 
 from .env_validation import validate_env_vars
+
+# MONKEY PATCH: django-fernet-fields uses 'force_text' which was removed in Django 4.0
+# We map it to 'force_str' to make the library work with Django 6.x.
+django.utils.encoding.force_text = django.utils.encoding.force_str
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -161,9 +166,7 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 # swagger authorization setting
 SWAGGER_SETTINGS = {
-    "SECURITY_DEFINITIONS": {
-        "api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}
-    },
+    "SECURITY_DEFINITIONS": {"api_key": {"type": "apiKey", "in": "header", "name": "Authorization"}},
 }
 
 # Password validation

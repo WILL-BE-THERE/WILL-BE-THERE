@@ -30,15 +30,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="event",
             name="created_at",
-            field=models.DateTimeField(
-                auto_now_add=True, help_text="Timestamp when event was created"
-            ),
-        ),
-        migrations.AddField(
-            model_name="event",
-            name="updated_at",
-            field=models.DateTimeField(
-                auto_now=True, help_text="Timestamp when event was last updated"
-            ),
+            field=models.DateTimeField(auto_now_add=True, help_text="Timestamp when event was created"),
         ),
     ]

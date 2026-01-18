@@ -19,9 +19,7 @@ class EventCreateTestCase(APITestCase):
         self.user = User.objects.create_user(
             username="eventuser", email="eventuser@example.com", password="TestPass123!"
         )
-        self.profile = userProfile.objects.create(
-            user=self.user, phone_number="+1234567890", is_verified=True
-        )
+        self.profile = userProfile.objects.create(user=self.user, phone_number="+1234567890", is_verified=True)
         self.token = Token.objects.create(user=self.user)
 
         # Prepare event data
@@ -47,9 +45,7 @@ class EventCreateTestCase(APITestCase):
     def test_create_event_authenticated(self):
         """Test creating event as authenticated user"""
         self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.token.key}")
-        response = self.client.post(
-            self.event_create_url, data=self.valid_event_data, format="json"
-        )
+        response = self.client.post(self.event_create_url, data=self.valid_event_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Event.objects.count(), 1)
         event = Event.objects.first()
@@ -58,9 +54,7 @@ class EventCreateTestCase(APITestCase):
 
     def test_create_event_unauthenticated(self):
         """Test creating event without authentication"""
-        response = self.client.post(
-            self.event_create_url, data=self.valid_event_data, format="json"
-        )
+        response = self.client.post(self.event_create_url, data=self.valid_event_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_create_event_missing_required_fields(self):
@@ -78,20 +72,12 @@ class EventListTestCase(APITestCase):
         self.event_list_url = "/api/events/event/"
 
         # Create two users with events
-        self.user1 = User.objects.create_user(
-            username="user1", email="user1@example.com", password="TestPass123!"
-        )
-        self.profile1 = userProfile.objects.create(
-            user=self.user1, phone_number="+1111111111", is_verified=True
-        )
+        self.user1 = User.objects.create_user(username="user1", email="user1@example.com", password="TestPass123!")
+        self.profile1 = userProfile.objects.create(user=self.user1, phone_number="+1111111111", is_verified=True)
         self.token1 = Token.objects.create(user=self.user1)
 
-        self.user2 = User.objects.create_user(
-            username="user2", email="user2@example.com", password="TestPass123!"
-        )
-        self.profile2 = userProfile.objects.create(
-            user=self.user2, phone_number="+2222222222", is_verified=True
-        )
+        self.user2 = User.objects.create_user(username="user2", email="user2@example.com", password="TestPass123!")
+        self.profile2 = userProfile.objects.create(user=self.user2, phone_number="+2222222222", is_verified=True)
         self.token2 = Token.objects.create(user=self.user2)
 
         # Create events
@@ -142,17 +128,13 @@ class EventPermissionsTestCase(APITestCase):
 
     def setUp(self):
         # Create two users
-        self.owner_user = User.objects.create_user(
-            username="owner", email="owner@example.com", password="TestPass123!"
-        )
+        self.owner_user = User.objects.create_user(username="owner", email="owner@example.com", password="TestPass123!")
         self.owner_profile = userProfile.objects.create(
             user=self.owner_user, phone_number="+1111111111", is_verified=True
         )
         self.owner_token = Token.objects.create(user=self.owner_user)
 
-        self.other_user = User.objects.create_user(
-            username="other", email="other@example.com", password="TestPass123!"
-        )
+        self.other_user = User.objects.create_user(username="other", email="other@example.com", password="TestPass123!")
         self.other_profile = userProfile.objects.create(
             user=self.other_user, phone_number="+2222222222", is_verified=True
         )

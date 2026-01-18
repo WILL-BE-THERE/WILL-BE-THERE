@@ -23,9 +23,7 @@ class EventSerializer(serializers.ModelSerializer):
         instance.eventName = validated_data.get("eventName", instance.eventName)
         instance.generalInfo = validated_data.get("generalInfo", instance.generalInfo)
         instance.dateOfEvent = validated_data.get("dateOfEvent", instance.dateOfEvent)
-        instance.eventClosingDate = validated_data.get(
-            "eventClosingDate", instance.eventClosingDate
-        )
+        instance.eventClosingDate = validated_data.get("eventClosingDate", instance.eventClosingDate)
         instance.time = validated_data.get("time", instance.time)
         instance.country = validated_data.get("country", instance.country)
         instance.state = validated_data.get("state", instance.state)
@@ -35,6 +33,4 @@ class EventSerializer(serializers.ModelSerializer):
         instance.facebook = validated_data.get("facebook", instance.facebook)
         instance.twitter = validated_data.get("twitter", instance.twitter)
         instance.linkedIn = validated_data.get("linkedIn", instance.linkedIn)
-        instance.congratulatoryMessage = validated_data.get(
-            "congratulatoryMessage", instance.congratulatoryMessage
-        )
+        instance.congratulatoryMessage = validated_data.get("congratulatoryMessage", instance.congratulatoryMessage)

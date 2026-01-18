@@ -8,9 +8,7 @@ signUp_request_body = openapi.Schema(
         "first_name": openapi.Schema(type=openapi.TYPE_STRING),
         "last_name": openapi.Schema(type=openapi.TYPE_STRING),
         "phone_number": openapi.Schema(type=openapi.TYPE_STRING),
-        "password": openapi.Schema(
-            type=openapi.TYPE_STRING, description="must be at least 8 characters"
-        ),
+        "password": openapi.Schema(type=openapi.TYPE_STRING, description="must be at least 8 characters"),
         "confirm_password": openapi.Schema(type=openapi.TYPE_STRING),
     },
 )

@@ -1,16 +1,16 @@
-# Will Be There: Your RSVP Revolution 
+# Will Be There: Your RSVP Revolution
 ----
 
-This comprehensive README provides a clear roadmap for getting your **Will Be There** server up and running.  With this system, managing event RSVPs becomes a breeze! 
+This comprehensive README provides a clear roadmap for getting your **Will Be There** server up and running.  With this system, managing event RSVPs becomes a breeze!
 
-**Table of Contents** 
+**Table of Contents**
 
-1. **Getting Started (Let's Get This Party Started!)** 
+1. **Getting Started (Let's Get This Party Started!)**
 2. **Prerequisites (Gotta Have the Essentials)**
-3. **Installation (Effortless Setup) 🪄** 
-4. **API Endpoints (Your Gateway to RSVP Management)** 
+3. **Installation (Effortless Setup) 🪄**
+4. **API Endpoints (Your Gateway to RSVP Management)**
 
-**Getting Started (Let's Get This Party Started!)** 
+**Getting Started (Let's Get This Party Started!)**
 
 Follow these steps to get your **Will Be There** server humming:
 
@@ -18,13 +18,13 @@ Follow these steps to get your **Will Be There** server humming:
 
 Before diving in, make sure you have these tools installed:
 
-*  **Python:** The programming language powering the server. (Download here: [https://www.python.org/downloads/](https://www.python.org/downloads/)) 
-*  **pip:** Python's package manager for installing dependencies. (Usually comes bundled with Python) 
+*  **Python:** The programming language powering the server. (Download here: [https://www.python.org/downloads/](https://www.python.org/downloads/))
+*  **pip:** Python's package manager for installing dependencies. (Usually comes bundled with Python)
 *  **Git:** The version control system for managing your code. (Download here: [https://git-scm.com/downloads](https://git-scm.com/downloads)) ️
 
 **Installation (Effortless Setup) 🪄**
 
-1. **Clone the Repository:** 
+1. **Clone the Repository:**
    ```bash
    git clone https://github.com/ADCH24-GROUP-22/WILL-BE-THERE.git
    ```
@@ -51,26 +51,26 @@ Before diving in, make sure you have these tools installed:
    ```bash
    pip install -r requirements.txt
    ```
-   This installs all the necessary libraries for your project. 
+   This installs all the necessary libraries for your project.
 
 6. **Database Migrations:**
    ```bash
    python manage.py makemigrations
    python manage.py migrate
    ```
-   These commands create and apply database changes. ️ ➡️ 
+   These commands create and apply database changes. ️ ➡️
 
 7. **Start the Server:**
    ```bash
    python manage.py runserver
    ```
-   Now your server is up and running, ready to handle RSVP requests! 
+   Now your server is up and running, ready to handle RSVP requests!
 
-**API Endpoints (Your Gateway to RSVP Management)** 
+**API Endpoints (Your Gateway to RSVP Management)**
 
 These endpoints allow users to interact with the Will Be There application:
 
-**1. Signup Endpoint (Welcome to the Party!)** 
+**1. Signup Endpoint (Welcome to the Party!)**
 
 * **URL:** http://127.0.0.1:8000/api/account/signup/
 * **Method:** POST
@@ -87,10 +87,10 @@ These endpoints allow users to interact with the Will Be There application:
 
 **Responses:**
 
-* **200 OK:** Signup successful!   A JSON response with user information and an authorization token is returned. 
+* **200 OK:** Signup successful!   A JSON response with user information and an authorization token is returned.
 * **400 Bad Request:**  Oops!  There's an error in your request.  Check the parameters and try again. ❗️
 
-**2. Login Endpoint (Let's Get RSVPing!)** 
+**2. Login Endpoint (Let's Get RSVPing!)**
 
 * **URL:** http://127.0.0.1:8000/api/account/login/
 * **Method:** POST
@@ -103,5 +103,4 @@ These endpoints allow users to interact with the Will Be There application:
 
 **Responses:**
 
-* **200 OK:** Login successful!  A JSON response with user information and an authorization token is returned. 
-
+* **200 OK:** Login successful!  A JSON response with user information and an authorization token is returned.

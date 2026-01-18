@@ -12,8 +12,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="userprofile",
             name="created_at",
-            field=models.DateTimeField(
-                auto_now_add=True, help_text="Timestamp when profile was created"
-            ),
+            field=models.DateTimeField(auto_now_add=True, help_text="Timestamp when profile was created"),
         ),
     ]

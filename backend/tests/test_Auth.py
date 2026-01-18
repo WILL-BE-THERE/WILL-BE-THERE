@@ -34,9 +34,7 @@ class UserSignUpTestCase(APITestCase):
 
     def test_signup_duplicate_username(self):
         """Test signup with duplicate username"""
-        User.objects.create_user(
-            username="testuser", email="existing@example.com", password="TestPass123!"
-        )
+        User.objects.create_user(username="testuser", email="existing@example.com", password="TestPass123!")
         response = self.client.post(self.signup_url, self.valid_signup_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -73,14 +71,10 @@ class UserLoginTestCase(APITestCase):
         self.login_url = "/api/account/login/"
 
         # Create a test user
-        self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="TestPass123!"
-        )
+        self.user = User.objects.create_user(username="testuser", email="testuser@example.com", password="TestPass123!")
 
         # Create associated profile and mark as verified
-        self.profile = userProfile.objects.create(
-            user=self.user, phone_number="+1234567890", is_verified=True
-        )
+        self.profile = userProfile.objects.create(user=self.user, phone_number="+1234567890", is_verified=True)
 
         # Create token
         self.token = Token.objects.create(user=self.user)
@@ -122,9 +116,7 @@ class EmailVerificationTestCase(APITestCase):
         self.verify_url = "/api/account/verify/"
 
         # Create a test user
-        self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="TestPass123!"
-        )
+        self.user = User.objects.create_user(username="testuser", email="testuser@example.com", password="TestPass123!")
 
         # Create profile with verification code
         self.profile = userProfile.objects.create(
@@ -168,9 +160,7 @@ class LogoutTestCase(APITestCase):
 
     def setUp(self):
         # Create a test user
-        self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="TestPass123!"
-        )
+        self.user = User.objects.create_user(username="testuser", email="testuser@example.com", password="TestPass123!")
         self.token = Token.objects.create(user=self.user)
         self.logout_url = "/api/account/logout/"
 

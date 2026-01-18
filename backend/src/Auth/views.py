@@ -2,7 +2,6 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import (
     api_view,
@@ -10,9 +9,10 @@ from rest_framework.decorators import (
     permission_classes,
     throttle_classes,
 )
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
+from rest_framework_simplejwt.tokens import RefreshToken
 from userProfile.models import userProfile
 
 from .email import verify_email
@@ -46,6 +46,7 @@ class VerifyThrottle(AnonRateThrottle):
     responses={200: "Success", 400: "Bad Request"},
 )
 @api_view(["POST"])
+@permission_classes([AllowAny])
 @throttle_classes([SignUpThrottle])
 def signUp(request):
     """view to signup users"""
@@ -79,6 +80,7 @@ def signUp(request):
     responses={200: "Success", 404: "Not Found"},
 )
 @api_view(["POST"])
+@permission_classes([AllowAny])
 @throttle_classes([VerifyThrottle])
 def Verify_account(request):
     """resend verification code"""
@@ -111,6 +113,7 @@ def Verify_account(request):
     responses={200: "Success", 404: "Not Found"},
 )
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def resend_Verification_code(request):
     """resend verification code"""
     email = request.data.get("email")
@@ -135,12 +138,21 @@ def resend_Verification_code(request):
     responses={200: "Success", 401: "Unauthorized"},
 )
 @api_view(["POST"])
+@permission_classes([AllowAny])
 @throttle_classes([LoginThrottle])
 def logIn(request):
     username = request.data.get("email")
     password = request.data.get("password")
 
     user = authenticate(username=username, password=password)
+    # If authentication fails, try to find user by email and use their username
+    if user is None:
+        try:
+            user_by_email = User.objects.get(email=username)
+            user = authenticate(username=user_by_email.username, password=password)
+        except User.DoesNotExist:
+            pass
+
     if user is not None:
         # Check if user's email is verified
         try:
@@ -151,14 +163,22 @@ def logIn(request):
                     status=status.HTTP_403_FORBIDDEN,
                 )
         except userProfile.DoesNotExist:
-            return Response(
-                {"error": "User profile not found"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+            if user.is_superuser:
+                # Create profile automatically for superusers if missing
+                user_profile = userProfile.objects.create(user=user, is_verified=True)
+            else:
+                return Response(
+                    {"error": "User profile not found"},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                )
 
-        token, _ = Token.objects.get_or_create(user=user)
+        refresh = RefreshToken.for_user(user)
         return Response(
-            {"token": token.key, "user": userSerializer(user).data},
+            {
+                "refresh": str(refresh),
+                "access": str(refresh.access_token),
+                "user": userSerializer(user).data,
+            },
             status=status.HTTP_200_OK,
         )
     return Response(
@@ -184,11 +204,11 @@ def logIn(request):
 )
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
-@authentication_classes([TokenAuthentication])
+@authentication_classes(["rest_framework_simplejwt.authentication.JWTAuthentication"])
 def logout(request):
     try:
-        token = Token.objects.get(user=request.user)
-        token.delete()
+        # SimpleJWT logout usually involves blacklisting the token if rotation is enabled
+        # For a basic logout, we just return success as the client should delete the token
         return Response({"message": "Logout successful"}, status=status.HTTP_200_OK)
     except Token.DoesNotExist:
         return Response({"detail": "Please login"}, status=status.HTTP_401_UNAUTHORIZED)
