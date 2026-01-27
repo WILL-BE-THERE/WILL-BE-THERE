@@ -1,13 +1,12 @@
 import shape1 from '../assets/shape1.png'
 import shape2 from '../assets/shape2.png'
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState, useEffect } from 'react'
 import { FaPencil } from 'react-icons/fa6'
 import { useParams } from 'react-router-dom'
 import PlusOneForm from '../components/PlusOneForm'
 import RsvpSuccessful from '../components/RsvpSuccessful'
 import axios from 'axios'
 import API_ENDPOINTS from '../config/api'
-import generateApiHeaders from './Headers'
 import { FaSpinner } from 'react-icons/fa'
 
 const Rsvp = () => {
@@ -18,15 +17,29 @@ const Rsvp = () => {
     guestName: '',
     guestEmail: '',
     isAttending: 'Yes',
-    isFriendsComing: 'Yes',
+    isFriendsComing: 'No',
     message: '',
   }
 
   const [userDetails, setUserDetails] = useState(initialDetails)
+  const [eventName, setEventName] = useState('')
   const [friendsNames, setFriendsNames] = useState<string[]>([])
   const [comingWithFriends, setComingWithFriends] = useState(false)
   const [rsvpSuccessful, setRsvpSuccessful] = useState(false)
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const response = await axios.get(API_ENDPOINTS.EVENTS.GET(id!))
+        setEventName(response.data.eventName)
+      } catch (error) {
+        console.error('Error fetching event name:', error)
+        setEventName('this event')
+      }
+    }
+    if (id) fetchEvent()
+  }, [id])
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -35,34 +48,41 @@ const Rsvp = () => {
     setUserDetails((prevState) => ({ ...prevState, [name]: value }))
   }
 
+  const submitRsvp = async (details: typeof initialDetails, friends: string[]) => {
+    setLoading(true)
+    try {
+      const payload = {
+        ...details,
+        event: parseInt(id || '0'),
+        message: details.message + (friends.length > 0 ? `\n\nAttendees coming with me:\n- ${friends.join('\n- ')}` : '')
+      }
+
+      await axios.post(API_ENDPOINTS.EVENTS.RSVP_CREATE, payload)
+
+      setRsvpSuccessful(true)
+      // We don't reset name here because RsvpSuccessful might need it
+    } catch (error: any) {
+      console.error('Error submitting RSVP:', error)
+      alert(error.response?.data?.message || 'Failed to submit RSVP. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (userDetails.isFriendsComing === 'Yes' && friendsNames.length === 0) {
       setComingWithFriends(true)
       return
     }
+    await submitRsvp(userDetails, friendsNames)
+  }
 
-    setLoading(true)
-    try {
-      const payload = {
-        ...userDetails,
-        event: parseInt(id || '0'),
-        message: userDetails.message + (friendsNames.length > 0 ? `\nFriends: ${friendsNames.join(', ')}` : '')
-      }
-
-      await axios.post(API_ENDPOINTS.EVENTS.RSVP_CREATE, payload, {
-        headers: generateApiHeaders()
-      })
-
-      setRsvpSuccessful(true)
-      setUserDetails(initialDetails)
-      setFriendsNames([])
-    } catch (error) {
-      console.error('Error submitting RSVP:', error)
-      alert('Failed to submit RSVP. Please try again.')
-    } finally {
-      setLoading(false)
-    }
+  const handleFriendsSubmit = (names: string[]) => {
+    setFriendsNames(names)
+    setComingWithFriends(false)
+    // Auto-submit now that we have names
+    submitRsvp(userDetails, names)
   }
 
   return (
@@ -70,11 +90,11 @@ const Rsvp = () => {
       {comingWithFriends && (
         <PlusOneForm
           setComingWithFriends={setComingWithFriends}
-          setFriendsNames={setFriendsNames}
+          setFriendsNames={handleFriendsSubmit}
         />
       )}
 
-      {rsvpSuccessful && <RsvpSuccessful />}
+      {rsvpSuccessful && <RsvpSuccessful eventName={eventName} />}
       <section className="h-[60rem] w-full bg-white relative flex overflow-hidden">
         <img
           src={shape2}
@@ -97,16 +117,16 @@ const Rsvp = () => {
               Don't be left behind
             </h1>
             <p className="text-sm mb-8 font-light">
-              RSVP to secure a spot and avoid missing out on the next big event
+              RSVP to secure a spot and avoid missing out on {eventName ? `"${eventName}"` : 'the next big event'}
             </p>
           </div>
         </aside>
         <aside className="w-full h-full relative z-[2] grid py-12 sm:w-1/2">
           <div className="w-full h-fit text-black px-5 sm:px-14 lg:w-[75%]">
-            <h1 className="text-2xl mb-2 font-bold">Confirm your attendace</h1>
+            <h1 className="text-2xl mb-2 font-bold">Confirm your attendance</h1>
             <p className="text-sm mb-1 font-medium text-neutral-200">
               Please fill in the information below to confirm your attendance
-              and get added to the guest list
+              at {eventName ? `"${eventName}"` : 'the event'} and get added to the guest list
             </p>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 mt-8">
               <label htmlFor="eventName" className="flex flex-col gap-1 w-full">
@@ -115,10 +135,9 @@ const Rsvp = () => {
                   <input
                     type="text"
                     name="event"
-                    value={userDetails.event}
-                    onChange={handleChange}
+                    value={eventName || `Event #${id}`}
                     disabled
-                    className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 w-full disabled:bg-gray-200 disabled:cursor-not-allowed disabled:font-medium disabled:text-neutral-200"
+                    className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 w-full disabled:bg-gray-100 disabled:cursor-not-allowed disabled:font-semibold disabled:text-primary-100"
                   />
                 </aside>
               </label>

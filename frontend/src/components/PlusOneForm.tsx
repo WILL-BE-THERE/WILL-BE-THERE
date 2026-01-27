@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useState } from 'react'
 
 type PlusOneFormProps = {
   setComingWithFriends: React.Dispatch<React.SetStateAction<boolean>>
-  setFriendsNames: React.Dispatch<React.SetStateAction<string[]>>
+  setFriendsNames: (names: string[]) => void
 }
 
 const PlusOneForm = ({

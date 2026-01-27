@@ -1,10 +1,17 @@
 import ViewDetailsButton from './Buttons/ViewDetailsButton'
+import API_ENDPOINTS from '../config/api'
 
 const SingleEvent = (props: any) => {
   const { picture, eventName, dateOfEvent, noOfRsvp, img, date, id } = props
-  const displayImg = picture || img
+  let displayImg = picture || img
   const displayDate = dateOfEvent || date
   const displayRsvp = noOfRsvp || 0
+
+  // Ensure image URL is absolute
+  if (displayImg && !displayImg.startsWith('http')) {
+    const baseUrl = API_ENDPOINTS.AUTH.LOGIN.split('/api')[0]
+    displayImg = `${baseUrl}${displayImg.startsWith('/') ? '' : '/'}${displayImg}`
+  }
 
   return (
     <div className="bg-white rounded-lg drop-shadow-xl shadow-lg shadow-black/10 pb-10 sm:pb-8">

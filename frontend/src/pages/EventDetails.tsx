@@ -2,7 +2,6 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import API_ENDPOINTS from '../config/api'
-import generateApiHeaders from './Headers'
 
 const EventDetails = () => {
   const navigate = useNavigate()
@@ -14,8 +13,7 @@ const EventDetails = () => {
     const fetchEventData = async () => {
       try {
         const response = await axios.get(
-          API_ENDPOINTS.EVENTS.GET(id!),
-          { headers: generateApiHeaders() }
+          API_ENDPOINTS.EVENTS.GET(id!)
         )
         setEventData(response.data)
       } catch (error) {
@@ -47,7 +45,12 @@ const EventDetails = () => {
     )
   }
 
-  const displayImg = data.picture || data.img
+  let displayImg = data.picture || data.img
+  // Ensure image URL is absolute
+  if (displayImg && !displayImg.startsWith('http')) {
+    const baseUrl = API_ENDPOINTS.AUTH.LOGIN.split('/api')[0]
+    displayImg = `${baseUrl}${displayImg.startsWith('/') ? '' : '/'}${displayImg}`
+  }
   const displayDate = data.dateOfEvent || data.date
   const displayAbout = data.generalInfo || data.about
 

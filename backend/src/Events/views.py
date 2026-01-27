@@ -5,7 +5,7 @@ from rest_framework.decorators import (
     authentication_classes,
     permission_classes,
 )
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -23,6 +23,7 @@ from .swagger import createEvent_request_body
     responses={200: "Success", 400: "BadRequest"},
 )
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def getEvents(request):
     """view for fetching all events"""
     try:
@@ -30,7 +31,7 @@ def getEvents(request):
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
-        return Response({"error": e}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @swagger_auto_schema(
@@ -40,6 +41,7 @@ def getEvents(request):
     responses={200: "Success", 404: "Not Found"},
 )
 @api_view(["GET"])
+@permission_classes([AllowAny])
 def getEvent(request, id):
     """view for fetching single event"""
     try:
@@ -109,6 +111,7 @@ def deleteEvent(request, id):
 
 
 @api_view(["POST"])
+@permission_classes([AllowAny])
 def createRSVP(request):
     """view for creating an RSVP"""
     serializer = RSVPSerializer(data=request.data)
