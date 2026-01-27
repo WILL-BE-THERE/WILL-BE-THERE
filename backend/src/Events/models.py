@@ -27,3 +27,18 @@ class Event(models.Model):
 
     def __str__(self):
         return self.eventName
+
+
+class RSVP(models.Model):
+    "model for event RSVPs"
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="rsvps")
+    guestName = models.CharField(max_length=200)
+    guestEmail = models.EmailField()
+    isAttending = models.CharField(max_length=10, default="Yes")
+    isFriendsComing = models.CharField(max_length=10, default="No")
+    message = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.guestName} - {self.event.eventName}"

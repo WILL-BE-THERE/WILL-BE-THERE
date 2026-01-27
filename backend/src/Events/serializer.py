@@ -1,15 +1,20 @@
 from rest_framework import serializers
 
-from .models import Event
+from .models import RSVP, Event
 
 
 class EventSerializer(serializers.ModelSerializer):
     "serializer for events"
 
+    noOfRsvp = serializers.SerializerMethodField()
+
     class Meta:
         model = Event
         fields = "__all__"
-        read_only_fields = ["user"]
+        read_only_fields = ["user", "noOfRsvp"]
+
+    def get_noOfRsvp(self, obj):
+        return obj.rsvps.count()
 
     def create(self, validated_data):
         """creating a new event"""
@@ -34,3 +39,13 @@ class EventSerializer(serializers.ModelSerializer):
         instance.twitter = validated_data.get("twitter", instance.twitter)
         instance.linkedIn = validated_data.get("linkedIn", instance.linkedIn)
         instance.congratulatoryMessage = validated_data.get("congratulatoryMessage", instance.congratulatoryMessage)
+        instance.save()
+        return instance
+
+
+class RSVPSerializer(serializers.ModelSerializer):
+    "serializer for RSVPs"
+
+    class Meta:
+        model = RSVP
+        fields = "__all__"

@@ -2,13 +2,12 @@ import { ChangeEvent, FormEvent, useState } from 'react'
 
 type PlusOneFormProps = {
   setComingWithFriends: React.Dispatch<React.SetStateAction<boolean>>
-
-  setRsvpSuccessful: React.Dispatch<React.SetStateAction<boolean>>
+  setFriendsNames: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 const PlusOneForm = ({
   setComingWithFriends,
-  setRsvpSuccessful,
+  setFriendsNames,
 }: PlusOneFormProps) => {
   const friendsDetails = {
     // list: [],
@@ -28,8 +27,10 @@ const PlusOneForm = ({
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    const names = Object.values(friendsComing).filter(name => name.trim() !== '')
+    setFriendsNames(names)
     setComingWithFriends(false)
-    setRsvpSuccessful(true)
+    // We don't set successful yet because the main Rsvp form needs to submit
   }
 
   return (

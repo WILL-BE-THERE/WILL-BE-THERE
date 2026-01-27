@@ -5,12 +5,16 @@ import { FaPencil } from 'react-icons/fa6'
 import { useParams } from 'react-router-dom'
 import PlusOneForm from '../components/PlusOneForm'
 import RsvpSuccessful from '../components/RsvpSuccessful'
+import axios from 'axios'
+import API_ENDPOINTS from '../config/api'
+import generateApiHeaders from './Headers'
+import { FaSpinner } from 'react-icons/fa'
 
 const Rsvp = () => {
   const { id } = useParams()
 
   const initialDetails = {
-    eventName: id,
+    event: id,
     guestName: '',
     guestEmail: '',
     isAttending: 'Yes',
@@ -19,8 +23,10 @@ const Rsvp = () => {
   }
 
   const [userDetails, setUserDetails] = useState(initialDetails)
+  const [friendsNames, setFriendsNames] = useState<string[]>([])
   const [comingWithFriends, setComingWithFriends] = useState(false)
   const [rsvpSuccessful, setRsvpSuccessful] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -29,14 +35,33 @@ const Rsvp = () => {
     setUserDetails((prevState) => ({ ...prevState, [name]: value }))
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (userDetails.isFriendsComing === 'Yes') {
+    if (userDetails.isFriendsComing === 'Yes' && friendsNames.length === 0) {
       setComingWithFriends(true)
-    } else {
-      setComingWithFriends(false)
-      setUserDetails(initialDetails)
+      return
+    }
+
+    setLoading(true)
+    try {
+      const payload = {
+        ...userDetails,
+        event: parseInt(id || '0'),
+        message: userDetails.message + (friendsNames.length > 0 ? `\nFriends: ${friendsNames.join(', ')}` : '')
+      }
+
+      await axios.post(API_ENDPOINTS.EVENTS.RSVP_CREATE, payload, {
+        headers: generateApiHeaders()
+      })
+
       setRsvpSuccessful(true)
+      setUserDetails(initialDetails)
+      setFriendsNames([])
+    } catch (error) {
+      console.error('Error submitting RSVP:', error)
+      alert('Failed to submit RSVP. Please try again.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -45,7 +70,7 @@ const Rsvp = () => {
       {comingWithFriends && (
         <PlusOneForm
           setComingWithFriends={setComingWithFriends}
-          setRsvpSuccessful={setRsvpSuccessful}
+          setFriendsNames={setFriendsNames}
         />
       )}
 
@@ -89,8 +114,8 @@ const Rsvp = () => {
                 <aside className="relative flex">
                   <input
                     type="text"
-                    name="eventName"
-                    value={userDetails.eventName}
+                    name="event"
+                    value={userDetails.event}
                     onChange={handleChange}
                     disabled
                     className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 w-full disabled:bg-gray-200 disabled:cursor-not-allowed disabled:font-medium disabled:text-neutral-200"
@@ -220,9 +245,10 @@ const Rsvp = () => {
               </article>
               <button
                 type="submit"
-                className="w-fit py-2 px-8 mt-5 bg-blue-700 text-white rounded"
+                disabled={loading}
+                className="w-fit py-2 px-8 mt-5 bg-blue-700 text-white rounded flex items-center justify-center min-w-[100px]"
               >
-                Submit
+                {loading ? <FaSpinner className="animate-spin" /> : 'Submit'}
               </button>
             </form>
           </div>

@@ -14,7 +14,7 @@ const EventDetails = () => {
     const fetchEventData = async () => {
       try {
         const response = await axios.get(
-          `${API_ENDPOINTS.EVENTS.LIST}${id}`,
+          API_ENDPOINTS.EVENTS.GET(id!),
           { headers: generateApiHeaders() }
         )
         setEventData(response.data)

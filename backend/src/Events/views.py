@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .models import Event
-from .serializer import EventSerializer
+from .serializer import EventSerializer, RSVPSerializer
 from .swagger import createEvent_request_body
 
 # Create your views here.
@@ -70,4 +70,49 @@ def createEvents(request):
     if serializer.is_valid():
         serializer.save()
         return Response({"event": serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["PUT", "PATCH"])
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+def updateEvent(request, id):
+    """view for updating an event"""
+    try:
+        event = Event.objects.get(id=id)
+        # Check if the user owns the event
+        if event.user != request.user:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = EventSerializer(event, data=request.data, partial=True, context={"user": request.user})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Event.DoesNotExist:
+        return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["DELETE"])
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+def deleteEvent(request, id):
+    """view for deleting an event"""
+    try:
+        event = Event.objects.get(id=id)
+        if event.user != request.user:
+            return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        event.delete()
+        return Response({"message": "Event deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    except Event.DoesNotExist:
+        return Response({"error": "Event not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(["POST"])
+def createRSVP(request):
+    """view for creating an RSVP"""
+    serializer = RSVPSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

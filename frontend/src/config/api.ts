@@ -18,10 +18,11 @@ export const API_ENDPOINTS = {
   // Events endpoints
   EVENTS: {
     LIST: `${API_BASE_URL}/api/events/event/`,
-    GET: (id: number) => `${API_BASE_URL}/api/events/event/${id}/`,
+    GET: (id: string | number) => `${API_BASE_URL}/api/events/event/${id}/`,
     CREATE: `${API_BASE_URL}/api/events/create/`,
-    UPDATE: (id: number) => `${API_BASE_URL}/api/events/event/${id}/update/`,
-    DELETE: (id: number) => `${API_BASE_URL}/api/events/event/${id}/delete/`,
+    UPDATE: (id: string | number) => `${API_BASE_URL}/api/events/event/${id}/update/`,
+    DELETE: (id: string | number) => `${API_BASE_URL}/api/events/event/${id}/delete/`,
+    RSVP_CREATE: `${API_BASE_URL}/api/events/rsvp/create/`,
   },
 }
 
