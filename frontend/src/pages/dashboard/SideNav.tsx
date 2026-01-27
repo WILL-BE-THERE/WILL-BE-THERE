@@ -96,16 +96,13 @@ const SideNav = () => {
 
         <button
           type="button"
-          className="h-full w-fit pb-5 flex items-end gap-2 text-red-600 font-medium text-sm pl-5 group"
+          onClick={() => setLogOut(true)}
+          className="h-full w-full pb-5 flex items-end gap-2 text-red-600 font-medium text-sm pl-10 group mt-auto"
         >
           <MdLogout className="text-base" />
-          <button
-            type="button"
-            onClick={() => setLogOut(true)}
-            className=" group-hover:translate-x-2 transition-all"
-          >
+          <span className=" group-hover:translate-x-2 transition-all">
             Logout
-          </button>
+          </span>
         </button>
       </div>
     </>

@@ -16,10 +16,21 @@ class EventSerializer(serializers.ModelSerializer):
     def get_noOfRsvp(self, obj):
         return obj.rsvps.count()
 
+    def format_url(self, url):
+        if url and not url.startswith(("http://", "https://")):
+            return f"https://{url}"
+        return url
+
     def create(self, validated_data):
         """creating a new event"""
         user = self.context["user"]
         validated_data["user"] = user
+
+        # Auto-format URLs
+        for field in ["instagram", "facebook", "twitter", "linkedIn"]:
+            if field in validated_data:
+                validated_data[field] = self.format_url(validated_data[field])
+
         return Event.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
@@ -34,10 +45,13 @@ class EventSerializer(serializers.ModelSerializer):
         instance.state = validated_data.get("state", instance.state)
         instance.city = validated_data.get("city", instance.city)
         instance.street = validated_data.get("street", instance.street)
-        instance.instagram = validated_data.get("instagram", instance.instagram)
-        instance.facebook = validated_data.get("facebook", instance.facebook)
-        instance.twitter = validated_data.get("twitter", instance.twitter)
-        instance.linkedIn = validated_data.get("linkedIn", instance.linkedIn)
+
+        # Auto-format and update social URLs
+        instance.instagram = self.format_url(validated_data.get("instagram", instance.instagram))
+        instance.facebook = self.format_url(validated_data.get("facebook", instance.facebook))
+        instance.twitter = self.format_url(validated_data.get("twitter", instance.twitter))
+        instance.linkedIn = self.format_url(validated_data.get("linkedIn", instance.linkedIn))
+
         instance.congratulatoryMessage = validated_data.get("congratulatoryMessage", instance.congratulatoryMessage)
         instance.save()
         return instance

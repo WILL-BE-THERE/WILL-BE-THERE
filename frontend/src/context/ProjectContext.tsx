@@ -58,7 +58,7 @@ const loggedInDetails = {
 const ProjectProvider = ({ children }: ProjectContextProviderProps) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<Bool>(false)
   const [signUpClicked, setSignUpClicked] = useState<Bool>(false)
-  const [isLoggedIn, setIsLoggedIn] = useState<Bool>(false)
+  const [isLoggedIn, setIsLoggedIn] = useState<Bool>(!!getCookie('Token'))
   const [signUpUserInfo, setSignUpUserInfo] = useState(signUpInfo)
   const [loginUserInfo, setLoginUserInfo] = useState(loginInfo)
   const [loggedInUserInfo, setLoggedInUserInfo] = useState(loggedInDetails)
