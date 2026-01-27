@@ -140,16 +140,25 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 DATABASES = {"default": env.db("DATABASE_URL", default=f"sqlite:///{BASE_DIR}/db.sqlite3")}
 
-# Caching Configuration (Redis)
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": env("REDIS_URL", default="redis://127.0.0.1:6379/1"),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        },
+# Caching Configuration
+if env("REDIS_URL", default=None):
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": env("REDIS_URL"),
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+        }
     }
-}
+else:
+    # Fallback to local memory cache for development if Redis is not available
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+            "LOCATION": "unique-snowflake",
+        }
+    }
 
 # Use Redis for Sessions
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
