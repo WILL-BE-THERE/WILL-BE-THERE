@@ -4,7 +4,6 @@ import SignUpButton from '../components/Buttons/SignUpButton'
 import LoginButton from '../components/Buttons/LoginButton'
 import axios from 'axios'
 import generateApiHeaders from './Headers'
-import generateApiHeaders from './Headers'
 
 import API_ENDPOINTS from '../config/api'
 
