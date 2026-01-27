@@ -7,81 +7,101 @@ import {
   faSpinner,
 } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
+import { useLocation, useNavigate } from 'react-router-dom'
 import generateApiHeaders from './Headers'
 import API_ENDPOINTS from '../config/api'
 
-interface TwoFactorAuth {
-  email: string
-  verificationCode: string
-  timer: number
+interface TwoFactorAuthProps {
+  email?: string
+  verificationCode?: string
+  timer?: number
   onVerify?: () => void
   onResend?: () => void
 }
 
-function TwoFactorAuthComponent(props: TwoFactorAuth) {
+function TwoFactorAuthComponent(props: TwoFactorAuthProps) {
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  // Get email from props or location state
+  const email = props.email || location.state?.email || ''
+  const initialTimer = props.timer || 60
+
   const [code, setCode] = React.useState('')
-  const [countdown, setCountdown] = React.useState(props.timer)
+  const [countdown, setCountdown] = React.useState(initialTimer)
+  const [loading, setLoading] = React.useState(false)
+  const [errorMessage, setErrorMessage] = React.useState('')
+  const [successMessage, setSuccessMessage] = React.useState('')
 
   React.useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCountdown(countdown - 1)
-      if (countdown === 0) {
-        setCountdown(0)
-        clearInterval(intervalId)
-      }
-    }, 1000)
-    return () => clearInterval(intervalId)
+    if (!email) {
+      console.error('No email provided for verification')
+      // Optional: navigate back if no email
+    }
+  }, [email])
+
+  React.useEffect(() => {
+    let intervalId: any
+    if (countdown > 0) {
+      intervalId = setInterval(() => {
+        setCountdown((prev) => prev - 1)
+      }, 1000)
+    }
+    return () => {
+      if (intervalId) clearInterval(intervalId)
+    }
   }, [countdown])
 
-  const handleVerify = () => {
-    if (props.onVerify) {
-      props.onVerify()
-    }
+  const handleVerify = async () => {
+    setErrorMessage('')
+    setSuccessMessage('')
+    setLoading(true)
 
-    axios
-      .post(
+    try {
+      await axios.post(
         API_ENDPOINTS.AUTH.VERIFY,
         {
-          email: props.email,
+          email: email,
           verification_code: code,
         },
         {
           headers: generateApiHeaders(),
         },
       )
-      .then((response) => {
-        // Verification successful
-        if (response.data.access) {
-           // If backend returns new tokens on verify
-        }
-      })
-      .catch((error) => {
-        console.error('Verification failed:', error)
-      })
+
+      setSuccessMessage('Email verified successfully! Redirecting to login...')
+      setTimeout(() => {
+        navigate('/login')
+      }, 2000)
+    } catch (error: any) {
+      setErrorMessage(error.response?.data?.error || 'Verification failed')
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const handleResend = () => {
-    if (props.onResend) {
-      props.onResend()
-      setCountdown(props.timer) // Reset timer on resend
-    }
+  const handleResend = async () => {
+    setErrorMessage('')
+    setSuccessMessage('')
+    setLoading(true)
 
-    axios
-      .post(
+    try {
+      await axios.post(
         API_ENDPOINTS.AUTH.RESEND_VERIFICATION,
         {
-          email: props.email,
+          email: email,
         },
         {
           headers: generateApiHeaders(),
         },
       )
-      .then(() => {
-        console.log('Resend successful')
-      })
-      .catch((error) => {
-        console.error('Resend failed:', error)
-      })
+      setSuccessMessage('Verification code resent!')
+      setCountdown(initialTimer)
+    } catch (error: any) {
+      setErrorMessage(error.response?.data?.error || 'Failed to resend code')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -118,37 +138,41 @@ function TwoFactorAuthComponent(props: TwoFactorAuth) {
           <p className="font-medium text-neutral-200 mb-2">
             Enter the verification code sent to
           </p>
-          <p className="text-sm text-gray-500">{props.email}</p>
+          <p className="text-sm text-gray-500">{email}</p>
           <input
             type="text"
             placeholder="Verification Code"
             value={code}
+            maxLength={4}
             onChange={(e) => setCode(e.target.value)}
-            className="w-full border border-gray-300 rounded-md bg-[#fafafa] px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+            className="w-full border border-gray-300 rounded-md bg-[#fafafa] px-3 py-2 mt-4 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
           />
+          {errorMessage && (
+            <p className="text-red-600 text-xs mt-2">{errorMessage}</p>
+          )}
+          {successMessage && (
+            <p className="text-green-600 text-xs mt-2">{successMessage}</p>
+          )}
           <button
             onClick={handleVerify}
-            disabled={code.length !== 4}
-            className="disabled:bg-gray-300 mt-4 py-2 px-4 text-sm font-medium text-center text-white rounded bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            disabled={code.length !== 4 || loading}
+            className="disabled:bg-gray-300 mt-4 py-2 px-4 text-sm font-medium text-center text-white rounded bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-1 focus:ring-blue-500 w-full flex justify-center items-center"
           >
-            Verify
+            {loading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Verify'}
           </button>
-          <p className="text-sm text-gray-500 mt-4">
+          <p className="text-sm text-gray-500 mt-4 text-center">
             Didn't get the code?{' '}
-            {countdown === 0 && (
+            {countdown === 0 ? (
               <span
                 onClick={handleResend}
-                className="text-blue-500 cursor-pointer"
+                className="text-blue-500 cursor-pointer hover:underline"
               >
                 Resend
               </span>
+            ) : (
+              <span className="text-gray-400">Resend in ({countdown}s)</span>
             )}
           </p>
-          {countdown !== 0 && (
-            <p className="text-blue-500">
-              ({countdown}s) {/* Countdown timer */}
-            </p>
-          )}
         </div>
       </section>
     </div>

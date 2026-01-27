@@ -71,9 +71,17 @@ const LoginPage = () => {
       setLoading(false)
     } catch (error: any) {
       // Error handling - log to monitoring service (Sentry) in production
-      setErrorMessage(error.response?.data?.error || 'Email or password incorrect')
+      const errorMsg = error.response?.data?.error || 'Email or password incorrect'
+      setErrorMessage(errorMsg)
       setWrongInfoLogin(true)
       setLoading(false)
+
+      // If account exists but not verified, redirect to verification page
+      if (error.response?.status === 403) {
+        setTimeout(() => {
+          navigate('/twofactorauth', { state: { email: loginUserInfo.email } })
+        }, 2000)
+      }
     }
     setLoginUserInfo((prevInfo) => ({ ...prevInfo, password: '' }))
     setSeePassword(false)

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import shape1 from '../assets/shape1.png'
 import shape2 from '../assets/shape2.png'
 import shape3 from '../assets/shape3.png'
@@ -24,6 +24,8 @@ const SignUpPage = () => {
   const [phoneError, setPhoneError] = useState(false)
   const [regSuccessFull, setRegSuccessful] = useState(false)
 
+  const navigate = useNavigate()
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setSignUpUserInfo((prevState) => ({ ...prevState, [name]: value }))
@@ -36,16 +38,6 @@ const SignUpPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // if (
-    //   signUpUserInfo.email.match(emailRegex) &&
-    //   signUpUserInfo.first_name &&
-    //   signUpUserInfo.last_name &&
-    //   signUpUserInfo.phone_number.match(phoneRegex) &&
-    //   signUpUserInfo.password.match(passRegex) &&
-    //   signUpUserInfo.confirm_password.match(passRegex)
-    // ) {
-    //   initSignup()
-    // }
 
     if (!emailRegex.test(signUpUserInfo.email)) {
       setErrors(true)
@@ -80,7 +72,6 @@ const SignUpPage = () => {
       setEmailExist({ exist: false, msg: '' })
       setRegSuccessful(true)
       setLoading(false)
-      initSignup()
 
       const { access, user } = response.data
       setCookie('Token', access, 7) // Store access token
@@ -89,9 +80,16 @@ const SignUpPage = () => {
         setCookie('username', user.username, 7)
         setCookie('email', user.email, 7)
       }
-    } catch (error) {
+
+      // Redirect to verification page
+      setTimeout(() => {
+        navigate('/twofactorauth', { state: { email: signUpUserInfo.email } })
+        initSignup()
+      }, 2000)
+
+    } catch (error: any) {
       // Error handling - log to monitoring service (Sentry) in production
-      setEmailExist({ exist: true, msg: error.response.data.email[0] })
+      setEmailExist({ exist: true, msg: error.response?.data?.email?.[0] || 'Signup failed' })
       setRegSuccessful(false)
       setLoading(false)
     }
