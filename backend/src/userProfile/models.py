@@ -9,6 +9,7 @@ class userProfile(models.Model):
     phone_number = EncryptedCharField(max_length=200)
     is_verified = models.BooleanField(default=False)
     verification_code = models.CharField(max_length=50, editable=False, default="hftrg&dhdywezvxddjdd")
+    reset_password_code = models.CharField(max_length=50, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, help_text="Timestamp when profile was created")
     updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when profile was last updated")
 

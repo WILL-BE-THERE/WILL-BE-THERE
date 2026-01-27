@@ -16,7 +16,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from userProfile.models import userProfile
 
 from .email import verify_email
-from .serializer import userSerializer
+from .serializer import (
+    RequestPasswordResetSerializer,
+    ResetPasswordSerializer,
+    userSerializer,
+)
 from .swagger import (
     VerifyAccount_request_body,
     logIn_request_body,
@@ -218,3 +222,70 @@ def logout(request):
         return Response({"detail": "Please login"}, status=status.HTTP_401_UNAUTHORIZED)
     except Exception as e:
         return Response({"detail": str(e)}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+@swagger_auto_schema(
+    method="post",
+    operation_description="Request a password reset code. The code will be sent to the user's email.",
+    request_body=RequestPasswordResetSerializer,
+    responses={200: "Success", 404: "Not Found"},
+)
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def requestPasswordReset(request):
+    """endpoint to request a password reset code"""
+    serializer = RequestPasswordResetSerializer(data=request.data)
+    if serializer.is_valid():
+        email = serializer.validated_data["email"]
+        try:
+            user = User.objects.get(email=email)
+            user_profile = userProfile.objects.get(user=user)
+            code = verify_email(email)
+            user_profile.reset_password_code = code
+            user_profile.save()
+            return Response({"success": "Password reset code sent successfully"})
+        except (User.DoesNotExist, userProfile.DoesNotExist):
+            return Response(
+                {"error": "User with this email does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@swagger_auto_schema(
+    method="post",
+    operation_description="Reset the user's password using the provided reset code.",
+    request_body=ResetPasswordSerializer,
+    responses={200: "Success", 400: "Bad Request", 404: "Not Found"},
+)
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def resetPassword(request):
+    """endpoint to reset password with code"""
+    serializer = ResetPasswordSerializer(data=request.data)
+    if serializer.is_valid():
+        email = serializer.validated_data["email"]
+        code = serializer.validated_data["code"]
+        new_password = serializer.validated_data["new_password"]
+
+        try:
+            user = User.objects.get(email=email)
+            user_profile = userProfile.objects.get(user=user)
+
+            if user_profile.reset_password_code == code:
+                user.set_password(new_password)
+                user.save()
+                user_profile.reset_password_code = ""
+                user_profile.save()
+                return Response({"success": "Password reset successfully"})
+            else:
+                return Response(
+                    {"error": "Invalid reset code"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        except (User.DoesNotExist, userProfile.DoesNotExist):
+            return Response(
+                {"error": "User with this email does not exist"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

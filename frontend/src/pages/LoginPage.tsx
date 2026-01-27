@@ -27,6 +27,7 @@ const LoginPage = () => {
   const [loginSuccess, setLoginSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
   const [wrongInfoLogin, setWrongInfoLogin] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const navigate = useNavigate()
   const login = () => navigate('/host')
@@ -38,6 +39,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setErrorMessage('')
     setLoading(true)
     try {
       const response = await axios.post(
@@ -67,8 +69,9 @@ const LoginPage = () => {
         login()
       }, 3000)
       setLoading(false)
-    } catch (error) {
+    } catch (error: any) {
       // Error handling - log to monitoring service (Sentry) in production
+      setErrorMessage(error.response?.data?.error || 'Email or password incorrect')
       setWrongInfoLogin(true)
       setLoading(false)
     }
@@ -122,7 +125,7 @@ const LoginPage = () => {
 
             {wrongInfoLogin && (
               <p className="text-xs text-red-600 font-medium my-3">
-                Email or password incorrect
+                {errorMessage}
               </p>
             )}
 

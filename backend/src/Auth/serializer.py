@@ -44,3 +44,19 @@ class userSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"email": ["Email is already exists"]}) from e
         userProfile.objects.create(user=user, phone_number=phone_number)
         return user
+
+
+class RequestPasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class ResetPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    code = serializers.CharField()
+    new_password = serializers.CharField(min_length=8, write_only=True)
+    confirm_password = serializers.CharField(min_length=8, write_only=True)
+
+    def validate(self, data):
+        if data["new_password"] != data["confirm_password"]:
+            raise serializers.ValidationError({"passwords": ["Passwords do not match"]})
+        return data

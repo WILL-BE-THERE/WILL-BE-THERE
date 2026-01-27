@@ -1,26 +1,41 @@
 import { FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import API_ENDPOINTS from '../config/api'
+import { FaSpinner } from 'react-icons/fa'
 
 const ForgotPasswordComponent = () => {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
   const navigate = useNavigate()
   const goBack = () => navigate(-1)
-  const submit = () => navigate('/newpassword')
 
   const emailRegex = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (email.match(emailRegex)) {
-      setEmail('')
-      submit()
-    }
-    if (!emailRegex.test(email)) {
+    setErrorMessage('')
+
+    if (!email.match(emailRegex)) {
       setEmailError(true)
-    } else {
-      setEmailError(false)
+      return
+    }
+    setEmailError(false)
+
+    setLoading(true)
+    try {
+      await axios.post(API_ENDPOINTS.AUTH.PASSWORD_RESET_REQUEST, { email })
+      setEmail('')
+      // Store email for the confirmation step
+      localStorage.setItem('reset_email', email)
+      navigate('/newpassword')
+    } catch (error: any) {
+      setErrorMessage(error.response?.data?.error || 'Failed to request password reset')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -52,12 +67,16 @@ const ForgotPasswordComponent = () => {
             {emailError && (
               <p className="text-red-600 text-xs">Enter valid email</p>
             )}
+            {errorMessage && (
+              <p className="text-red-600 text-xs mt-1">{errorMessage}</p>
+            )}
           </label>
           <button
             type="submit"
-            className="py-2 rounded-md bg-primary-100 text-white font-semibold border-none outline-none w-full text-center mb-5"
+            disabled={loading}
+            className="py-2 rounded-md bg-primary-100 text-white font-semibold border-none outline-none w-full text-center mb-5 flex items-center justify-center min-h-[40px]"
           >
-            Submit
+            {loading ? <FaSpinner className="animate-spin" /> : 'Submit'}
           </button>
         </form>
         <button

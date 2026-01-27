@@ -14,6 +14,8 @@ export const API_ENDPOINTS = {
     LOGOUT: `${API_BASE_URL}/api/account/logout/`,
     VERIFY: `${API_BASE_URL}/api/account/verify/`,
     RESEND_VERIFICATION: `${API_BASE_URL}/api/account/resend-verification/`,
+    PASSWORD_RESET_REQUEST: `${API_BASE_URL}/api/account/password-reset-request/`,
+    PASSWORD_RESET_CONFIRM: `${API_BASE_URL}/api/account/password-reset-confirm/`,
   },
   // Events endpoints
   EVENTS: {
