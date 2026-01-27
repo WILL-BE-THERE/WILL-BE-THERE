@@ -9,13 +9,16 @@ export default {
       },
       colors: {
         primary: {
-          100: '#1A53FD',
-          200: '#1262B1',
+          100: 'var(--primary-100, #1A53FD)',
+          200: 'var(--primary-200, #1262B1)',
         },
-        neutral: { 100: '#C6E3FF', 200: '#5E5C5C' },
+        neutral: {
+          100: 'var(--neutral-100, #C6E3FF)',
+          200: 'var(--neutral-200, #5E5C5C)',
+        },
         secondary: {
-          100: '#FD901A',
-          200: '#B16512',
+          100: 'var(--secondary-100, #FD901A)',
+          200: 'var(--secondary-200, #B16512)',
         },
       },
     },

@@ -66,3 +66,18 @@ jobs:
 
       - name: Build Frontend Image
         run: docker build -t frontend-test ./frontend
+
+  e2e-testing:
+    needs: [frontend-quality, backend-quality]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install dependencies
+        run: cd frontend && npm install
+      - name: Install Playwright Browsers
+        run: cd frontend && npx playwright install --with-deps chromium
+      - name: Run Playwright tests
+        run: cd frontend && npm run test:e2e

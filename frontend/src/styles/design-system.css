@@ -1,0 +1,63 @@
+:root {
+  /* Primary Colors */
+  --primary-100: #101070; /* Navy Blue based on project palette */
+  --primary-200: #1a1a8c;
+  --primary-bg: #fafafa;
+
+  /* Neutrals */
+  --neutral-100: #ffffff;
+  --neutral-200: #333333;
+  --neutral-300: #666666;
+  --neutral-400: #999999;
+  --neutral-boundary: #d6d6d6;
+
+  /* Semantic Colors */
+  --error: #dc2626;
+  --success: #16a34a;
+  --warning: #ca8a04;
+
+  /* Typography */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --text-base: 1rem;
+  --text-sm: 0.875rem;
+  --text-xs: 0.75rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+
+  /* Spacing */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+
+  /* Border Radius */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-full: 9999px;
+
+  /* Shadow */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--neutral-200);
+  background-color: var(--primary-bg);
+}
+
+.btn-primary {
+  @apply bg-primary-100 text-white px-5 py-2 rounded-md transition-all;
+}
+
+.btn-primary:hover {
+  @apply scale-105;
+}
+
+.input-field {
+  @apply border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm;
+}
