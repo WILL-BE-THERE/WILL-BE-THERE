@@ -10,10 +10,10 @@ const RsvpSuccessful = ({ eventName, rsvpData }: { eventName?: string, rsvpData?
         <div className="w-20 mb-4">
           <img src={successfulIcon} alt="Icon for successful" className="w-full" />
         </div>
-        
+
         <h1 className="text-xl font-bold text-gray-800">RSVP Successful!</h1>
         <p className="text-center text-sm text-gray-500 mt-2 mb-6 font-medium px-2">
-          You and your plus-ones are confirmed for {eventName ? `"${eventName}"` : 'the event'}. 
+          You and your plus-ones are confirmed for {eventName ? `"${eventName}"` : 'the event'}.
           Show the codes below at the entrance.
         </p>
 

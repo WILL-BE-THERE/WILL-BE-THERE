@@ -35,6 +35,7 @@ import GuestMetrics from '../src/pages/dashboard/GuestMetrics.tsx'
 import EventSettings from '../src/pages/dashboard/EventSettings.tsx'
 import UserInfo from '../src/pages/dashboard/UserInfo.tsx'
 import Googlelogin from '../src/components/Googlesign/GoogleLogin.tsx'
+import Engagement from '../src/pages/dashboard/Engagement.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -74,6 +75,7 @@ const router = createBrowserRouter(
         <Route path="event" element={<Event />} />
         <Route path="revenue" element={<Revenue />} />
         <Route path="metrics" element={<GuestMetrics />} />
+        <Route path="engagement" element={<Engagement />} />
         <Route path="eventSettings" element={<EventSettings />} />
         <Route path="userInfo" element={<UserInfo />} />
       </Route>

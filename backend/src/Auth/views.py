@@ -71,10 +71,7 @@ def signUp(request):
         user_profile.verification_code = code
         user_profile.save()
         return Response(
-            {
-                "user": serializer.data,
-                "message": "User registered successfully. Please verify your email."
-            },
+            {"user": serializer.data, "message": "User registered successfully. Please verify your email."},
             status=status.HTTP_201_CREATED,
         )
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

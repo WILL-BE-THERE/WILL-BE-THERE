@@ -12,4 +12,7 @@ urlpatterns = [
     path("rsvp/create/", views.createRSVP, name="createRSVP"),
     path("event/<int:id>/guests/", views.getEventGuests, name="getEventGuests"),
     path("rsvp/check-in/", views.checkInGuest, name="checkInGuest"),
+    path("dashboard-summary/", views.getDashboardSummary, name="getDashboardSummary"),
+    path("announcements/create/", views.createAnnouncement, name="createAnnouncement"),
+    path("announcements/<int:event_id>/", views.getAnnouncements, name="getAnnouncements"),
 ]

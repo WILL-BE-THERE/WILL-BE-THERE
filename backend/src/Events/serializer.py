@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import RSVP, Event
+from .models import RSVP, Announcement, Event
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -78,3 +78,12 @@ class RSVPSerializer(serializers.ModelSerializer):
         if obj.plus_ones.exists():
             return RSVPSerializer(obj.plus_ones.all(), many=True).data
         return []
+
+
+class AnnouncementSerializer(serializers.ModelSerializer):
+    """serializer for event announcements"""
+
+    class Meta:
+        model = Announcement
+        fields = "__all__"
+        read_only_fields = ["created_at"]

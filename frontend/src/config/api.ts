@@ -28,6 +28,9 @@ export const API_ENDPOINTS = {
     GUESTS: (id: string | number) => `${API_BASE_URL}/api/events/event/${id}/guests/`,
     MY_EVENTS: `${API_BASE_URL}/api/events/my-events/`,
     CHECK_IN: `${API_BASE_URL}/api/events/rsvp/check-in/`,
+    DASHBOARD_SUMMARY: `${API_BASE_URL}/api/events/dashboard-summary/`,
+    ANNOUNCEMENT_CREATE: `${API_BASE_URL}/api/events/announcements/create/`,
+    ANNOUNCEMENT_GET: (id: string | number) => `${API_BASE_URL}/api/events/announcements/${id}/`,
   },
 }
 

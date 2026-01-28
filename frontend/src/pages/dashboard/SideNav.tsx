@@ -7,19 +7,20 @@ import {
   PiUser,
 } from 'react-icons/pi'
 import { NavLink } from 'react-router-dom'
-import { MdLogout } from 'react-icons/md'
+import { MdLogout, MdOutlineMessage } from 'react-icons/md'
 import { useState } from 'react'
 import LogoutModal from './../../pages/dashboard/LogoutModal'
 
 const sideNavData = [
   { icon: <IoGridOutline />, text: 'Overview', link: '/dashboard' },
-  { icon: <PiCalendarX />, text: 'Event', link: '/dashboard/event' },
+  { icon: <PiCalendarX />, text: 'Event List', link: '/dashboard/event' },
   {
     icon: <PiChartLineUp />,
     text: 'Guest Metrics',
     link: '/dashboard/metrics',
   },
   { icon: <PiChartPieSlice />, text: 'Revenue', link: '/dashboard/revenue' },
+  { icon: <MdOutlineMessage />, text: 'Engagement', link: '/dashboard/engagement' },
 ] as const
 
 const sideNavData2 = [

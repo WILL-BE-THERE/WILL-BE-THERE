@@ -79,6 +79,30 @@ const GuestMetrics = () => {
     }
   }
 
+  const handleExport = () => {
+    if (guests.length === 0) return
+    const headers = ['Guest Name', 'Email', 'Checked In', 'Plus Ones', 'Registration Date']
+    const rows = guests.map(g => [
+      g.guestName,
+      g.guestEmail,
+      g.checked_in ? 'Yes' : 'No',
+      g.plus_ones?.length || 0,
+      new Date(g.created_at).toLocaleDateString()
+    ])
+
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + headers.join(",") + "\n"
+      + rows.map(e => e.join(",")).join("\n")
+
+    const encodedUri = encodeURI(csvContent)
+    const link = document.createElement("a")
+    link.setAttribute("href", encodedUri)
+    link.setAttribute("download", `guests_${selectedEventId}_${new Date().toISOString().split('T')[0]}.csv`)
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   const confirmedGuests = guests.filter(g => g.checked_in)
   const pendingGuests = guests.filter(g => !g.checked_in)
 
@@ -95,15 +119,24 @@ const GuestMetrics = () => {
       <div className="w-full lg:w-[70%] bg-white rounded-lg py-6 px-5 shadow-sm">
         <div className="flex justify-between items-center mb-7">
           <h1 className="font-bold text-xl text-gray-800">Guest Management</h1>
-          <select 
-            value={selectedEventId}
-            onChange={(e) => setSelectedEventId(e.target.value)}
-            className="border border-gray-200 rounded-md p-2 text-sm font-medium focus:ring-2 focus:ring-primary-100 outline-none"
-          >
-            {events.map(event => (
-              <option key={event.id} value={event.id}>{event.eventName}</option>
-            ))}
-          </select>
+          <div className="flex gap-3">
+            <button
+              onClick={handleExport}
+              disabled={guests.length === 0}
+              className="px-4 py-2 text-xs font-bold text-primary-100 bg-primary-100/10 rounded-md hover:bg-primary-100 hover:text-white transition-all disabled:opacity-50"
+            >
+              Export CSV
+            </button>
+            <select
+              value={selectedEventId}
+              onChange={(e) => setSelectedEventId(e.target.value)}
+              className="border border-gray-200 rounded-md p-2 text-sm font-medium focus:ring-2 focus:ring-primary-100 outline-none"
+            >
+              {events.map(event => (
+                <option key={event.id} value={event.id}>{event.eventName}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Check-in Tool */}
@@ -111,16 +144,16 @@ const GuestMetrics = () => {
           <h2 className="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wider">Verification Tool</h2>
           <form onSubmit={handleCheckIn} className="flex gap-3">
             <div className="relative flex-1">
-              <input 
-                type="text" 
-                placeholder="Enter unique RSVP token or scan code..." 
+              <input
+                type="text"
+                placeholder="Enter unique RSVP token or scan code..."
                 value={checkInToken}
                 onChange={(e) => setCheckInToken(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 focus:border-primary-100 outline-none text-sm transition-all"
               />
               <FaSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
             </div>
-            <button 
+            <button
               disabled={checkInLoading}
               className="bg-primary-100 text-white px-6 py-3 rounded-lg font-bold text-sm shadow-lg shadow-primary-100/20 hover:bg-primary-200 transition-all disabled:opacity-50"
             >
@@ -141,7 +174,7 @@ const GuestMetrics = () => {
           <h1>Plus Ones</h1>
           <h1 className="text-center">Status</h1>
         </div>
-        
+
         <ul className="text-[13px] font-semibold flex flex-col gap-4 overflow-y-auto max-h-[30rem] pr-2">
           {guests.length === 0 && !loading && (
             <div className="py-20 text-center text-gray-400 font-medium">No guests have RSVP'd yet.</div>

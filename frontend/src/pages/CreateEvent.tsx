@@ -347,7 +347,7 @@ const CreateEvent = () => {
           <section className="border-2 border-dashed rounded-xl border-black/30 my-10 py-6 w-[90%] mx-auto px-5 text-start sm:px-12 sm:py-12 lg:w-[75%]">
             <h1 className="font-bold mb-1 text-xl">Pricing and Inclusions</h1>
             <p className="text-sm text-neutral-200 mb-6">Specify if your event is paid and what guests get for their money.</p>
-            
+
             <form id="pricingForm" onSubmit={handleSubmit} className="flex flex-col gap-6">
               <div className="flex items-center gap-4 bg-[#fafafa] p-4 rounded-md border border-[#d6d6d6]">
                 <input
