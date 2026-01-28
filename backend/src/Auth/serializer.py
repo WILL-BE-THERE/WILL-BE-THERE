@@ -26,13 +26,13 @@ class userSerializer(serializers.ModelSerializer):
         phone_number = self.context.get("phone_number")
         confirm_password = self.context.get("confirm_password")
         if not phone_number:
-            raise ValidationError({"phone_number": ["phone Number is required"]})
+            raise ValidationError({"phone_number": ["Phone number is required"]})
 
         if not confirm_password:
-            raise ValidationError({"confirm_Password": ["Confirm Password is required"]})
+            raise ValidationError({"confirm_password": ["Confirm password is required"]})
 
         if confirm_password != data["password"]:
-            raise ValidationError({"passwords": ["passwords do not match"]})
+            raise ValidationError({"confirm_password": ["Passwords do not match"]})
         return data
 
     def create(self, validated_data):

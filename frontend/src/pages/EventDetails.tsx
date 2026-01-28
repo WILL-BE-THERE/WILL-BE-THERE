@@ -96,9 +96,34 @@ const EventDetails = () => {
           <section className="flex flex-col mt-5">
             <h1 className="font-semibold">Dress code:</h1>
             <p className="text-sm text-neutral-200 font-medium">
-              {data?.dressCode}
+              {data?.dressCode || 'Not specified'}
             </p>
           </section>
+
+          {data?.is_paid && (
+            <section className="flex flex-col mt-5 p-4 bg-primary-100/5 rounded-lg border border-primary-100/20">
+              <div className="flex justify-between items-center">
+                <h1 className="font-bold text-primary-100 uppercase text-xs tracking-wider">Admission</h1>
+                {data.is_redeemable && (
+                  <span className="bg-green-100 text-green-700 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase">
+                    Redeemable
+                  </span>
+                )}
+              </div>
+              <p className="text-2xl font-bold mt-1">
+                {data.currency} {data.price}
+              </p>
+              {data.inclusions && (
+                <div className="mt-3">
+                  <h2 className="text-xs font-semibold text-neutral-400 uppercase">What's included:</h2>
+                  <p className="text-sm text-neutral-200 mt-1 italic">
+                    {data.inclusions}
+                  </p>
+                </div>
+              )}
+            </section>
+          )}
+
           <div className="flex gap-7 items-center mt-8">
             <button
               type="button"

@@ -7,7 +7,6 @@ import { ChangeEvent, FormEvent, useState } from 'react'
 import RegistrationSuccessful from '../components/RegistrationSuccessful'
 import axios from 'axios'
 import { useProjectContext } from './../../src/context/ProjectContext'
-import { setCookie } from './CookieUtils'
 import generateApiHeaders from './Headers'
 import SocialLoginButtons from '../components/SignUp/SocialLoginButtons'
 import API_ENDPOINTS from '../config/api'
@@ -31,10 +30,9 @@ const SignUpPage = () => {
     setSignUpUserInfo((prevState) => ({ ...prevState, [name]: value }))
   }
 
-  const emailRegex = /[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}/gim
-  const phoneRegex =
-    /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/
-  const passRegex = /[\s\S]*/s
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const phoneRegex = /^\+?[\d\s-]{10,}$/
+  const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._-])[A-Za-z\d@$!%*?&._-]{8,}$/
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -62,24 +60,16 @@ const SignUpPage = () => {
     setLoading(true)
 
     try {
-      const response = await axios.post(
+      await axios.post(
         API_ENDPOINTS.AUTH.SIGNUP,
         signUpUserInfo,
         {
-          headers: generateApiHeaders(),
+          headers: generateApiHeaders(false),
         },
       )
       setEmailExist({ exist: false, msg: '' })
       setRegSuccessful(true)
       setLoading(false)
-
-      const { access, user } = response.data
-      setCookie('Token', access, 7) // Store access token
-      if (user) {
-        setCookie('id', user.id, 7)
-        setCookie('username', user.username, 7)
-        setCookie('email', user.email, 7)
-      }
 
       // Redirect to verification page
       setTimeout(() => {
@@ -88,8 +78,23 @@ const SignUpPage = () => {
       }, 2000)
 
     } catch (error: any) {
-      // Error handling - log to monitoring service (Sentry) in production
-      setEmailExist({ exist: true, msg: error.response?.data?.email?.[0] || 'Signup failed' })
+      // Extract specific error messages from backend
+      let msg = 'Signup failed. Please check your information.'
+      if (error.response?.data) {
+        const data = error.response.data
+        if (typeof data === 'string') {
+          msg = data
+        } else if (data.email) {
+          msg = data.email[0]
+        } else if (data.phone_number) {
+          msg = data.phone_number[0]
+        } else if (data.confirm_password) {
+          msg = data.confirm_password[0]
+        } else if (data.error) {
+          msg = data.error
+        }
+      }
+      setEmailExist({ exist: true, msg })
       setRegSuccessful(false)
       setLoading(false)
     }
@@ -196,7 +201,7 @@ const SignUpPage = () => {
                 Phone Number <span className="text-red-600 font-bold">*</span>
               </p>
               <input
-                type="number"
+                type="tel"
                 name="phone_number"
                 value={signUpUserInfo.phone_number}
                 onChange={handleChange}

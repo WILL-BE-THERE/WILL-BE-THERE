@@ -1,13 +1,13 @@
 import { getCookie } from "./CookieUtils";
 
-const generateApiHeaders = () => {
+const generateApiHeaders = (withAuth: boolean = true) => {
     const token = getCookie('Token');
     const headers: Record<string, string> = {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
     };
 
-    if (token) {
+    if (token && withAuth) {
         headers['Authorization'] = `Bearer ${token}`;
     }
 

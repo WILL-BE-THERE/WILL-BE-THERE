@@ -51,6 +51,7 @@ class VerifyThrottle(AnonRateThrottle):
 )
 @api_view(["POST"])
 @permission_classes([AllowAny])
+@authentication_classes([])
 @throttle_classes([SignUpThrottle])
 def signUp(request):
     """view to signup users"""
@@ -65,16 +66,14 @@ def signUp(request):
 
     if serializer.is_valid():
         user = serializer.save()
-        refresh = RefreshToken.for_user(user)
         code = verify_email(data.get("email"))
         user_profile = userProfile.objects.get(user=user)
         user_profile.verification_code = code
         user_profile.save()
         return Response(
             {
-                "refresh": str(refresh),
-                "access": str(refresh.access_token),
                 "user": serializer.data,
+                "message": "User registered successfully. Please verify your email."
             },
             status=status.HTTP_201_CREATED,
         )
@@ -89,6 +88,7 @@ def signUp(request):
 )
 @api_view(["POST"])
 @permission_classes([AllowAny])
+@authentication_classes([])
 @throttle_classes([VerifyThrottle])
 def Verify_account(request):
     """resend verification code"""
@@ -122,6 +122,7 @@ def Verify_account(request):
 )
 @api_view(["POST"])
 @permission_classes([AllowAny])
+@authentication_classes([])
 def resend_Verification_code(request):
     """resend verification code"""
     email = request.data.get("email")
@@ -147,6 +148,7 @@ def resend_Verification_code(request):
 )
 @api_view(["POST"])
 @permission_classes([AllowAny])
+@authentication_classes([])
 @throttle_classes([LoginThrottle])
 def logIn(request):
     username = request.data.get("email")
@@ -232,6 +234,7 @@ def logout(request):
 )
 @api_view(["POST"])
 @permission_classes([AllowAny])
+@authentication_classes([])
 def requestPasswordReset(request):
     """endpoint to request a password reset code"""
     serializer = RequestPasswordResetSerializer(data=request.data)
@@ -260,6 +263,7 @@ def requestPasswordReset(request):
 )
 @api_view(["POST"])
 @permission_classes([AllowAny])
+@authentication_classes([])
 def resetPassword(request):
     """endpoint to reset password with code"""
     serializer = ResetPasswordSerializer(data=request.data)

@@ -22,9 +22,14 @@ const CreateEvent = () => {
     street: '',
     imageSelected: null as File | null,
     instagram: '',
-    linkedin: '',
     facebook: '',
     twitter: '',
+    linkedin: '',
+    is_paid: false,
+    price: '0',
+    currency: 'GHS',
+    inclusions: '',
+    is_redeemable: false,
   }
 
   const [selectedImage, setSelectedImage] = useState('')
@@ -63,6 +68,12 @@ const CreateEvent = () => {
         return
       }
     }
+    if (currentStep === 3) {
+      if (eventInfo.country === '' || eventInfo.state === '' || eventInfo.city === '' || eventInfo.street === '') {
+        alert('Please fill in all required location information.');
+        return;
+      }
+    }
     setCurrentStep((prev) => prev + 1)
   }
 
@@ -86,6 +97,11 @@ const CreateEvent = () => {
     formData.append('facebook', eventInfo.facebook)
     formData.append('twitter', eventInfo.twitter)
     formData.append('linkedIn', eventInfo.linkedin)
+    formData.append('is_paid', String(eventInfo.is_paid))
+    formData.append('price', eventInfo.price)
+    formData.append('currency', eventInfo.currency)
+    formData.append('inclusions', eventInfo.inclusions)
+    formData.append('is_redeemable', String(eventInfo.is_redeemable))
 
     if (eventInfo.imageSelected) {
       formData.append('picture', eventInfo.imageSelected)
@@ -127,11 +143,14 @@ const CreateEvent = () => {
           <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${currentStep >= 2 ? 'bg-primary-100 text-white' : 'bg-gray-200 text-gray-500'}`}>2</div>
           <div className={`h-1 w-12 rounded ${currentStep >= 3 ? 'bg-primary-100' : 'bg-gray-200'}`}></div>
           <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${currentStep >= 3 ? 'bg-primary-100 text-white' : 'bg-gray-200 text-gray-500'}`}>3</div>
+          <div className={`h-1 w-12 rounded ${currentStep >= 4 ? 'bg-primary-100' : 'bg-gray-200'}`}></div>
+          <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold ${currentStep >= 4 ? 'bg-primary-100 text-white' : 'bg-gray-200 text-gray-500'}`}>4</div>
         </div>
         <p className="font-medium text-base text-neutral-200 mt-1 border-b-2 border-b-neutral-200 w-[90%] pt-3 mx-auto pb-3 mb-6 sm:w-4/5 lg:w-3/5">
           {currentStep === 1 && 'Step 1: Upload a catchy banner for your event'}
           {currentStep === 2 && 'Step 2: Tell us more about the event details'}
           {currentStep === 3 && 'Step 3: Where and how can guests find you?'}
+          {currentStep === 4 && 'Step 4: Pricing and Inclusions (Optional)'}
         </p>
       </section>
 
@@ -313,11 +332,103 @@ const CreateEvent = () => {
                   <FaArrowLeft /> Back
                 </button>
                 <button
-                  type="submit"
-                  disabled={loading}
+                  type="button"
+                  onClick={nextStep}
                   className="flex items-center gap-3 text-white bg-primary-100 font-medium border border-primary-100 text-sm py-2 px-6 rounded-md hover:bg-primary-200 transition-all min-h-[40px]"
                 >
-                  {loading ? <FaSpinner className="animate-spin" /> : <>Create Event <FaArrowRight /></>}
+                  Next <FaArrowRight />
+                </button>
+              </div>
+            </form>
+          </section>
+        )}
+
+        {currentStep === 4 && (
+          <section className="border-2 border-dashed rounded-xl border-black/30 my-10 py-6 w-[90%] mx-auto px-5 text-start sm:px-12 sm:py-12 lg:w-[75%]">
+            <h1 className="font-bold mb-1 text-xl">Pricing and Inclusions</h1>
+            <p className="text-sm text-neutral-200 mb-6">Specify if your event is paid and what guests get for their money.</p>
+            
+            <form id="pricingForm" onSubmit={handleSubmit} className="flex flex-col gap-6">
+              <div className="flex items-center gap-4 bg-[#fafafa] p-4 rounded-md border border-[#d6d6d6]">
+                <input
+                  type="checkbox"
+                  name="is_paid"
+                  id="is_paid"
+                  checked={eventInfo.is_paid}
+                  onChange={(e) => setEventInfo(prev => ({ ...prev, is_paid: e.target.checked }))}
+                  className="w-5 h-5 cursor-pointer accent-primary-100"
+                />
+                <label htmlFor="is_paid" className="font-semibold text-neutral-200 cursor-pointer">
+                  This is a paid event
+                </label>
+              </div>
+
+              {eventInfo.is_paid && (
+                <div className="flex flex-col gap-6 animate-in fade-in duration-300">
+                  <div className="flex gap-4">
+                    <label htmlFor="currency" className="flex flex-col gap-1 w-24">
+                      <p className="text-sm font-medium text-neutral-200">Currency</p>
+                      <select
+                        name="currency"
+                        value={eventInfo.currency}
+                        onChange={handleChange}
+                        className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-2 py-3 text-sm text-neutral-200 font-medium"
+                      >
+                        <option value="GHS">GHS</option>
+                        <option value="USD">USD</option>
+                        <option value="NGN">NGN</option>
+                      </select>
+                    </label>
+                    <label htmlFor="price" className="flex flex-col gap-1 flex-1">
+                      <p className="text-sm font-medium text-neutral-200">Price</p>
+                      <input
+                        type="number"
+                        name="price"
+                        placeholder="0.00"
+                        value={eventInfo.price}
+                        onChange={handleChange}
+                        className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200"
+                      />
+                    </label>
+                  </div>
+
+                  <label htmlFor="inclusions" className="flex flex-col gap-1 w-full">
+                    <p className="text-sm font-medium text-neutral-200">What's included in the cost?</p>
+                    <textarea
+                      name="inclusions"
+                      placeholder="e.g. Food, Drinks, Goody bag..."
+                      value={eventInfo.inclusions}
+                      onChange={handleChange}
+                      className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200 h-24 resize-none"
+                    />
+                  </label>
+
+                  <div className="flex items-center gap-4">
+                    <input
+                      type="checkbox"
+                      name="is_redeemable"
+                      id="is_redeemable"
+                      checked={eventInfo.is_redeemable}
+                      onChange={(e) => setEventInfo(prev => ({ ...prev, is_redeemable: e.target.checked }))}
+                      className="w-4 h-4 cursor-pointer accent-primary-100"
+                    />
+                    <label htmlFor="is_redeemable" className="text-sm font-medium text-neutral-200 cursor-pointer">
+                      The cost is redeemable (e.g. for food/drinks at the venue)
+                    </label>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-between mt-8 border-t border-dashed border-black/30 pt-8">
+                <button type="button" onClick={prevStep} className="flex items-center gap-2 px-4 py-2 text-primary-100 font-semibold border border-primary-100 rounded-md hover:bg-primary-100 hover:text-white transition-all">
+                  <FaArrowLeft /> Back
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex items-center gap-3 text-white bg-primary-100 font-medium border border-primary-100 text-sm py-2 px-8 rounded-md hover:bg-primary-200 transition-all min-h-[40px]"
+                >
+                  {loading ? <FaSpinner className="animate-spin" /> : <>Complete Creation <FaArrowRight /></>}
                 </button>
               </div>
             </form>

@@ -46,7 +46,7 @@ const LoginPage = () => {
         API_ENDPOINTS.AUTH.LOGIN,
         loginUserInfo,
         {
-          headers: generateApiHeaders(),
+          headers: generateApiHeaders(false),
         },
       )
 

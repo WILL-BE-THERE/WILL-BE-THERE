@@ -25,6 +25,9 @@ export const API_ENDPOINTS = {
     UPDATE: (id: string | number) => `${API_BASE_URL}/api/events/event/${id}/update/`,
     DELETE: (id: string | number) => `${API_BASE_URL}/api/events/event/${id}/delete/`,
     RSVP_CREATE: `${API_BASE_URL}/api/events/rsvp/create/`,
+    GUESTS: (id: string | number) => `${API_BASE_URL}/api/events/event/${id}/guests/`,
+    MY_EVENTS: `${API_BASE_URL}/api/events/my-events/`,
+    CHECK_IN: `${API_BASE_URL}/api/events/rsvp/check-in/`,
   },
 }
 

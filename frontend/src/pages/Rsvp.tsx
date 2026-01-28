@@ -26,6 +26,7 @@ const Rsvp = () => {
   const [friendsNames, setFriendsNames] = useState<string[]>([])
   const [comingWithFriends, setComingWithFriends] = useState(false)
   const [rsvpSuccessful, setRsvpSuccessful] = useState(false)
+  const [rsvpData, setRsvpData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -54,13 +55,13 @@ const Rsvp = () => {
       const payload = {
         ...details,
         event: parseInt(id || '0'),
-        message: details.message + (friends.length > 0 ? `\n\nAttendees coming with me:\n- ${friends.join('\n- ')}` : '')
+        plus_ones: friends // Send names as a separate list for processing
       }
 
-      await axios.post(API_ENDPOINTS.EVENTS.RSVP_CREATE, payload)
+      const response = await axios.post(API_ENDPOINTS.EVENTS.RSVP_CREATE, payload)
 
+      setRsvpData(response.data)
       setRsvpSuccessful(true)
-      // We don't reset name here because RsvpSuccessful might need it
     } catch (error: any) {
       console.error('Error submitting RSVP:', error)
       alert(error.response?.data?.message || 'Failed to submit RSVP. Please try again.')
@@ -94,7 +95,7 @@ const Rsvp = () => {
         />
       )}
 
-      {rsvpSuccessful && <RsvpSuccessful eventName={eventName} />}
+      {rsvpSuccessful && <RsvpSuccessful eventName={eventName} rsvpData={rsvpData} />}
       <section className="h-[60rem] w-full bg-white relative flex overflow-hidden">
         <img
           src={shape2}

@@ -9,9 +9,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .models import Event
+from .models import Event, RSVP
 from .serializer import EventSerializer, RSVPSerializer
 from .swagger import createEvent_request_body
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
 
@@ -28,6 +29,19 @@ def getEvents(request):
     """view for fetching all events"""
     try:
         events = Event.objects.all()
+        serializer = EventSerializer(events, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+def getMyEvents(request):
+    """view for fetching events created by the current user"""
+    try:
+        events = Event.objects.filter(user=request.user).order_by("-created_at")
         serializer = EventSerializer(events, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
@@ -113,9 +127,72 @@ def deleteEvent(request, id):
 @api_view(["POST"])
 @permission_classes([AllowAny])
 def createRSVP(request):
-    """view for creating an RSVP"""
-    serializer = RSVPSerializer(data=request.data)
+    """view for creating an RSVP along with structured plus-ones"""
+    data = request.data.copy()
+    plus_one_names = data.pop("plus_ones", [])
+    
+    serializer = RSVPSerializer(data=data)
     if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        parent_rsvp = serializer.save()
+        
+        # Create structured child records for each plus-one
+        for name in plus_one_names:
+            if name.strip():
+                RSVP.objects.create(
+                    event=parent_rsvp.event,
+                    guestName=name.strip(),
+                    guestEmail=parent_rsvp.guestEmail,  # Linked to primary contact
+                    parent_rsvp=parent_rsvp,
+                    isAttending="Yes",
+                    payment_status=parent_rsvp.payment_status  # Matches parent's status
+                )
+        
+        # Return the primary RSVP data (which now includes plus_ones via SerializerMethodField)
+        return Response(RSVPSerializer(parent_rsvp).data, status=status.HTTP_201_CREATED)
+        
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+def checkInGuest(request):
+    """view for checking in a guest via token"""
+    token = request.data.get("token")
+    if not token:
+        return Response({"error": "Token is required"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    rsvp = get_object_or_404(RSVP, rsvp_token=token)
+    
+    # Check if the current user owns the event
+    if rsvp.event.user != request.user:
+        return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    if rsvp.checked_in:
+        return Response({"message": f"{rsvp.guestName} is already checked in"}, status=status.HTTP_200_OK)
+    
+    rsvp.checked_in = True
+    rsvp.save()
+    
+    return Response({
+        "message": f"Successfully checked in {rsvp.guestName}",
+        "guestName": rsvp.guestName,
+        "checked_in": rsvp.checked_in
+    }, status=status.HTTP_200_OK)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+@authentication_classes([JWTAuthentication])
+def getEventGuests(request, id):
+    """view for fetching all guests for a specific event"""
+    event = get_object_or_404(Event, id=id)
+    
+    # Check if the current user owns the event
+    if event.user != request.user:
+        return Response({"error": "Unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+    
+    # Get all primary RSVPs (those without parents)
+    rsvps = RSVP.objects.filter(event=event, parent_rsvp=None).order_by("-created_at")
+    serializer = RSVPSerializer(rsvps, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)

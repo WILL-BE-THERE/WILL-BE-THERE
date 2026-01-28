@@ -52,6 +52,13 @@ class EventSerializer(serializers.ModelSerializer):
         instance.twitter = self.format_url(validated_data.get("twitter", instance.twitter))
         instance.linkedIn = self.format_url(validated_data.get("linkedIn", instance.linkedIn))
 
+        # Update pricing fields
+        instance.is_paid = validated_data.get("is_paid", instance.is_paid)
+        instance.price = validated_data.get("price", instance.price)
+        instance.currency = validated_data.get("currency", instance.currency)
+        instance.inclusions = validated_data.get("inclusions", instance.inclusions)
+        instance.is_redeemable = validated_data.get("is_redeemable", instance.is_redeemable)
+
         instance.congratulatoryMessage = validated_data.get("congratulatoryMessage", instance.congratulatoryMessage)
         instance.save()
         return instance
@@ -60,6 +67,14 @@ class EventSerializer(serializers.ModelSerializer):
 class RSVPSerializer(serializers.ModelSerializer):
     "serializer for RSVPs"
 
+    plus_ones = serializers.SerializerMethodField()
+
     class Meta:
         model = RSVP
         fields = "__all__"
+        read_only_fields = ["rsvp_token", "created_at"]
+
+    def get_plus_ones(self, obj):
+        if obj.plus_ones.exists():
+            return RSVPSerializer(obj.plus_ones.all(), many=True).data
+        return []
