@@ -42,7 +42,7 @@ const EventList = () => {
     const eventDate = new Date(date)
     const now = new Date()
     now.setHours(0, 0, 0, 0)
-    
+
     if (eventDate.getTime() === now.getTime()) return { text: 'Live', color: 'bg-green-100 text-green-700' }
     if (eventDate < now) return { text: 'Past', color: 'bg-gray-100 text-gray-700' }
     return { text: 'Upcoming', color: 'bg-blue-100 text-blue-700' }
@@ -63,8 +63,8 @@ const EventList = () => {
           <h1 className="text-xl font-bold text-gray-800">Event Management</h1>
           <p className="text-sm text-gray-400">Total {events.length} events created</p>
         </div>
-        <Link 
-          to="/createevent" 
+        <Link
+          to="/createevent"
           className="bg-primary-100 text-white px-6 py-2 rounded-lg font-bold text-sm hover:bg-primary-200 transition-all"
         >
           + New Event
@@ -94,7 +94,7 @@ const EventList = () => {
                     {status.text}
                   </div>
                 </div>
-                
+
                 <div className="p-5 flex-1 flex flex-col gap-4">
                   <div>
                     <h2 className="font-bold text-gray-800 text-lg truncate mb-1">{event.eventName}</h2>
@@ -118,19 +118,19 @@ const EventList = () => {
                   </div>
 
                   <div className="flex gap-2 mt-auto">
-                    <Link 
-                      to={`/events/${event.id}`} 
+                    <Link
+                      to={`/events/${event.id}`}
                       className="flex-1 bg-gray-50 text-gray-500 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-gray-100 transition-all"
                     >
                       <FaEye /> View
                     </Link>
-                    <button 
+                    <button
                       onClick={() => alert('Edit feature coming soon to specialized editor')}
                       className="flex-1 bg-primary-100/10 text-primary-100 py-2 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-primary-100 hover:text-white transition-all"
                     >
                       <FaEdit /> Edit
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleDelete(event.id)}
                       className="w-10 bg-red-50 text-red-500 py-2 rounded-lg flex items-center justify-center hover:bg-red-500 hover:text-white transition-all"
                     >

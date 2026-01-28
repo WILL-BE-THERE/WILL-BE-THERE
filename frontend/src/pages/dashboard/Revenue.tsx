@@ -86,26 +86,26 @@ const Revenue = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <RevenueCard 
-          title="Total Earnings" 
-          value={summary?.total_revenue || 0} 
-          icon={<FaWallet />} 
-          trend="+12.5%" 
-          isPositive 
+        <RevenueCard
+          title="Total Earnings"
+          value={summary?.total_revenue || 0}
+          icon={<FaWallet />}
+          trend="+12.5%"
+          isPositive
         />
-        <RevenueCard 
-          title="Avg. Ticket Price" 
-          value={summary?.total_revenue / (summary?.total_rsvps || 1)} 
-          icon={<FaChartLine />} 
-          trend="+3.2%" 
-          isPositive 
+        <RevenueCard
+          title="Avg. Ticket Price"
+          value={summary?.total_revenue / (summary?.total_rsvps || 1)}
+          icon={<FaChartLine />}
+          trend="+3.2%"
+          isPositive
         />
-        <RevenueCard 
-          title="Refunds" 
-          value={0} 
-          icon={<FaArrowDown />} 
-          trend="0.0%" 
-          isPositive={false} 
+        <RevenueCard
+          title="Refunds"
+          value={0}
+          icon={<FaArrowDown />}
+          trend="0.0%"
+          isPositive={false}
         />
       </div>
 

@@ -10,7 +10,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .models import RSVP, Announcement, Event
+from .models import RSVP, Event
 from .serializer import (
     AnnouncementSerializer,
     EventSerializer,

@@ -90,7 +90,7 @@ const GuestMetrics = () => {
       new Date(g.created_at).toLocaleDateString()
     ])
 
-    const csvContent = "data:text/csv;charset=utf-8," 
+    const csvContent = "data:text/csv;charset=utf-8,"
       + headers.join(",") + "\n"
       + rows.map(e => e.join(",")).join("\n")
 

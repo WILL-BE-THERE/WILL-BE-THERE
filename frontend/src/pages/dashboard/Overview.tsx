@@ -40,8 +40,8 @@ const Overview = () => {
           <h1 className="text-2xl font-bold text-gray-800">Welcome back, Host!</h1>
           <p className="text-gray-400 text-sm mt-1">Here's what's happening with your events today.</p>
         </div>
-        <Link 
-          to="/createevent" 
+        <Link
+          to="/createevent"
           className="bg-primary-100 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-xl shadow-primary-100/20 hover:scale-105 transition-all"
         >
           + Create New Event
@@ -50,29 +50,29 @@ const Overview = () => {
 
       {/* KPI Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard 
-          icon={<FaCalendarAlt />} 
-          title="Total Events" 
-          value={summary?.total_events || 0} 
+        <StatCard
+          icon={<FaCalendarAlt />}
+          title="Total Events"
+          value={summary?.total_events || 0}
           color="bg-blue-50 text-blue-600"
         />
-        <StatCard 
-          icon={<FaUsers />} 
-          title="Total RSVPs" 
-          value={summary?.total_rsvps || 0} 
+        <StatCard
+          icon={<FaUsers />}
+          title="Total RSVPs"
+          value={summary?.total_rsvps || 0}
           color="bg-purple-50 text-purple-600"
         />
-        <StatCard 
-          icon={<FaMoneyBillWave />} 
-          title="Total Revenue" 
-          value={`${summary?.total_revenue?.toLocaleString() || 0}`} 
+        <StatCard
+          icon={<FaMoneyBillWave />}
+          title="Total Revenue"
+          value={`${summary?.total_revenue?.toLocaleString() || 0}`}
           color="bg-green-50 text-green-600"
           isRevenue
         />
-        <StatCard 
-          icon={<FaUsers />} 
-          title="Checked In" 
-          value={summary?.checked_in_count || 0} 
+        <StatCard
+          icon={<FaUsers />}
+          title="Checked In"
+          value={summary?.checked_in_count || 0}
           color="bg-amber-50 text-amber-600"
         />
       </div>
@@ -86,7 +86,7 @@ const Overview = () => {
               View all <FaArrowRight />
             </Link>
           </div>
-          
+
           <div className="overflow-x-auto">
             <table className="w-full text-left">
               <thead>

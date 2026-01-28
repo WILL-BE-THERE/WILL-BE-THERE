@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("Events", "0012_event_currency_event_inclusions_event_is_paid_and_more"),
     ]
