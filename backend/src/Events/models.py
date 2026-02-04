@@ -8,7 +8,34 @@ from django.db import models
 class Event(models.Model):
     "model for creating events"
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="events")
+    # NEW: Organization-based ownership (multi-tenant)
+    organization = models.ForeignKey(
+        'Organizations.Organization',
+        on_delete=models.CASCADE,
+        related_name="events",
+        null=True,  # Temporarily nullable for migration
+        blank=True,
+        help_text="Organization that owns this event"
+    )
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="created_events",
+        help_text="User who created this event (for audit trail)"
+    )
+    
+    # DEPRECATED: Keep for backward compatibility during migration
+    user = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name="events_legacy",
+        null=True,
+        blank=True,
+        help_text="DEPRECATED: Use organization instead"
+    )
+    
     picture = models.ImageField(upload_to="events")
     eventName = models.CharField(max_length=200)
     generalInfo = models.TextField()
@@ -25,7 +52,7 @@ class Event(models.Model):
     linkedIn = models.URLField(blank=True, null=True)
     congratulatoryMessage = models.TextField(blank=True, null=True)
 
-    # Pricing fields
+    # Pricing fields (Deprecated - moving to TicketType)
     is_paid = models.BooleanField(default=False)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     currency = models.CharField(max_length=10, default="GHS")
@@ -39,10 +66,31 @@ class Event(models.Model):
         return self.eventName
 
 
+class TicketType(models.Model):
+    """Model for different types of tickets (e.g., VIP, Regular, Early Bird)"""
+
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="ticket_types")
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    currency = models.CharField(max_length=10, default="GHS")
+    quantity = models.PositiveIntegerField(help_text="Total number of tickets available for this type")
+    sold = models.PositiveIntegerField(default=0, help_text="Number of tickets sold")
+    sale_start_date = models.DateTimeField(null=True, blank=True)
+    sale_end_date = models.DateTimeField(null=True, blank=True)
+
+    def is_available(self):
+        return self.sold < self.quantity
+
+    def __str__(self):
+        return f"{self.name} - {self.event.eventName}"
+
+
 class RSVP(models.Model):
     "model for event RSVPs"
 
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name="rsvps")
+    ticket_type = models.ForeignKey(TicketType, on_delete=models.SET_NULL, null=True, blank=True, related_name="rsvps")
     guestName = models.CharField(max_length=200)
     guestEmail = models.EmailField()
     isAttending = models.CharField(max_length=10, default="Yes")
@@ -54,8 +102,11 @@ class RSVP(models.Model):
     payment_status = models.CharField(
         max_length=20,
         default="Pending",
-        choices=[("Pending", "Pending"), ("Paid", "Paid"), ("Refunded", "Refunded"), ("N/A", "Not Applicable")],
+        choices=[("Pending", "Pending"), ("Paid", "Paid"), ("Refunded", "Refunded"), ("Cancelled", "Cancelled"), ("N/A", "Not Applicable")],
     )
+    stripe_payment_intent = models.CharField(max_length=255, blank=True, null=True)
+    mpesa_receipt_number = models.CharField(max_length=50, blank=True, null=True)
+    checkout_request_id = models.CharField(max_length=100, blank=True, null=True)
     checked_in = models.BooleanField(default=False)
     parent_rsvp = models.ForeignKey("self", on_delete=models.CASCADE, null=True, blank=True, related_name="plus_ones")
 

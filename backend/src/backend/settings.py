@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "Auth",
     "userProfile",
     "Events",
+    "Organizations",
     "corsheaders",
     # third party applications
     "rest_framework",
@@ -66,6 +67,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "drf_yasg",
+    "django_celery_results",
     "backend",
 ]
 
@@ -243,6 +245,8 @@ REST_FRAMEWORK = {
         "login": "30/hour",
         "verify": "30/hour",
     },
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
 }
 
 
@@ -270,3 +274,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Encryption Keys (Fernet)
 # Default key provided for development convenience only. Generate a new one for production!
 FERNET_KEYS = [env("FERNET_KEY", default="b7wDkLmqK0f0J8Gk3h6n5yX9dZ2a1c4vBNmMlLjK5_g=")]
+
+# Stripe Payments
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")
+STRIPE_PUBLISHABLE_KEY = env("STRIPE_PUBLISHABLE_KEY", default="")
+STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
+
+# Celery Configuration
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="redis://localhost:6379/0")
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = TIME_ZONE
+
+# M-Pesa Configurations
+MPESA_CONSUMER_KEY = env("MPESA_CONSUMER_KEY", default="")
+MPESA_CONSUMER_SECRET = env("MPESA_CONSUMER_SECRET", default="")
+MPESA_PASSKEY = env("MPESA_PASSKEY", default="")
+MPESA_SHORTCODE = env("MPESA_SHORTCODE", default="174379") # Default Sandbox Shortcode
+MPESA_CALLBACK_URL = env("MPESA_CALLBACK_URL", default="")

@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path("my-events/", views.getMyEvents, name="getMyEvents"),
+    path("my-tickets/", views.getMyTickets, name="getMyTickets"),
     path("event/", views.getEvents, name="getevents"),
     path("event/<int:id>/", views.getEvent, name="getevent"),
     path("event/<int:id>/update/", views.updateEvent, name="updateEvent"),
@@ -15,4 +16,5 @@ urlpatterns = [
     path("dashboard-summary/", views.getDashboardSummary, name="getDashboardSummary"),
     path("announcements/create/", views.createAnnouncement, name="createAnnouncement"),
     path("announcements/<int:event_id>/", views.getAnnouncements, name="getAnnouncements"),
+    path("callback/mpesa/", views.mpesa_callback, name="mpesa_callback"),
 ]

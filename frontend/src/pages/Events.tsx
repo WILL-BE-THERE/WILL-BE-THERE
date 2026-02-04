@@ -11,6 +11,10 @@ const fetchALLEvents = async () => {
     const response = await axios.get(
       API_ENDPOINTS.EVENTS.LIST
     )
+    // Check if response is paginated (has results array) or flat array
+    if (response.data.results && Array.isArray(response.data.results)) {
+        return response.data.results
+    }
     return response.data
   } catch (error) {
     console.error('error fetching events:', error)

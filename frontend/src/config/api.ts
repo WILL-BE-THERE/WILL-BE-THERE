@@ -27,6 +27,7 @@ export const API_ENDPOINTS = {
     RSVP_CREATE: `${API_BASE_URL}/api/events/rsvp/create/`,
     GUESTS: (id: string | number) => `${API_BASE_URL}/api/events/event/${id}/guests/`,
     MY_EVENTS: `${API_BASE_URL}/api/events/my-events/`,
+    MY_TICKETS: `${API_BASE_URL}/api/events/my-tickets/`,
     CHECK_IN: `${API_BASE_URL}/api/events/rsvp/check-in/`,
     DASHBOARD_SUMMARY: `${API_BASE_URL}/api/events/dashboard-summary/`,
     ANNOUNCEMENT_CREATE: `${API_BASE_URL}/api/events/announcements/create/`,

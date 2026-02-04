@@ -11,3 +11,4 @@ gunicorn
 django-redis
 Pillow
 django-fernet-fields
+stripe

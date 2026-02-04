@@ -1,12 +1,21 @@
 from rest_framework import serializers
 
-from .models import RSVP, Announcement, Event
+from .models import RSVP, Announcement, Event, TicketType
+
+
+class TicketTypeSerializer(serializers.ModelSerializer):
+    """serializer for ticket types"""
+
+    class Meta:
+        model = TicketType
+        exclude = ["event", "sold"]
 
 
 class EventSerializer(serializers.ModelSerializer):
     "serializer for events"
 
     noOfRsvp = serializers.SerializerMethodField()
+    ticket_types = TicketTypeSerializer(many=True, read_only=True)
 
     class Meta:
         model = Event
@@ -25,7 +34,11 @@ class EventSerializer(serializers.ModelSerializer):
         """creating a new event"""
         user = self.context["user"]
         validated_data["user"] = user
-
+        
+        # Extract ticket types data if present in context or handle separately
+        # Ideally ticket types are created via a separate endpoint or nested write
+        # For now, we will handle ticket creation in the view or separate signal if passed
+        
         # Auto-format URLs
         for field in ["instagram", "facebook", "twitter", "linkedIn"]:
             if field in validated_data:
@@ -52,7 +65,7 @@ class EventSerializer(serializers.ModelSerializer):
         instance.twitter = self.format_url(validated_data.get("twitter", instance.twitter))
         instance.linkedIn = self.format_url(validated_data.get("linkedIn", instance.linkedIn))
 
-        # Update pricing fields
+        # Update pricing fields (Keeping for backward compatibility or migration)
         instance.is_paid = validated_data.get("is_paid", instance.is_paid)
         instance.price = validated_data.get("price", instance.price)
         instance.currency = validated_data.get("currency", instance.currency)
@@ -68,11 +81,12 @@ class RSVPSerializer(serializers.ModelSerializer):
     "serializer for RSVPs"
 
     plus_ones = serializers.SerializerMethodField()
+    ticket_type_details = TicketTypeSerializer(source="ticket_type", read_only=True)
 
     class Meta:
         model = RSVP
         fields = "__all__"
-        read_only_fields = ["rsvp_token", "created_at"]
+        read_only_fields = ["rsvp_token", "created_at", "stripe_payment_intent"]
 
     def get_plus_ones(self, obj):
         if obj.plus_ones.exists():

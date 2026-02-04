@@ -15,7 +15,11 @@ const EventList = () => {
         const response = await axios.get(API_ENDPOINTS.EVENTS.MY_EVENTS, {
           headers: generateApiHeaders()
         })
-        setEvents(response.data)
+        if (response.data.results && Array.isArray(response.data.results)) {
+           setEvents(response.data.results)
+        } else {
+           setEvents(response.data)
+        }
       } catch (error) {
         console.error('Error fetching events:', error)
       } finally {

@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { Country, State, City } from 'country-state-city'
-import { FaArrowRight, FaArrowLeft, FaSpinner } from 'react-icons/fa'
+import { FaArrowRight, FaArrowLeft, FaSpinner, FaTrash, FaPlus } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import SocialMediaInputs from '../components/CreateEvent/SocialMediaInputs'
 import ImageUploadSection from '../components/CreateEvent/ImageUploadSection'
@@ -8,8 +8,20 @@ import axios from 'axios'
 import API_ENDPOINTS from '../config/api'
 import generateApiHeaders from './Headers'
 
+interface TicketType {
+  name: string
+  description: string
+  price: string
+  quantity: string
+  currency: string
+}
+
 const CreateEvent = () => {
   const [currentStep, setCurrentStep] = useState(1)
+  const [ticketTypes, setTicketTypes] = useState<TicketType[]>([
+    { name: 'General Admission', description: '', price: '0', quantity: '100', currency: 'GHS' }
+  ])
+
   const initialEventInfo = {
     eventName: '',
     generalInfo: '',
@@ -57,6 +69,23 @@ const CreateEvent = () => {
     setEventInfo((prevInfo) => ({ ...prevInfo, [name]: value }))
   }
 
+  const handleTicketChange = (index: number, e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    const updatedTickets = [...ticketTypes]
+    updatedTickets[index] = { ...updatedTickets[index], [name]: value }
+    setTicketTypes(updatedTickets)
+  }
+
+  const addTicketType = () => {
+    setTicketTypes([...ticketTypes, { name: '', description: '', price: '0', quantity: '0', currency: 'GHS' }])
+  }
+
+  const removeTicketType = (index: number) => {
+    if (ticketTypes.length === 1) return
+    const updatedTickets = ticketTypes.filter((_, i) => i !== index)
+    setTicketTypes(updatedTickets)
+  }
+
   const nextStep = () => {
     if (currentStep === 1 && !eventInfo.imageSelected) {
       alert('Please select an event banner image.')
@@ -98,10 +127,25 @@ const CreateEvent = () => {
     formData.append('twitter', eventInfo.twitter)
     formData.append('linkedIn', eventInfo.linkedin)
     formData.append('is_paid', String(eventInfo.is_paid))
-    formData.append('price', eventInfo.price)
-    formData.append('currency', eventInfo.currency)
+    
+    // Legacy support
+    formData.append('price', ticketTypes[0]?.price || '0')
+    formData.append('currency', ticketTypes[0]?.currency || 'GHS')
+    
     formData.append('inclusions', eventInfo.inclusions)
     formData.append('is_redeemable', String(eventInfo.is_redeemable))
+
+    // Send Ticket Types as JSON string
+    const ticketsToSend = ticketTypes.map(t => ({
+      ...t,
+      price: parseFloat(t.price),
+      quantity: parseInt(t.quantity)
+    }))
+    // Using simple array matching backend expectation
+    ticketsToSend.forEach((ticket, index) => {
+        formData.append('ticket_types', JSON.stringify(ticket))
+    })
+
 
     if (eventInfo.imageSelected) {
       formData.append('picture', eventInfo.imageSelected)
@@ -150,7 +194,7 @@ const CreateEvent = () => {
           {currentStep === 1 && 'Step 1: Upload a catchy banner for your event'}
           {currentStep === 2 && 'Step 2: Tell us more about the event details'}
           {currentStep === 3 && 'Step 3: Where and how can guests find you?'}
-          {currentStep === 4 && 'Step 4: Pricing and Inclusions (Optional)'}
+          {currentStep === 4 && 'Step 4: Ticket Types & Pricing'}
         </p>
       </section>
 
@@ -345,55 +389,85 @@ const CreateEvent = () => {
 
         {currentStep === 4 && (
           <section className="border-2 border-dashed rounded-xl border-black/30 my-10 py-6 w-[90%] mx-auto px-5 text-start sm:px-12 sm:py-12 lg:w-[75%]">
-            <h1 className="font-bold mb-1 text-xl">Pricing and Inclusions</h1>
-            <p className="text-sm text-neutral-200 mb-6">Specify if your event is paid and what guests get for their money.</p>
+            <h1 className="font-bold mb-1 text-xl">Tickets & Pricing</h1>
+            <p className="text-sm text-neutral-200 mb-6">Create the ticket types you want to enable for this event.</p>
 
             <form id="pricingForm" onSubmit={handleSubmit} className="flex flex-col gap-6">
-              <div className="flex items-center gap-4 bg-[#fafafa] p-4 rounded-md border border-[#d6d6d6]">
-                <input
-                  type="checkbox"
-                  name="is_paid"
-                  id="is_paid"
-                  checked={eventInfo.is_paid}
-                  onChange={(e) => setEventInfo(prev => ({ ...prev, is_paid: e.target.checked }))}
-                  className="w-5 h-5 cursor-pointer accent-primary-100"
-                />
-                <label htmlFor="is_paid" className="font-semibold text-neutral-200 cursor-pointer">
-                  This is a paid event
-                </label>
+              <div className="flex flex-col gap-4">
+                 {ticketTypes.map((ticket, index) => (
+                    <div key={index} className="bg-gray-50 p-4 rounded-lg border border-gray-200 relative animate-in fade-in duration-300">
+                        <div className="flex justify-between items-center mb-3">
+                            <h3 className="font-bold text-gray-700">Ticket Type {index + 1}</h3>
+                            <button type="button" onClick={() => removeTicketType(index)} className="text-red-500 hover:text-red-700 text-sm" title="Remove Ticket">
+                                <FaTrash />
+                            </button>
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                             <label className="flex flex-col gap-1">
+                                <span className="text-xs font-bold text-gray-500">Name</span>
+                                <input 
+                                    type="text" 
+                                    name="name" 
+                                    value={ticket.name}
+                                    placeholder="e.g. VIP, Early Bird" 
+                                    onChange={(e) => handleTicketChange(index, e)}
+                                    className="p-2 rounded border border-gray-300 text-sm"
+                                    required
+                                />
+                             </label>
+                             <label className="flex flex-col gap-1">
+                                <span className="text-xs font-bold text-gray-500">Quantity</span>
+                                <input 
+                                    type="number" 
+                                    name="quantity" 
+                                    value={ticket.quantity}
+                                    placeholder="Total available" 
+                                    onChange={(e) => handleTicketChange(index, e)}
+                                    className="p-2 rounded border border-gray-300 text-sm"
+                                    required
+                                />
+                             </label>
+                             <label className="flex flex-col gap-1">
+                                <span className="text-xs font-bold text-gray-500">Price</span>
+                                <input 
+                                    type="number" 
+                                    name="price" 
+                                    value={ticket.price}
+                                    placeholder="0.00" 
+                                    onChange={(e) => handleTicketChange(index, e)}
+                                    className="p-2 rounded border border-gray-300 text-sm"
+                                    required
+                                />
+                             </label>
+                             <label className="flex flex-col gap-1">
+                                <span className="text-xs font-bold text-gray-500">Currency</span>
+                                <select 
+                                    name="currency" 
+                                    value={ticket.currency} 
+                                    onChange={(e) => handleTicketChange(index, e)}
+                                    className="p-2 rounded border border-gray-300 text-sm"
+                                >
+                                    <option value="GHS">GHS</option>
+                                    <option value="USD">USD</option>
+                                    <option value="NGN">NGN</option>
+                                </select>
+                             </label>
+                        </div>
+                    </div>
+                 ))}
+                 
+                 <button 
+                    type="button" 
+                    onClick={addTicketType}
+                    className="flex items-center justify-center gap-2 py-3 border-2 border-dashed border-primary-100 text-primary-100 font-bold rounded-lg hover:bg-primary-50 transition-all"
+                 >
+                    <FaPlus /> Add Another Ticket Type
+                 </button>
               </div>
 
-              {eventInfo.is_paid && (
-                <div className="flex flex-col gap-6 animate-in fade-in duration-300">
-                  <div className="flex gap-4">
-                    <label htmlFor="currency" className="flex flex-col gap-1 w-24">
-                      <p className="text-sm font-medium text-neutral-200">Currency</p>
-                      <select
-                        name="currency"
-                        value={eventInfo.currency}
-                        onChange={handleChange}
-                        className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-2 py-3 text-sm text-neutral-200 font-medium"
-                      >
-                        <option value="GHS">GHS</option>
-                        <option value="USD">USD</option>
-                        <option value="NGN">NGN</option>
-                      </select>
-                    </label>
-                    <label htmlFor="price" className="flex flex-col gap-1 flex-1">
-                      <p className="text-sm font-medium text-neutral-200">Price</p>
-                      <input
-                        type="number"
-                        name="price"
-                        placeholder="0.00"
-                        value={eventInfo.price}
-                        onChange={handleChange}
-                        className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 text-sm text-neutral-200"
-                      />
-                    </label>
-                  </div>
-
+              <div className="mt-4">
                   <label htmlFor="inclusions" className="flex flex-col gap-1 w-full">
-                    <p className="text-sm font-medium text-neutral-200">What's included in the cost?</p>
+                    <p className="text-sm font-medium text-neutral-200">What's included in the cost? (General)</p>
                     <textarea
                       name="inclusions"
                       placeholder="e.g. Food, Drinks, Goody bag..."
@@ -403,7 +477,7 @@ const CreateEvent = () => {
                     />
                   </label>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 mt-4">
                     <input
                       type="checkbox"
                       name="is_redeemable"
@@ -416,8 +490,7 @@ const CreateEvent = () => {
                       The cost is redeemable (e.g. for food/drinks at the venue)
                     </label>
                   </div>
-                </div>
-              )}
+              </div>
 
               <div className="flex justify-between mt-8 border-t border-dashed border-black/30 pt-8">
                 <button type="button" onClick={prevStep} className="flex items-center gap-2 px-4 py-2 text-primary-100 font-semibold border border-primary-100 rounded-md hover:bg-primary-100 hover:text-white transition-all">

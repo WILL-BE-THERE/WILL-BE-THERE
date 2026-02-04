@@ -8,6 +8,19 @@ import RsvpSuccessful from '../components/RsvpSuccessful'
 import axios from 'axios'
 import API_ENDPOINTS from '../config/api'
 import { FaSpinner } from 'react-icons/fa'
+import API_ENDPOINTS from '../config/api'
+import { FaSpinner } from 'react-icons/fa'
+import { BsCheckCircle, BsPhone } from 'react-icons/bs'
+
+interface TicketType {
+  id: number
+  name: string
+  description: string
+  price: string
+  currency: string
+  quantity: number
+  sold: number
+}
 
 const Rsvp = () => {
   const { id } = useParams()
@@ -28,12 +41,26 @@ const Rsvp = () => {
   const [rsvpSuccessful, setRsvpSuccessful] = useState(false)
   const [rsvpData, setRsvpData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  
+  // Ticket System State
+  const [ticketTypes, setTicketTypes] = useState<TicketType[]>([])
+  const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null)
+  const [ticketTypes, setTicketTypes] = useState<TicketType[]>([])
+  const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null)
+  
+  // Payment State
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [showMpesaModal, setShowMpesaModal] = useState(false)
+  const [checkoutRequestId, setCheckoutRequestId] = useState('')
 
   useEffect(() => {
     const fetchEvent = async () => {
       try {
         const response = await axios.get(API_ENDPOINTS.EVENTS.GET(id!))
         setEventName(response.data.eventName)
+        if (response.data.ticket_types && Array.isArray(response.data.ticket_types)) {
+            setTicketTypes(response.data.ticket_types)
+        }
       } catch (error) {
         console.error('Error fetching event name:', error)
         setEventName('this event')
@@ -55,13 +82,20 @@ const Rsvp = () => {
       const payload = {
         ...details,
         event: parseInt(id || '0'),
-        plus_ones: friends // Send names as a separate list for processing
+        ticket_type: selectedTicketId,
+        plus_ones: friends,
+        phone_number: phoneNumber // M-Pesa Phone Number
       }
 
       const response = await axios.post(API_ENDPOINTS.EVENTS.RSVP_CREATE, payload)
 
-      setRsvpData(response.data)
-      setRsvpSuccessful(true)
+      if (response.data.checkout_request_id) {
+          setCheckoutRequestId(response.data.checkout_request_id)
+          setShowMpesaModal(true)
+      } else {
+          setRsvpData(response.data)
+          setRsvpSuccessful(true)
+      }
     } catch (error: any) {
       console.error('Error submitting RSVP:', error)
       alert(error.response?.data?.message || 'Failed to submit RSVP. Please try again.')
@@ -76,6 +110,16 @@ const Rsvp = () => {
       setComingWithFriends(true)
       return
     }
+    
+    // Validate M-Pesa Requirements
+    if (selectedTicketId) {
+        const ticket = ticketTypes.find(t => t.id === selectedTicketId)
+        if (ticket && parseFloat(ticket.price) > 0 && !phoneNumber) {
+            alert("Please enter a phone number for M-Pesa payment.")
+            return
+        }
+    }
+
     await submitRsvp(userDetails, friendsNames)
   }
 
@@ -96,6 +140,33 @@ const Rsvp = () => {
       )}
 
       {rsvpSuccessful && <RsvpSuccessful eventName={eventName} rsvpData={rsvpData} />}
+      
+      {rsvpSuccessful && <RsvpSuccessful eventName={eventName} rsvpData={rsvpData} />}
+      
+      {/* M-Pesa Modal */}
+      {showMpesaModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+             <div className="bg-white p-6 rounded-lg w-full max-w-sm shadow-2xl text-center">
+                 <div className="mb-4 flex justify-center text-green-600 text-5xl">
+                     <BsPhone />
+                 </div>
+                 <h2 className="text-xl font-bold mb-2">Check your phone</h2>
+                 <p className="text-gray-600 mb-6">
+                     An M-Pesa prompt has been sent to <b>{phoneNumber}</b>. Please enter your PIN to complete the transaction.
+                 </p>
+                 <button 
+                    onClick={() => {
+                        setShowMpesaModal(false)
+                        setRsvpSuccessful(true) // Optimistically show success or check status
+                    }}
+                    className="bg-green-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-green-700 transition"
+                 >
+                    I have paid
+                 </button>
+             </div>
+        </div>
+      )}
+
       <section className="h-[60rem] w-full bg-white relative flex overflow-hidden">
         <img
           src={shape2}
@@ -142,6 +213,62 @@ const Rsvp = () => {
                   />
                 </aside>
               </label>
+
+              {/* Ticket Selection */}
+              {ticketTypes.length > 0 && (
+                 <div className="flex flex-col gap-2">
+                    <p className="text-sm font-medium text-neutral-200">Select Ticket</p>
+                    <div className="grid gap-3">
+                        {ticketTypes.map(ticket => (
+                            <label key={ticket.id} className={`border rounded-md p-3 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition-colors ${selectedTicketId === ticket.id ? 'border-primary-100 bg-blue-50' : 'border-[#d6d6d6]'}`}>
+                                <div className="flex items-center gap-3">
+                                    <input 
+                                        type="radio" 
+                                        name="ticket_type" 
+                                        value={ticket.id}
+                                        checked={selectedTicketId === ticket.id}
+                                        onChange={() => setSelectedTicketId(ticket.id)}
+                                        className="w-4 h-4 text-primary-100"
+                                    />
+                                    <div>
+                                        <p className="font-semibold">{ticket.name}</p>
+                                        {ticket.description && <p className="text-xs text-gray-500">{ticket.description}</p>}
+                                    </div>
+                                </div>
+                                <div className="text-right">
+                                    <p className="font-bold text-primary-100">
+                                        {parseFloat(ticket.price) > 0 ? `${ticket.currency} ${ticket.price}` : 'Free'}
+                                    </p>
+                                    <p className="text-xs text-gray-500">
+                                        {ticket.quantity - ticket.sold > 0 ? `${ticket.quantity - ticket.sold} left` : 'Sold Out'}
+                                    </p>
+                                </div>
+                            </label>
+                        ))}
+                    </div>
+                 </div>
+              )}
+        
+              {/* M-Pesa Phone Input */}
+              {selectedTicketId && ticketTypes.find(t => t.id === selectedTicketId && parseFloat(t.price) > 0) && (
+                  <label htmlFor="phoneNumber" className="flex flex-col gap-1 w-full animate-in fade-in slide-in-from-top-2">
+                    <p className="flex gap-1 text-sm font-medium text-neutral-200">
+                      M-Pesa Phone Number
+                    </p>
+                    <aside className="relative flex">
+                      <input
+                        type="tel"
+                        name="phoneNumber"
+                        placeholder="2547..."
+                        value={phoneNumber}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        className="border-[1.5px] border-[#d6d6d6] focus:outline-[1.5px] focus:outline-primary-100 rounded-md bg-[#fafafa] px-4 py-3 placeholder:text-sm w-full"
+                        required
+                      />
+                    </aside>
+                    <p className="text-xs text-gray-500">Format: 2547XXXXXXXX</p>
+                  </label>
+              )}
 
               <label htmlFor="guestName" className="flex flex-col gap-1 w-full">
                 <p className="flex gap-1 text-sm font-medium text-neutral-200">

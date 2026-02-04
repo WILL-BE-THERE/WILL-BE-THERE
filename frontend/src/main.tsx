@@ -37,11 +37,14 @@ import UserInfo from '../src/pages/dashboard/UserInfo.tsx'
 import Googlelogin from '../src/components/Googlesign/GoogleLogin.tsx'
 import Engagement from '../src/pages/dashboard/Engagement.tsx'
 
+import MyTickets from './pages/MyTickets.tsx'
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
         <Route index element={<Home />} />
+        <Route path="mytickets" element={<MyTickets />} /> 
         <Route path="createevent" element={<CreateEvent />} />
         <Route path="createeventmessage" element={<CreateEventMessage />} />
         <Route path="about" element={<About />} />

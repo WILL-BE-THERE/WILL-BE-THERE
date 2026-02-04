@@ -1,7 +1,6 @@
 import random
 
-from django.conf import settings
-from django.core.mail import send_mail
+from .tasks import send_email_task
 
 
 def generate_verification_code():
@@ -13,8 +12,8 @@ def verify_email(email):
     subject = "Verify Your Account"
     verification_code = generate_verification_code()
     message = f"Your verification code is: {verification_code}"
-    email_from = settings.EMAIL_HOST_USER
     recipient_list = [email]
 
-    send_mail(subject, message, email_from, recipient_list)
+    # Trigger Async Task
+    send_email_task.delay(subject, message, recipient_list)
     return verification_code
