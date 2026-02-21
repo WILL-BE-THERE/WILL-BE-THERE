@@ -64,13 +64,13 @@ export const whoWeAreData = [
 // Data for the testimonial section
 export const testmonialData = [
   {
-    desc: 'Will Be There has transformed the way we plan and manage events. It is intuitive, effecient, and has all the features we need to ensure our events are a success.',
+    desc: 'Will Be There has transformed the way we plan and manage events. It is intuitive, efficient, and has all the features we need to ensure our events are a success.',
     img: testmonialImage1,
     name: 'Sarah Johnson',
     occupation: 'Event manager, YM Capital',
   },
   {
-    desc: 'I love how easy it is to RSVP for events using Wil Be There. The process is seamless, and I always know exactly what to expect when attending an event.',
+    desc: 'I love how easy it is to RSVP for events using Will Be There. The process is seamless, and I always know exactly what to expect when attending an event.',
     img: testmonialImage2,
     name: 'John Yuri',
     occupation: 'Attendee',

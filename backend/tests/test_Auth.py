@@ -26,7 +26,9 @@ class UserSignUpTestCase(APITestCase):
         """Test successful user signup"""
         response = self.client.post(self.signup_url, self.valid_signup_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertIn("token", response.json())
+        self.assertIn("access", response.json())
+        self.assertIn("refresh", response.json())
+        self.assertIn("user", response.json())
         self.assertIn("user", response.json())
 
         # Verify user was created in database
@@ -84,7 +86,9 @@ class UserLoginTestCase(APITestCase):
         login_data = {"email": "testuser@example.com", "password": "TestPass123!"}
         response = self.client.post(self.login_url, login_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("token", response.json())
+        self.assertIn("access", response.json())
+        self.assertIn("refresh", response.json())
+        self.assertIn("user", response.json())
 
     def test_login_unverified_email(self):
         """Test login fails with unverified email"""
@@ -144,6 +148,28 @@ class EmailVerificationTestCase(APITestCase):
         }
         response = self.client.post(self.verify_url, verify_data, format="json")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+    def test_verification_with_distinct_username_and_email(self):
+        """Test verification succeeds when username differs from email"""
+        distinct_user = User.objects.create_user(
+            username="different_username",
+            email="different@example.com",
+            password="TestPass123!",
+        )
+        userProfile.objects.create(
+            user=distinct_user,
+            phone_number="+1987654321",
+            is_verified=False,
+            verification_code="654321",
+        )
+
+        verify_data = {"email": "different@example.com", "verification_code": "654321"}
+        response = self.client.post(self.verify_url, verify_data, format="json")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        verified_profile = userProfile.objects.get(user=distinct_user)
+        self.assertTrue(verified_profile.is_verified)
 
     def test_verification_nonexistent_email(self):
         """Test verification with non-existent email"""
