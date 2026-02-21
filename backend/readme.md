@@ -87,7 +87,7 @@ These endpoints allow users to interact with the Will Be There application:
 
 **Responses:**
 
-* **200 OK:** Signup successful!   A JSON response with user information and an authorization token is returned.
+* **201 Created:** Signup successful! A JSON response with user information and a success message is returned (email verification is required).
 * **400 Bad Request:**  Oops!  There's an error in your request.  Check the parameters and try again. ❗️
 
 **2. Login Endpoint (Let's Get RSVPing!)**
@@ -103,4 +103,4 @@ These endpoints allow users to interact with the Will Be There application:
 
 **Responses:**
 
-* **200 OK:** Login successful!  A JSON response with user information and an authorization token is returned.
+* **200 OK:** Login successful! A JSON response with JWT `access` and `refresh` tokens plus user information is returned.

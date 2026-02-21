@@ -92,7 +92,7 @@ def Verify_account(request):
     email = request.data.get("email")
     verification_code = request.data.get("verification_code")
     try:
-        user = User.objects.get(username=email)
+        user = User.objects.get(email=email)
         user_profile = userProfile.objects.get(user=user)
         if user_profile.verification_code == verification_code:
             user_profile.is_verified = True
@@ -124,7 +124,7 @@ def resend_Verification_code(request):
     """resend verification code"""
     email = request.data.get("email")
     try:
-        user = User.objects.get(username=email)
+        user = User.objects.get(email=email)
         user_profile = userProfile.objects.get(user=user)
         code = verify_email(email)
         user_profile.verification_code = code
