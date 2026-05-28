@@ -38,6 +38,7 @@ import Googlelogin from '../src/components/Googlesign/GoogleLogin.tsx'
 import Engagement from '../src/pages/dashboard/Engagement.tsx'
 
 import MyTickets from './pages/MyTickets.tsx'
+import TeamManagement from './pages/TeamManagement.tsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -79,6 +80,7 @@ const router = createBrowserRouter(
         <Route path="revenue" element={<Revenue />} />
         <Route path="metrics" element={<GuestMetrics />} />
         <Route path="engagement" element={<Engagement />} />
+        <Route path="team" element={<TeamManagement />} />
         <Route path="eventSettings" element={<EventSettings />} />
         <Route path="userInfo" element={<UserInfo />} />
       </Route>

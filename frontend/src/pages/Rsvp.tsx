@@ -8,8 +8,6 @@ import RsvpSuccessful from '../components/RsvpSuccessful'
 import axios from 'axios'
 import API_ENDPOINTS from '../config/api'
 import { FaSpinner } from 'react-icons/fa'
-import API_ENDPOINTS from '../config/api'
-import { FaSpinner } from 'react-icons/fa'
 import { BsCheckCircle, BsPhone } from 'react-icons/bs'
 
 interface TicketType {
@@ -45,8 +43,7 @@ const Rsvp = () => {
   // Ticket System State
   const [ticketTypes, setTicketTypes] = useState<TicketType[]>([])
   const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null)
-  const [ticketTypes, setTicketTypes] = useState<TicketType[]>([])
-  const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null)
+
   
   // Payment State
   const [phoneNumber, setPhoneNumber] = useState('')

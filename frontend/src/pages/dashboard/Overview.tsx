@@ -4,15 +4,21 @@ import API_ENDPOINTS from '../../config/api'
 import generateApiHeaders from '../Headers'
 import { FaSpinner, FaCalendarAlt, FaUsers, FaMoneyBillWave, FaArrowRight } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import OrganizationSelector from '../../components/OrganizationSelector'
 
 const Overview = () => {
   const [summary, setSummary] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [selectedOrgId, setSelectedOrgId] = useState<number | null>(null)
 
   useEffect(() => {
     const fetchSummary = async () => {
       try {
-        const response = await axios.get(API_ENDPOINTS.EVENTS.DASHBOARD_SUMMARY, {
+        const url = selectedOrgId 
+          ? `${API_ENDPOINTS.EVENTS.DASHBOARD_SUMMARY}?organization_id=${selectedOrgId}`
+          : API_ENDPOINTS.EVENTS.DASHBOARD_SUMMARY
+        
+        const response = await axios.get(url, {
           headers: generateApiHeaders()
         })
         setSummary(response.data)
@@ -23,7 +29,7 @@ const Overview = () => {
       }
     }
     fetchSummary()
-  }, [])
+  }, [selectedOrgId])
 
   if (loading) {
     return (
@@ -46,6 +52,14 @@ const Overview = () => {
         >
           + Create New Event
         </Link>
+      </div>
+
+      {/* Organization Selector */}
+      <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-50">
+        <OrganizationSelector 
+          selectedOrgId={selectedOrgId}
+          onOrganizationChange={setSelectedOrgId}
+        />
       </div>
 
       {/* KPI Stats Grid */}

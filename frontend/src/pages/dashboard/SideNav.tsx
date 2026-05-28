@@ -5,6 +5,7 @@ import {
   PiChartPieSlice,
   PiCalendarX,
   PiUser,
+  PiUsers,
 } from 'react-icons/pi'
 import { NavLink } from 'react-router-dom'
 import { MdLogout, MdOutlineMessage } from 'react-icons/md'
@@ -21,6 +22,7 @@ const sideNavData = [
   },
   { icon: <PiChartPieSlice />, text: 'Revenue', link: '/dashboard/revenue' },
   { icon: <MdOutlineMessage />, text: 'Engagement', link: '/dashboard/engagement' },
+  { icon: <PiUsers />, text: 'Team', link: '/dashboard/team' },
 ] as const
 
 const sideNavData2 = [
