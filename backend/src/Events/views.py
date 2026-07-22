@@ -1,6 +1,11 @@
-from django.shortcuts import get_object_or_404
+import json
+
+# Initialize Stripe
+import stripe
+from django.conf import settings
 from django.db import transaction
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -9,10 +14,13 @@ from rest_framework.decorators import (
     authentication_classes,
     permission_classes,
 )
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.pagination import PageNumberPagination
+
+# Organizations & Permissions
+from Organizations.models import OrganizationMember
 
 from .models import RSVP, Event, TicketType
 from .serializer import (
@@ -20,20 +28,10 @@ from .serializer import (
     EventSerializer,
     RSVPSerializer,
 )
-from django.conf import settings
 from .swagger import createEvent_request_body
-
-# Organizations & Permissions
-from Organizations.models import OrganizationMember
-from Organizations.permissions import CanManageEvent, CanViewFinances, CanCheckIn
-
-# Initialize Stripe
-import stripe
-stripe.api_key = settings.STRIPE_SECRET_KEY
-
-# M-Pesa Utils
 from .utils import initiate_stk_push
-import json
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 
@@ -44,22 +42,22 @@ import json
 def getDashboardSummary(request):
     """view for host dashboard aggregate statistics (organization-filtered)"""
     user = request.user
-    
+
     # Get organization from query param (optional, defaults to all user's orgs)
     org_id = request.query_params.get('organization_id')
-    
+
     # Filter events by organizations where user is a member
     user_orgs = OrganizationMember.objects.filter(
         user=user,
         is_active=True
     ).values_list('organization_id', flat=True)
-    
+
     events = Event.objects.filter(organization_id__in=user_orgs)
-    
+
     # Further filter by specific org if provided
     if org_id:
         events = events.filter(organization_id=org_id)
-    
+
     total_events = events.count()
     rsvps = RSVP.objects.filter(event__in=events)
     total_rsvps = rsvps.count()
@@ -67,7 +65,7 @@ def getDashboardSummary(request):
     # Revenue calculation (only for users with finance permissions)
     total_revenue = 0
     can_view_revenue = False
-    
+
     if org_id:
         member = OrganizationMember.objects.filter(
             user=user,
@@ -75,7 +73,7 @@ def getDashboardSummary(request):
             is_active=True
         ).first()
         can_view_revenue = member and member.can_view_finances()
-    
+
     if can_view_revenue or not org_id:  # Show revenue if no specific org or has permission
         paid_rsvps = rsvps.filter(payment_status="Paid")
         for rsvp in paid_rsvps:
@@ -158,7 +156,7 @@ def getMyEvents(request):
             user=request.user,
             is_active=True
         ).values_list('organization_id', flat=True)
-        
+
         events = Event.objects.filter(organization_id__in=user_orgs).order_by("-created_at")
         paginator = PageNumberPagination()
         paginator.page_size = 10
@@ -222,23 +220,23 @@ def createEvents(request):
     user = request.user
     data = request.data.copy()
     ticket_types_data = data.pop("ticket_types", [])
-    
+
     # If using form-data, ticket_types might need parsing from JSON string if sent that way
     import json
     if isinstance(ticket_types_data, list) and len(ticket_types_data) > 0 and isinstance(ticket_types_data[0], str):
          # Try parsing if it's a list of strings (happens with FormData sometimes)
          try:
              ticket_types_data = [json.loads(t) for t in ticket_types_data]
-         except:
+         except Exception:
              pass
 
     serializer = EventSerializer(data=data, context={"user": user})
-    
+
     if serializer.is_valid():
         try:
             with transaction.atomic():
                 event = serializer.save()
-                
+
                 # Create Ticket Types
                 for ticket_data in ticket_types_data:
                     # Sanitize basic fields
@@ -250,12 +248,12 @@ def createEvents(request):
                         quantity=ticket_data.get("quantity", 0),
                         currency=ticket_data.get("currency", "GHS")
                     )
-                    
+
             # Reload event to include new ticket types in serializer
             return Response({"event": EventSerializer(event).data}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": f"Failed to create event tickets: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
-            
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -302,30 +300,30 @@ def createRSVP(request):
     data = request.data.copy()
     plus_one_names = data.pop("plus_ones", [])
     ticket_type_id = data.get("ticket_type")
-    
+
     # 1. Validation & Inventory Check with Locking
     ticket_type = None
     if ticket_type_id:
         try:
             # Lock the ticket type row until this transaction finishes
             ticket_type = TicketType.objects.select_for_update().get(id=ticket_type_id)
-            
+
             # Check availability including the main guest + plus ones
             total_tickets_needed = 1 + len(plus_one_names)
-            
+
             if (ticket_type.sold + total_tickets_needed) > ticket_type.quantity:
                 return Response(
-                    {"error": f"Not enough tickets available. Remaining: {ticket_type.quantity - ticket_type.sold}"}, 
+                    {"error": f"Not enough tickets available. Remaining: {ticket_type.quantity - ticket_type.sold}"},
                     status=status.HTTP_400_BAD_REQUEST
                 )
         except TicketType.DoesNotExist:
              return Response({"error": "Invalid ticket type"}, status=status.HTTP_400_BAD_REQUEST)
 
-    
+
     serializer = RSVPSerializer(data=data)
     if serializer.is_valid():
         parent_rsvp = serializer.save()
-        
+
         # Link ticket type
         if ticket_type:
             parent_rsvp.ticket_type = ticket_type
@@ -343,21 +341,21 @@ def createRSVP(request):
                     isAttending="Yes",
                     payment_status=parent_rsvp.payment_status,
                 )
-        
+
         # Increment Sold Count
         if ticket_type:
             total_sold_now = 1 + len(plus_one_names)
             ticket_type.sold += total_sold_now
             ticket_type.save()
-            
+
         # Payment Integration (M-Pesa STK Push)
         checkout_request_id = None
         if ticket_type and ticket_type.price > 0:
-            # Assume guestName or a separate field has phone number for now, 
+            # Assume guestName or a separate field has phone number for now,
             # OR expect it in request.data. In real app, we need a dedicated phone field.
             # Ideally frontend sends "phone_number".
             phone_number = request.data.get("phone_number")
-            
+
             if phone_number:
                 try:
                     response = initiate_stk_push(
@@ -365,7 +363,7 @@ def createRSVP(request):
                         amount=ticket_type.price,
                         account_reference=f"Ticket-{parent_rsvp.rsvp_token}"
                     )
-                    
+
                     if "CheckoutRequestID" in response:
                         checkout_request_id = response["CheckoutRequestID"]
                         parent_rsvp.checkout_request_id = checkout_request_id
@@ -387,7 +385,7 @@ def createRSVP(request):
         if checkout_request_id:
             response_data["checkout_request_id"] = checkout_request_id
             response_data["message"] = "STK Push sent. Please check your phone."
-            
+
         return Response(response_data, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -452,10 +450,10 @@ def stripe_webhook(request):
         event = stripe.Webhook.construct_event(
             payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
         )
-    except ValueError as e:
+    except ValueError:
         # Invalid payload
         return HttpResponse(status=400)
-    except stripe.error.SignatureVerificationError as e:
+    except stripe.error.SignatureVerificationError:
         # Invalid signature
         return HttpResponse(status=400)
 
@@ -479,20 +477,20 @@ def stripe_webhook(request):
 def mpesa_callback(request):
     """Callback for M-Pesa STK Push"""
     data = request.data
-    
+
     # Log the callback data (In production use proper logging)
     print("M-Pesa Callback:", json.dumps(data))
-    
+
     try:
         body = data.get("Body", {}).get("stkCallback", {})
         result_code = body.get("ResultCode")
         checkout_request_id = body.get("CheckoutRequestID")
-        
+
         if result_code == 0:
             # Payment Successful
             metadata = body.get("CallbackMetadata", {}).get("Item", [])
             receipt_number = next((item.get("Value") for item in metadata if item.get("Name") == "MpesaReceiptNumber"), None)
-            
+
             try:
                 rsvp = RSVP.objects.get(checkout_request_id=checkout_request_id)
                 rsvp.payment_status = "Paid"
@@ -505,9 +503,9 @@ def mpesa_callback(request):
             # Payment Failed/Cancelled
             try:
                 rsvp = RSVP.objects.get(checkout_request_id=checkout_request_id)
-                rsvp.payment_status = "Cancelled" 
+                rsvp.payment_status = "Cancelled"
                 rsvp.save()
-            except:
+            except Exception:
                 pass
             return Response({"message": "Payment failed or cancelled"}, status=status.HTTP_200_OK)
 
