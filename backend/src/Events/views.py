@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.db import transaction
+from django.db.models import Count
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from drf_yasg.utils import swagger_auto_schema
@@ -54,7 +55,7 @@ def getDashboardSummary(request):
         is_active=True
     ).values_list('organization_id', flat=True)
     
-    events = Event.objects.filter(organization_id__in=user_orgs)
+    events = Event.objects.filter(organization_id__in=user_orgs).annotate(rsvp_count=Count('rsvps'))
     
     # Further filter by specific org if provided
     if org_id:
@@ -92,7 +93,7 @@ def getDashboardSummary(request):
             "total_revenue": total_revenue if can_view_revenue or not org_id else None,
             "checked_in_count": checked_in_count,
             "recent_activity": RSVPSerializer(recent_rsvps, many=True).data,
-            "event_breakdown": [{"id": e.id, "name": e.eventName, "rsvps": e.rsvps.count()} for e in events[:5]],
+            "event_breakdown": [{"id": e.id, "name": e.eventName, "rsvps": e.rsvp_count} for e in events[:5]],
         },
         status=status.HTTP_200_OK,
     )
