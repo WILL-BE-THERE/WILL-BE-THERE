@@ -34,11 +34,11 @@ class EventSerializer(serializers.ModelSerializer):
         """creating a new event"""
         user = self.context["user"]
         validated_data["user"] = user
-        
+
         # Extract ticket types data if present in context or handle separately
         # Ideally ticket types are created via a separate endpoint or nested write
         # For now, we will handle ticket creation in the view or separate signal if passed
-        
+
         # Auto-format URLs
         for field in ["instagram", "facebook", "twitter", "linkedIn"]:
             if field in validated_data:

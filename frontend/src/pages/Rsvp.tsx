@@ -8,7 +8,7 @@ import RsvpSuccessful from '../components/RsvpSuccessful'
 import axios from 'axios'
 import API_ENDPOINTS from '../config/api'
 import { FaSpinner } from 'react-icons/fa'
-import { BsCheckCircle, BsPhone } from 'react-icons/bs'
+import {  BsPhone } from 'react-icons/bs'
 
 interface TicketType {
   id: number
@@ -48,7 +48,7 @@ const Rsvp = () => {
   // Payment State
   const [phoneNumber, setPhoneNumber] = useState('')
   const [showMpesaModal, setShowMpesaModal] = useState(false)
-  const [checkoutRequestId, setCheckoutRequestId] = useState('')
+  const [_checkoutRequestId, setCheckoutRequestId] = useState('')
 
   useEffect(() => {
     const fetchEvent = async () => {
