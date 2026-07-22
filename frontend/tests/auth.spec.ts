@@ -8,7 +8,7 @@ test.describe('Authentication Flow', () => {
     await expect(page.getByRole('heading', { name: 'Login', exact: true })).toBeVisible();
 
     // Fill in email and password
-    await page.locator('input[name="email"]').fill('test@example.com');
+    await page.locator('form input[name="email"]').fill('test@example.com');
     await page.locator('input[name="password"]').fill('password123');
 
     // Check login button

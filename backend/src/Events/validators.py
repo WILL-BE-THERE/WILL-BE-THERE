@@ -27,10 +27,11 @@ def validate_image_file(file: UploadedFile):
     if not file:
         raise ValidationError("No file provided.")
 
+    file_size = file.size or 0
     # Check file size
-    if file.size > MAX_FILE_SIZE:
+    if file_size > MAX_FILE_SIZE:
         raise ValidationError(
-            f"File size exceeds maximum allowed size of 5MB. Uploaded file size: {file.size / (1024 * 1024):.2f}MB"
+            f"File size exceeds maximum allowed size of 5MB. Uploaded file size: {file_size / (1024 * 1024):.2f}MB"
         )
 
     # Check MIME type
@@ -38,9 +39,7 @@ def validate_image_file(file: UploadedFile):
         raise ValidationError(f"Invalid file type: {file.content_type}. Allowed types: {', '.join(ALLOWED_MIME_TYPES)}")
 
     # Check file extension
-    file_name = file.name.lower()
+    file_name = file.name.lower() if file.name else ""
     has_valid_extension = any(file_name.endswith(ext) for ext in ALLOWED_EXTENSIONS)
     if not has_valid_extension:
         raise ValidationError(f"Invalid file extension. Allowed extensions: {', '.join(ALLOWED_EXTENSIONS)}")
-
-    return file
