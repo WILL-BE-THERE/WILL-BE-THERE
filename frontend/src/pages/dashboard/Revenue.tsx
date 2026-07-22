@@ -17,7 +17,7 @@ import {
 ChartJs.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Filler)
 
 const Revenue = () => {
-  const [summary, setSummary] = useState<any>(null)
+  const [summary, setSummary] = useState<unknown>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -119,7 +119,7 @@ const Revenue = () => {
   )
 }
 
-const RevenueCard = ({ title, value, icon, trend, isPositive }: any) => (
+const RevenueCard = ({ title, value, icon, trend, isPositive }: unknown) => (
   <article className="bg-white p-6 rounded-2xl shadow-sm border border-gray-50 flex flex-col gap-4">
     <div className="flex justify-between items-start">
       <div className="w-10 h-10 bg-gray-50 rounded-xl flex items-center justify-center text-primary-100 text-lg">
