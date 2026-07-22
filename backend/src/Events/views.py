@@ -77,7 +77,7 @@ def getDashboardSummary(request):
         can_view_revenue = member and member.can_view_finances()
     
     if can_view_revenue or not org_id:  # Show revenue if no specific org or has permission
-        paid_rsvps = rsvps.filter(payment_status="Paid")
+        paid_rsvps = rsvps.filter(payment_status="Paid").select_related("ticket_type", "event")
         for rsvp in paid_rsvps:
             price = rsvp.ticket_type.price if rsvp.ticket_type else rsvp.event.price
             total_revenue += float(price)
