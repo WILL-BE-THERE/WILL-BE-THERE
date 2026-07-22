@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import get_object_or_404
 from django.db import transaction
 from django.http import HttpResponse
@@ -22,6 +24,8 @@ from .serializer import (
 )
 from django.conf import settings
 from .swagger import createEvent_request_body
+
+logger = logging.getLogger(__name__)
 
 # Organizations & Permissions
 from Organizations.models import OrganizationMember
@@ -144,7 +148,8 @@ def getEvents(request):
         serializer = EventSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        logger.error("An unexpected error occurred", exc_info=True)
+        return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
@@ -166,7 +171,8 @@ def getMyEvents(request):
         serializer = EventSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        logger.error("An unexpected error occurred", exc_info=True)
+        return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET"])
@@ -183,7 +189,8 @@ def getMyTickets(request):
         serializer = RSVPSerializer(result_page, many=True)
         return paginator.get_paginated_response(serializer.data)
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        logger.error("An unexpected error occurred", exc_info=True)
+        return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @swagger_auto_schema(
@@ -254,7 +261,8 @@ def createEvents(request):
             # Reload event to include new ticket types in serializer
             return Response({"event": EventSerializer(event).data}, status=status.HTTP_201_CREATED)
         except Exception as e:
-            return Response({"error": f"Failed to create event tickets: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+            logger.error("Failed to create event tickets", exc_info=True)
+            return Response({"error": "Failed to create event tickets. An unexpected error occurred."}, status=status.HTTP_400_BAD_REQUEST)
             
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -378,7 +386,8 @@ def createRSVP(request):
                          return Response({"error": "Failed to initiate M-Pesa payment"}, status=status.HTTP_400_BAD_REQUEST)
 
                 except Exception as e:
-                    return Response({"error": f"Payment initiation failed: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
+                    logger.error("Payment initiation failed", exc_info=True)
+                    return Response({"error": "Payment initiation failed. An unexpected error occurred."}, status=status.HTTP_400_BAD_REQUEST)
             else:
                  return Response({"error": "Phone number required for payment"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -512,4 +521,5 @@ def mpesa_callback(request):
             return Response({"message": "Payment failed or cancelled"}, status=status.HTTP_200_OK)
 
     except Exception as e:
-        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        logger.error("An unexpected error occurred", exc_info=True)
+        return Response({"error": "An unexpected error occurred"}, status=status.HTTP_400_BAD_REQUEST)
