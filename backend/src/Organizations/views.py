@@ -1,20 +1,19 @@
-from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from .models import Organization, OrganizationMember, EventTeamMember
+from .models import Organization, OrganizationMember
+from .permissions import IsOrganizationMember
 from .serializers import (
-    OrganizationSerializer,
-    OrganizationMemberSerializer,
     InviteMemberSerializer,
-    EventTeamMemberSerializer
+    OrganizationMemberSerializer,
+    OrganizationSerializer,
 )
-from .permissions import IsOrganizationMember, IsOrganizationOwner
 
 
 @api_view(['GET'])
@@ -26,7 +25,7 @@ def listMyOrganizations(request):
         user=request.user,
         is_active=True
     ).select_related('organization')
-    
+
     organizations = [m.organization for m in memberships]
     serializer = OrganizationSerializer(organizations, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -39,11 +38,11 @@ def listMyOrganizations(request):
 def createOrganization(request):
     """Create a new organization (user becomes owner)"""
     serializer = OrganizationSerializer(data=request.data)
-    
+
     if serializer.is_valid():
         # Create organization
         org = serializer.save(owner=request.user)
-        
+
         # Add creator as owner member
         OrganizationMember.objects.create(
             organization=org,
@@ -51,12 +50,12 @@ def createOrganization(request):
             role='owner',
             is_active=True
         )
-        
+
         return Response(
             OrganizationSerializer(org).data,
             status=status.HTTP_201_CREATED
         )
-    
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -66,7 +65,7 @@ def createOrganization(request):
 def getOrganization(request, org_id):
     """Get organization details"""
     org = get_object_or_404(Organization, id=org_id)
-    
+
     # Check if user is a member
     is_member = org.members.filter(user=request.user, is_active=True).exists()
     if not is_member:
@@ -74,7 +73,7 @@ def getOrganization(request, org_id):
             {"error": "You are not a member of this organization"},
             status=status.HTTP_403_FORBIDDEN
         )
-    
+
     serializer = OrganizationSerializer(org)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -85,7 +84,7 @@ def getOrganization(request, org_id):
 def listMembers(request, org_id):
     """List all members of an organization"""
     org = get_object_or_404(Organization, id=org_id)
-    
+
     members = org.members.filter(is_active=True).select_related('user', 'invited_by')
     serializer = OrganizationMemberSerializer(members, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -98,7 +97,7 @@ def listMembers(request, org_id):
 def inviteMember(request, org_id):
     """Invite a new member to the organization"""
     org = get_object_or_404(Organization, id=org_id)
-    
+
     # Check if user can manage this org
     member = org.members.filter(user=request.user, is_active=True).first()
     if not member or not member.can_manage_events():
@@ -106,14 +105,14 @@ def inviteMember(request, org_id):
             {"error": "Only admins and owners can invite members"},
             status=status.HTTP_403_FORBIDDEN
         )
-    
+
     serializer = InviteMemberSerializer(data=request.data)
     if not serializer.is_valid():
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
     email = serializer.validated_data['email']
     role = serializer.validated_data['role']
-    
+
     # Find user by email
     try:
         invited_user = User.objects.get(email=email)
@@ -122,14 +121,14 @@ def inviteMember(request, org_id):
             {"error": f"No user found with email: {email}"},
             status=status.HTTP_404_NOT_FOUND
         )
-    
+
     # Check if already a member
     if org.members.filter(user=invited_user).exists():
         return Response(
             {"error": "User is already a member of this organization"},
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+
     # Create membership
     new_member = OrganizationMember.objects.create(
         organization=org,
@@ -138,9 +137,9 @@ def inviteMember(request, org_id):
         invited_by=request.user,
         is_active=True
     )
-    
+
     # TODO: Send email notification to invited user
-    
+
     return Response(
         OrganizationMemberSerializer(new_member).data,
         status=status.HTTP_201_CREATED
@@ -154,7 +153,7 @@ def updateMemberRole(request, org_id, member_id):
     """Update a member's role"""
     org = get_object_or_404(Organization, id=org_id)
     member_to_update = get_object_or_404(OrganizationMember, id=member_id, organization=org)
-    
+
     # Check if requester can manage
     requester_member = org.members.filter(user=request.user, is_active=True).first()
     if not requester_member or requester_member.role != 'owner':
@@ -162,24 +161,24 @@ def updateMemberRole(request, org_id, member_id):
             {"error": "Only owners can change member roles"},
             status=status.HTTP_403_FORBIDDEN
         )
-    
+
     # Prevent changing owner role
     if member_to_update.role == 'owner':
         return Response(
             {"error": "Cannot change owner role. Transfer ownership instead."},
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+
     new_role = request.data.get('role')
     if new_role not in dict(OrganizationMember.ROLE_CHOICES):
         return Response(
             {"error": "Invalid role"},
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+
     member_to_update.role = new_role
     member_to_update.save()
-    
+
     return Response(
         OrganizationMemberSerializer(member_to_update).data,
         status=status.HTTP_200_OK
@@ -193,7 +192,7 @@ def removeMember(request, org_id, member_id):
     """Remove a member from the organization"""
     org = get_object_or_404(Organization, id=org_id)
     member_to_remove = get_object_or_404(OrganizationMember, id=member_id, organization=org)
-    
+
     # Check if requester can manage
     requester_member = org.members.filter(user=request.user, is_active=True).first()
     if not requester_member or not requester_member.can_manage_events():
@@ -201,18 +200,18 @@ def removeMember(request, org_id, member_id):
             {"error": "Only admins and owners can remove members"},
             status=status.HTTP_403_FORBIDDEN
         )
-    
+
     # Prevent removing owner
     if member_to_remove.role == 'owner':
         return Response(
             {"error": "Cannot remove owner. Transfer ownership first."},
             status=status.HTTP_400_BAD_REQUEST
         )
-    
+
     # Soft delete (deactivate)
     member_to_remove.is_active = False
     member_to_remove.save()
-    
+
     return Response(
         {"message": f"Member {member_to_remove.user.username} removed successfully"},
         status=status.HTTP_200_OK
