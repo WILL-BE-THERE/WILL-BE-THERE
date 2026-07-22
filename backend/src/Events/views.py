@@ -1,3 +1,5 @@
+import json
+
 # Initialize Stripe
 import stripe
 from django.conf import settings
@@ -27,13 +29,12 @@ from .serializer import (
     RSVPSerializer,
 )
 from .swagger import createEvent_request_body
+from .utils import initiate_stk_push
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # M-Pesa Utils
-import json
 
-from .utils import initiate_stk_push
 
 # Create your views here.
 
@@ -229,7 +230,7 @@ def createEvents(request):
          # Try parsing if it's a list of strings (happens with FormData sometimes)
          try:
              ticket_types_data = [json.loads(t) for t in ticket_types_data]
-         except:
+         except Exception:
              pass
 
     serializer = EventSerializer(data=data, context={"user": user})
@@ -507,7 +508,7 @@ def mpesa_callback(request):
                 rsvp = RSVP.objects.get(checkout_request_id=checkout_request_id)
                 rsvp.payment_status = "Cancelled"
                 rsvp.save()
-            except:
+            except Exception:
                 pass
             return Response({"message": "Payment failed or cancelled"}, status=status.HTTP_200_OK)
 
