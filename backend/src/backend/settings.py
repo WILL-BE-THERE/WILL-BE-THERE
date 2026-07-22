@@ -21,7 +21,7 @@ from .env_validation import validate_env_vars
 
 # MONKEY PATCH: django-fernet-fields uses 'force_text' which was removed in Django 4.0
 # We map it to 'force_str' to make the library work with Django 6.x.
-django.utils.encoding.force_text = django.utils.encoding.force_str
+django.utils.encoding.force_text = getattr(django.utils.encoding, "force_str", lambda x: x)  # type: ignore
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
