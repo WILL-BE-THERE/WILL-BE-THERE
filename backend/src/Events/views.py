@@ -75,13 +75,13 @@ def getDashboardSummary(request):
             organization_id=org_id,
             is_active=True
         ).first()
-        can_view_revenue = member and member.can_view_finances()
+        can_view_revenue = bool(member and member.can_view_finances())
 
     if can_view_revenue or not org_id:  # Show revenue if no specific org or has permission
         paid_rsvps = rsvps.filter(payment_status="Paid")
         for rsvp in paid_rsvps:
             price = rsvp.ticket_type.price if rsvp.ticket_type else rsvp.event.price
-            total_revenue += float(price)
+            total_revenue += int(float(price))
 
     checked_in_count = rsvps.filter(checked_in=True).count()
     recent_rsvps = rsvps.order_by("-created_at")[:5]

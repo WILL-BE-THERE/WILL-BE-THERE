@@ -59,6 +59,6 @@ def initiate_stk_push(phone_number, amount, account_reference, transaction_desc=
         response.raise_for_status()
         return response.json()
     except requests.exceptions.HTTPError as e:
-        return {"error": f"M-Pesa HTTP Error: {e.response.text}"}
+        return {"error": f"M-Pesa HTTP Error: {e.response.text if e.response else str(e)}"}
     except Exception as e:
         return {"error": f"M-Pesa Error: {str(e)}"}
