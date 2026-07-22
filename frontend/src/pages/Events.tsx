@@ -23,7 +23,7 @@ const fetchALLEvents = async () => {
 }
 
 const Events = () => {
-  const [events, setEvents] = React.useState<any[]>([])
+  const [events, setEvents] = React.useState<unknown[]>([])
 
   useEffect(() => {
     const fetchData = async () => {

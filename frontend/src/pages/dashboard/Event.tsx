@@ -6,7 +6,7 @@ import { FaSpinner, FaEdit, FaTrash, FaEye, FaCalendarAlt, FaMapMarkerAlt } from
 import { Link } from 'react-router-dom'
 
 const EventList = () => {
-  const [events, setEvents] = useState<any[]>([])
+  const [events, setEvents] = useState<unknown[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -78,7 +78,7 @@ const EventList = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {events.length === 0 ? (
           <div className="col-span-full py-20 text-center bg-white rounded-2xl border-2 border-dashed border-gray-100">
-            <p className="text-gray-400 font-medium">You haven't created any events yet.</p>
+            <p className="text-gray-400 font-medium">You haven't created unknown events yet.</p>
             <Link to="/createevent" className="text-primary-100 font-bold mt-2 block hover:underline">Create your first event</Link>
           </div>
         ) : (
