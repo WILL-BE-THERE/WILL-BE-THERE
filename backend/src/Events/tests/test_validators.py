@@ -1,8 +1,9 @@
-from django.test import TestCase
-from django.core.exceptions import ValidationError
-from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest.mock import MagicMock
-from Events.validators import validate_image_file, MAX_FILE_SIZE
+
+from django.core.exceptions import ValidationError
+from django.test import TestCase
+
+from Events.validators import MAX_FILE_SIZE, validate_image_file
 
 
 class ValidateImageFileTestCase(TestCase):
