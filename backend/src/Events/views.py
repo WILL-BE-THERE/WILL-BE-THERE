@@ -66,7 +66,7 @@ def getDashboardSummary(request):
     total_rsvps = rsvps.count()
 
     # Revenue calculation (only for users with finance permissions)
-    total_revenue = 0
+    total_revenue: float = 0.0
     can_view_revenue = False
 
     if org_id:
