@@ -5,9 +5,6 @@ import { VscBellDot } from 'react-icons/vsc'
 
 const TopNav = () => {
   const { loggedInUserInfo } = useProjectContext()
-  // const timeOfDay = () => {
-  //   if (Date.now)
-  // }
 
   const currentHour = new Date().getHours()
   const timeOfDay =
