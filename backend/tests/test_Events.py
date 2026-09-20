@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
-from userProfile.models import userProfile
 
-from .models import Event
+from Events.models import Event
+from userProfile.models import userProfile
 
 
 class EventCreateTestCase(APITestCase):

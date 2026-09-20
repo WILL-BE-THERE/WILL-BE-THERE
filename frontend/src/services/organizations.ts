@@ -1,5 +1,5 @@
 // API endpoints for Organizations
-import api from './api';
+import api from '../utils/api';
 
 export interface Organization {
   id: number;
