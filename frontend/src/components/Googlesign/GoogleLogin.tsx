@@ -6,10 +6,10 @@ import { signInWithPopup } from 'firebase/auth'
 function Googlelogin() {
   const handleClick = () => {
     signInWithPopup(auth, provider)
-      .then((_result) => {
+      .then((_result) => { console.log(_result);
         // TODO: Send user credentials to backend and create/authenticate user
       })
-      .catch((_error) => {
+      .catch((_error) => { console.error(_error);
         // Error handling - log to monitoring service in production
       })
   }

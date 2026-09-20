@@ -1,5 +1,6 @@
 // API endpoints for Organizations
-import api from './api';
+import axios from 'axios';
+
 
 export interface Organization {
   id: number;
@@ -41,7 +42,7 @@ export interface InviteMemberPayload {
 
 // Get all organizations where user is a member
 export const getMyOrganizations = async (): Promise<Organization[]> => {
-  const response = await api.get('/organizations/my/');
+  const response = await axios.get('/organizations/my/');
   return response.data;
 };
 
@@ -51,19 +52,19 @@ export const createOrganization = async (data: {
   description?: string;
   website?: string;
 }): Promise<Organization> => {
-  const response = await api.post('/organizations/create/', data);
+  const response = await axios.post('/organizations/create/', data);
   return response.data;
 };
 
 // Get organization details
 export const getOrganization = async (orgId: number): Promise<Organization> => {
-  const response = await api.get(`/organizations/${orgId}/`);
+  const response = await axios.get(`/organizations/${orgId}/`);
   return response.data;
 };
 
 // Get organization members
 export const getOrganizationMembers = async (orgId: number): Promise<OrganizationMember[]> => {
-  const response = await api.get(`/organizations/${orgId}/members/`);
+  const response = await axios.get(`/organizations/${orgId}/members/`);
   return response.data;
 };
 
@@ -72,7 +73,7 @@ export const inviteMember = async (
   orgId: number,
   data: InviteMemberPayload
 ): Promise<OrganizationMember> => {
-  const response = await api.post(`/organizations/${orgId}/invite/`, data);
+  const response = await axios.post(`/organizations/${orgId}/invite/`, data);
   return response.data;
 };
 
@@ -82,11 +83,11 @@ export const updateMemberRole = async (
   memberId: number,
   role: string
 ): Promise<OrganizationMember> => {
-  const response = await api.patch(`/organizations/${orgId}/members/${memberId}/role/`, { role });
+  const response = await axios.patch(`/organizations/${orgId}/members/${memberId}/role/`, { role });
   return response.data;
 };
 
 // Remove member from organization
 export const removeMember = async (orgId: number, memberId: number): Promise<void> => {
-  await api.delete(`/organizations/${orgId}/members/${memberId}/remove/`);
+  await axios.delete(`/organizations/${orgId}/members/${memberId}/remove/`);
 };
