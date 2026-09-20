@@ -1,11 +1,11 @@
-import random
+import secrets
 
 from .tasks import send_email_task
 
 
 def generate_verification_code():
     """Generate a random 4-digit verification code."""
-    return "".join(str(random.randint(0, 9)) for _ in range(4))
+    return "".join(str(secrets.randbelow(10)) for _ in range(4))
 
 
 def verify_email(email):

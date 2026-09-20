@@ -1,5 +1,20 @@
 // API endpoints for Organizations
-import api from './api';
+import axios from 'axios';
+
+
+// Create a custom axios instance that will use the API_BASE_URL
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000',
+});
+
+// Add interceptor to include auth token
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('access_token');
+  if (token && config.headers) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
 
 export interface Organization {
   id: number;

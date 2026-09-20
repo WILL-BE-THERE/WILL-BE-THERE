@@ -3,7 +3,10 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
+
 from userProfile.models import userProfile
+
+from .email import generate_verification_code
 
 
 @pytest.mark.django_db
@@ -41,3 +44,8 @@ class TestAuthViews:
         )
 
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
+
+    def test_generate_verification_code(self):
+        code = generate_verification_code()
+        assert len(code) == 4
+        assert code.isdigit()
