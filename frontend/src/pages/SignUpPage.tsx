@@ -77,7 +77,7 @@ const SignUpPage = () => {
         initSignup()
       }, 2000)
 
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Extract specific error messages from backend
       let msg = 'Signup failed. Please check your information.'
       if (error.response?.data) {

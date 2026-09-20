@@ -69,7 +69,7 @@ const LoginPage = () => {
         login()
       }, 3000)
       setLoading(false)
-    } catch (error: any) {
+    } catch (error: unknown) {
       // Error handling - log to monitoring service (Sentry) in production
       const errorMsg = error.response?.data?.error || 'Email or password incorrect'
       setErrorMessage(errorMsg)

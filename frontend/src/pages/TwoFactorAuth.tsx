@@ -41,7 +41,7 @@ function TwoFactorAuthComponent(props: TwoFactorAuthProps) {
   }, [email])
 
   React.useEffect(() => {
-    let intervalId: any
+    let intervalId: unknown
     if (countdown > 0) {
       intervalId = setInterval(() => {
         setCountdown((prev) => prev - 1)
@@ -73,7 +73,7 @@ function TwoFactorAuthComponent(props: TwoFactorAuthProps) {
       setTimeout(() => {
         navigate('/login')
       }, 2000)
-    } catch (error: any) {
+    } catch (error: unknown) {
       setErrorMessage(error.response?.data?.error || 'Verification failed')
     } finally {
       setLoading(false)
@@ -97,7 +97,7 @@ function TwoFactorAuthComponent(props: TwoFactorAuthProps) {
       )
       setSuccessMessage('Verification code resent!')
       setCountdown(initialTimer)
-    } catch (error: any) {
+    } catch (error: unknown) {
       setErrorMessage(error.response?.data?.error || 'Failed to resend code')
     } finally {
       setLoading(false)

@@ -6,7 +6,7 @@ import API_ENDPOINTS from '../config/api'
 const EventDetails = () => {
   const navigate = useNavigate()
   const { id } = useParams()
-  const [data, setEventData] = useState<any>(null)
+  const [data, setEventData] = useState<unknown>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

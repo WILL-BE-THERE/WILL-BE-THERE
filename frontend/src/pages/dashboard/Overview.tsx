@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import OrganizationSelector from '../../components/OrganizationSelector'
 
 const Overview = () => {
-  const [summary, setSummary] = useState<any>(null)
+  const [summary, setSummary] = useState<unknown>(null)
   const [loading, setLoading] = useState(true)
   const [selectedOrgId, setSelectedOrgId] = useState<number | null>(null)
 
@@ -115,7 +115,7 @@ const Overview = () => {
                 {summary?.recent_activity?.length === 0 ? (
                   <tr><td colSpan={4} className="py-10 text-center text-gray-400 font-medium italic">No recent registrations yet.</td></tr>
                 ) : (
-                  summary?.recent_activity?.map((activity: any, i: number) => (
+                  summary?.recent_activity?.map((activity: unknown, i: number) => (
                     <tr key={i} className="border-b border-gray-50/50 hover:bg-gray-50 transition-colors group">
                       <td className="py-4 px-2">
                         <div className="font-bold text-gray-800 group-hover:text-primary-100 transition-colors">{activity.guestName}</div>
@@ -145,9 +145,9 @@ const Overview = () => {
           <h2 className="text-lg font-bold text-gray-800 mb-6 font-serrat">Your Active Events</h2>
           <div className="flex flex-col gap-4">
             {summary?.event_breakdown?.length === 0 ? (
-              <p className="py-10 text-center text-gray-400 font-medium italic">You haven't created any events yet.</p>
+              <p className="py-10 text-center text-gray-400 font-medium italic">You haven't created unknown events yet.</p>
             ) : (
-              summary?.event_breakdown?.map((event: any, i: number) => (
+              summary?.event_breakdown?.map((event: unknown, i: number) => (
                 <div key={i} className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100">
                   <div className="w-10 h-10 rounded-lg bg-primary-100/10 text-primary-100 flex items-center justify-center font-bold text-xs">
                     {i + 1}
@@ -169,7 +169,7 @@ const Overview = () => {
   )
 }
 
-const StatCard = ({ icon, title, value, color, isRevenue }: any) => (
+const StatCard = ({ icon, title, value, color, isRevenue }: unknown) => (
   <article className="bg-white p-6 rounded-2xl flex flex-col gap-4 shadow-sm border border-gray-50 hover:translate-y-[-4px] transition-all">
     <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl ${color}`}>
       {icon}

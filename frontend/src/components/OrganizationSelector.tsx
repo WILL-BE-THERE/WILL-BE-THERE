@@ -28,7 +28,7 @@ export default function OrganizationSelector({
       if (!selectedOrgId && orgs.length > 0) {
         onOrganizationChange(orgs[0].id);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       setError(err.message || 'Failed to load organizations');
     } finally {
       setLoading(false);

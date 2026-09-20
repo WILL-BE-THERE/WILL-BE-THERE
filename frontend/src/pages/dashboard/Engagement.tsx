@@ -5,10 +5,10 @@ import generateApiHeaders from '../Headers'
 import { FaSpinner, FaPaperPlane, FaBullhorn } from 'react-icons/fa'
 
 const Engagement = () => {
-  const [events, setEvents] = useState<any[]>([])
+  const [events, setEvents] = useState<unknown[]>([])
   const [selectedEventId, setSelectedEventId] = useState<string | number>('')
   const [message, setMessage] = useState('')
-  const [announcements, setAnnouncements] = useState<any[]>([])
+  const [announcements, setAnnouncements] = useState<unknown[]>([])
   const [loading, setLoading] = useState(false)
   const [fetching, setFetching] = useState(false)
   const [status, setStatus] = useState({ text: '', type: '' })
@@ -63,7 +63,7 @@ const Engagement = () => {
       // Refresh list
       const response = await axios.get(API_ENDPOINTS.EVENTS.ANNOUNCEMENT_GET(selectedEventId))
       setAnnouncements(response.data)
-    } catch (error: any) {
+    } catch (error: unknown) {
       setStatus({ text: error.response?.data?.error || 'Failed to post', type: 'error' })
     } finally {
       setLoading(false)
