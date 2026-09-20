@@ -142,7 +142,7 @@ const CreateEvent = () => {
       quantity: parseInt(t.quantity)
     }))
     // Using simple array matching backend expectation
-    ticketsToSend.forEach((ticket, index) => {
+    ticketsToSend.forEach((ticket) => {
         formData.append('ticket_types', JSON.stringify(ticket))
     })
 

@@ -3,7 +3,7 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import userProfile
+from userProfile.models import userProfile
 
 
 class UserProfileCreationTestCase(TestCase):
