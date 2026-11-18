@@ -25,7 +25,7 @@ from .swagger import createEvent_request_body
 
 # Organizations & Permissions
 from Organizations.models import OrganizationMember
-from Organizations.permissions import CanManageEvent, CanViewFinances, CanCheckIn
+from Organizations.permissions import CanManageEvent, CanCheckIn
 
 # Initialize Stripe
 import stripe
