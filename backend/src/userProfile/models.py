@@ -14,4 +14,4 @@ class userProfile(models.Model):
     updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp when profile was last updated")
 
     def __str__(self) -> str:
-        return self.user.username
+        return str(self.user.username)

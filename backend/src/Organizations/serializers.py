@@ -1,6 +1,7 @@
-from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Organization, OrganizationMember, EventTeamMember
+from rest_framework import serializers
+
+from .models import EventTeamMember, Organization, OrganizationMember
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -15,7 +16,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
     """Organization with member count"""
     owner_username = serializers.CharField(source='owner.username', read_only=True)
     member_count = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = Organization
         fields = [
@@ -24,7 +25,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
             'member_count', 'created_at', 'updated_at'
         ]
         read_only_fields = ['slug', 'owner', 'created_at', 'updated_at']
-    
+
     def get_member_count(self, obj):
         return obj.members.filter(is_active=True).count()
 
@@ -34,7 +35,7 @@ class OrganizationMemberSerializer(serializers.ModelSerializer):
     user_details = UserSerializer(source='user', read_only=True)
     organization_name = serializers.CharField(source='organization.name', read_only=True)
     invited_by_username = serializers.CharField(source='invited_by.username', read_only=True, allow_null=True)
-    
+
     class Meta:
         model = OrganizationMember
         fields = [
@@ -49,7 +50,7 @@ class InviteMemberSerializer(serializers.Serializer):
     """Payload for inviting a new member"""
     email = serializers.EmailField()
     role = serializers.ChoiceField(choices=OrganizationMember.ROLE_CHOICES)
-    
+
     def validate_role(self, value):
         # Prevent inviting as owner (only one owner per org)
         if value == 'owner':
@@ -62,7 +63,7 @@ class EventTeamMemberSerializer(serializers.ModelSerializer):
     member_details = OrganizationMemberSerializer(source='member', read_only=True)
     event_name = serializers.CharField(source='event.eventName', read_only=True)
     assigned_by_username = serializers.CharField(source='assigned_by.username', read_only=True, allow_null=True)
-    
+
     class Meta:
         model = EventTeamMember
         fields = [
