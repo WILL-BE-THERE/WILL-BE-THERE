@@ -89,7 +89,7 @@ export default function TeamManagement() {
       setInviteRole('staff');
       loadMembers();
       alert('Member invited successfully!');
-    } catch (error: any) {
+    } catch (error: unknown) {
       alert(error.response?.data?.error || 'Failed to invite member');
     }
   };

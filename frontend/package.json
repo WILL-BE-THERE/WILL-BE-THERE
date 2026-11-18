@@ -15,6 +15,8 @@
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
+    "@stripe/react-stripe-js": "^6.8.0",
+    "@stripe/stripe-js": "^9.12.0",
     "@types/axios": "^0.14.0",
     "chart.js": "^4.4.2",
     "country-state-city": "^3.2.1",
@@ -31,7 +33,7 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.57.0",
-    "@types/react": "^18.2.66",
+    "@types/react": "^18.3.31",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",

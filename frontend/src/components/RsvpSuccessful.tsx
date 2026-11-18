@@ -3,7 +3,7 @@ import successfulIcon from '../assets/successful-icon.png'
 
 import { QRCodeSVG } from 'qrcode.react'
 
-const RsvpSuccessful = ({ eventName, rsvpData }: { eventName?: string, rsvpData?: any }) => {
+const RsvpSuccessful = ({ eventName, rsvpData }: { eventName?: string, rsvpData?: unknown }) => {
   return (
     <div className="fixed top-0 left-0 h-screen w-screen bg-[#B5B5B5]/80 flex justify-center items-center z-50 overflow-y-auto">
       <div className="bg-white p-6 rounded-md w-[90%] max-w-md my-8 flex flex-col items-center shadow-2xl">
@@ -29,7 +29,7 @@ const RsvpSuccessful = ({ eventName, rsvpData }: { eventName?: string, rsvpData?
           </div>
 
           {/* Plus Ones */}
-          {rsvpData?.plus_ones?.map((guest: any, index: number) => (
+          {rsvpData?.plus_ones?.map((guest: unknown, index: number) => (
             <div key={guest.rsvp_token} className="flex items-center gap-4 p-3 bg-white border border-gray-200 rounded-lg">
               <div className="bg-gray-50 p-1.5 rounded-md">
                 <QRCodeSVG value={guest.rsvp_token} size={48} />

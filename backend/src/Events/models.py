@@ -25,17 +25,17 @@ class Event(models.Model):
         related_name="created_events",
         help_text="User who created this event (for audit trail)"
     )
-    
+
     # DEPRECATED: Keep for backward compatibility during migration
     user = models.ForeignKey(
-        User, 
-        on_delete=models.CASCADE, 
+        User,
+        on_delete=models.CASCADE,
         related_name="events_legacy",
         null=True,
         blank=True,
         help_text="DEPRECATED: Use organization instead"
     )
-    
+
     picture = models.ImageField(upload_to="events")
     eventName = models.CharField(max_length=200)
     generalInfo = models.TextField()

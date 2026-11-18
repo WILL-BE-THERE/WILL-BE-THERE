@@ -7,9 +7,9 @@ import { MdOutlineMessage, MdCheckCircle, MdCancel } from 'react-icons/md'
 import { FaSpinner, FaSearch } from 'react-icons/fa'
 
 const GuestMetrics = () => {
-  const [events, setEvents] = useState<any[]>([])
+  const [events, setEvents] = useState<unknown[]>([])
   const [selectedEventId, setSelectedEventId] = useState<string | number>('')
-  const [guests, setGuests] = useState<any[]>([])
+  const [guests, setGuests] = useState<unknown[]>([])
   const [loading, setLoading] = useState(true)
   const [checkInToken, setCheckInToken] = useState('')
   const [checkInLoading, setCheckInLoading] = useState(false)
@@ -72,7 +72,7 @@ const GuestMetrics = () => {
         headers: generateApiHeaders()
       })
       setGuests(updatedGuests.data)
-    } catch (error: any) {
+    } catch (error: unknown) {
       setCheckInMsg({ text: error.response?.data?.error || 'Check-in failed', type: 'error' })
     } finally {
       setCheckInLoading(false)

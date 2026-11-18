@@ -59,7 +59,7 @@ const NewPasswordComponent = () => {
       localStorage.removeItem('reset_email')
       alert('Password reset successfully! Please login.')
       navigate('/login')
-    } catch (error: any) {
+    } catch (error: unknown) {
       setErrorMessage(error.response?.data?.error || 'Failed to reset password')
     } finally {
       setLoading(false)

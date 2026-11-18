@@ -32,7 +32,7 @@ const ForgotPasswordComponent = () => {
       // Store email for the confirmation step
       localStorage.setItem('reset_email', email)
       navigate('/newpassword')
-    } catch (error: any) {
+    } catch (error: unknown) {
       setErrorMessage(error.response?.data?.error || 'Failed to request password reset')
     } finally {
       setLoading(false)

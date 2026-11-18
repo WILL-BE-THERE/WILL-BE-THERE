@@ -1,7 +1,7 @@
 import ViewDetailsButton from './Buttons/ViewDetailsButton'
 import API_ENDPOINTS from '../config/api'
 
-const SingleEvent = (props: any) => {
+const SingleEvent = (props: unknown) => {
   const { picture, eventName, dateOfEvent, noOfRsvp, img, date, id } = props
   let displayImg = picture || img
   const displayDate = dateOfEvent || date

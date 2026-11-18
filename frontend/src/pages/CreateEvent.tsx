@@ -159,7 +159,7 @@ const CreateEvent = () => {
         }
       })
       submitForm()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error creating event:', error)
       alert(error.response?.data?.message || 'Failed to create event. Please check your links and inputs.')
     } finally {

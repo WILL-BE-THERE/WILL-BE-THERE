@@ -37,7 +37,7 @@ const Rsvp = () => {
   const [friendsNames, setFriendsNames] = useState<string[]>([])
   const [comingWithFriends, setComingWithFriends] = useState(false)
   const [rsvpSuccessful, setRsvpSuccessful] = useState(false)
-  const [rsvpData, setRsvpData] = useState<any>(null)
+  const [rsvpData, setRsvpData] = useState<unknown>(null)
   const [loading, setLoading] = useState(false)
   
   // Ticket System State
@@ -93,7 +93,7 @@ const Rsvp = () => {
           setRsvpData(response.data)
           setRsvpSuccessful(true)
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error submitting RSVP:', error)
       alert(error.response?.data?.message || 'Failed to submit RSVP. Please try again.')
     } finally {
@@ -347,7 +347,7 @@ const Rsvp = () => {
               <div className="">
                 <p className="font-medium text-sm text-neutral-200 mb-2 mt-2">
                   {' '}
-                  Will your friends accompany you?{' '}
+                  Will your friends accompunknown you?{' '}
                 </p>
                 <input
                   type="radio"
