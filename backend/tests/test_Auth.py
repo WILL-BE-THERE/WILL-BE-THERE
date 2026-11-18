@@ -5,6 +5,7 @@ from django.test import Client
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.test import APITestCase
+
 from userProfile.models import userProfile
 
 

@@ -13,25 +13,25 @@ def migrate_user_events_to_organizations(apps, schema_editor):
     Organization = apps.get_model('Organizations', 'Organization')
     OrganizationMember = apps.get_model('Organizations', 'OrganizationMember')
     Event = apps.get_model('Events', 'Event')
-    
+
     for user in User.objects.all():
         # Create personal organization for each user
         base_slug = slugify(user.username)
         slug = base_slug
         counter = 1
-        
+
         # Ensure unique slug
         while Organization.objects.filter(slug=slug).exists():
             slug = f"{base_slug}-{counter}"
             counter += 1
-        
+
         org = Organization.objects.create(
             name=f"{user.username}'s Organization",
             slug=slug,
             owner=user,
             subscription_tier='free'
         )
-        
+
         # Add user as owner member
         OrganizationMember.objects.create(
             organization=org,
@@ -39,13 +39,13 @@ def migrate_user_events_to_organizations(apps, schema_editor):
             role='owner',
             is_active=True
         )
-        
+
         # Transfer all events from this user to the new organization
         events_updated = Event.objects.filter(user=user, organization__isnull=True).update(
             organization=org,
             created_by=user
         )
-        
+
         print(f"[OK] Created org '{org.name}' and migrated {events_updated} events for user '{user.username}'")
 
 
