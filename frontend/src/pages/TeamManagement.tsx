@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Organization,
   OrganizationMember,
   getMyOrganizations,
   getOrganizationMembers,
   inviteMember,
-  updateMemberRole,
   removeMember,
   createOrganization,
 } from '../services/organizations';
@@ -31,7 +29,6 @@ const ROLE_COLORS = {
 };
 
 export default function TeamManagement() {
-  const navigate = useNavigate();
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [selectedOrg, setSelectedOrg] = useState<Organization | null>(null);
   const [members, setMembers] = useState<OrganizationMember[]>([]);
